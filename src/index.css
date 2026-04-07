@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-france-blue: #002395;
+  --color-france-red: #ED2939;
+  --color-neon-glow: #00f2ff;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-white font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .glow-text {
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.5), 0 0 20px rgba(0, 242, 255, 0.3);
+  }
+  
+  .glow-border {
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+  }
+
+  .neon-button {
+    @apply relative overflow-hidden transition-all duration-300;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+  }
+
+  .neon-button:hover {
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
+  }
+}
+
