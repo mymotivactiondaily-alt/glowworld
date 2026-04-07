@@ -14,6 +14,7 @@ import { CartDrawer } from './components/CartDrawer';
 import { SocialProof } from './components/SocialProof';
 import { HowItWorks } from './components/HowItWorks';
 import { ScrollToTop } from './components/ScrollToTop';
+import { CookieConsent } from './components/CookieConsent';
 
 // Pages
 import { HomePage } from './pages/HomePage';
@@ -99,6 +100,8 @@ function AppContent() {
         onCheckout={() => handleCheckout(t)}
         isCheckingOut={isCheckingOut}
       />
+
+      <CookieConsent />
     </div>
   );
 }

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /success
+Disallow: /cancel
+
+Sitemap: https://glowworld2026.com/sitemap.xml

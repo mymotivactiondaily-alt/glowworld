@@ -16,7 +16,7 @@ const stripe = process.env.STRIPE_SECRET_KEY
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = parseInt(process.env.PORT || '3000', 10);
 
   app.use(express.json());
 
@@ -58,7 +58,7 @@ async function startServer() {
           enabled: true,
         },
         payment_intent_data: {
-          statement_descriptor: 'MOTIVACTION-LED',
+          statement_descriptor: 'GLOWWORLD2026',
         },
       });
 
