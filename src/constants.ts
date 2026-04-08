@@ -89,8 +89,8 @@ export const PRODUCTS: Product[] = [
     team: 'Pack',
     image: '/images/led-wristbands-product.png',
     description: 'Pack Duo pour vibrer ensemble. Économisez 5€ sur votre commande.',
-    features: ['2 Bracelets', 'Synchro Groupée', 'App Gratuite', 'Livraison Suivie'],
-    longDescription: 'Le football est plus beau quand on le partage. Ce pack contient deux bracelets connectés. Synchronisez-les sur le même téléphone pour que vos deux poignets s\'illuminent en même temps lors des buts !'
+    features: ['2 Bracelets', 'Contrôle Duo Simultané', 'App Gratuite', 'Portée 5-10m'],
+    longDescription: 'Le football est plus beau quand on le partage. Ce pack contient deux bracelets connectés. Contrôlez les deux bracelets simultanément sur le même téléphone pour que vos deux poignets s\'illuminent en même temps au rythme de l\'ambiance !'
   },
   {
     id: 'family-pack-pro',
@@ -99,8 +99,18 @@ export const PRODUCTS: Product[] = [
     team: 'Pack',
     image: '/images/led-wristbands-product.png',
     description: 'Transformez votre salon en stade. Le meilleur rapport qualité/prix.',
-    features: ['4 Bracelets', 'Contrôle Centralisé', 'Mode Enfant', 'Piles Incluses'],
-    longDescription: 'Le pack idéal pour les familles de fans. Un seul téléphone peut contrôler les 4 bracelets. Créez une ambiance de stade incroyable chez vous et vivez la Coupe du Monde comme si vous y étiez.'
+    features: ['4 Bracelets', 'Contrôle Centralisé', 'Rayon 5-10m', 'Piles Incluses'],
+    longDescription: 'Le pack idéal pour les familles de fans. Un seul téléphone peut contrôler jusqu\'à 8 bracelets simultaneously. Créez une ambiance de stade incroyable chez vous et vivez la Coupe du Monde comme si vous y étiez.'
+  },
+  {
+    id: 'team-pack-pro',
+    name: 'Pack Équipe Ultime (8 Bracelets)',
+    price: 149.99,
+    team: 'Pack',
+    image: '/images/led-wristbands-product.png',
+    description: 'La limite technologique ultime. Équipez tout votre groupe.',
+    features: ['8 Bracelets', 'Synchro Totale', 'Capacité Max Bluetooth', 'Livraison Express'],
+    longDescription: 'Le summum de l\'expérience GlowWorld. Ce pack utilise la capacité maximale de l\'application pour synchroniser 8 bracelets sur un seul smartphone. Idéal pour les bars ou les grands groupes d\'amis.'
   }
 ];
 
@@ -136,9 +146,9 @@ export const BLOG_POSTS: BlogPost[] = [
     content: `
       Synchroniser votre bracelet LED GlowWorld avec les matchs en direct est un jeu d'enfant. La première étape consiste à télécharger l'application officielle via le QR code situé au dos de votre bracelet. Une fois installée, activez le Bluetooth de votre smartphone et jumelez votre appareil en quelques secondes.
 
-      Dans l'application, sélectionnez l'onglet "Live Match" et choisissez l'équipe de France. Notre technologie exclusive analyse le flux audio et les données en temps réel du match pour déclencher des effets lumineux spectaculaires. Que ce soit pour l'hymne national ou une célébration de but, votre bracelet réagira instantanément.
+      Dans l'application, sélectionnez l'onglet "Mode Stade" et choisissez votre équipe. Notre technologie de détection sonore analyse l'ambiance et les chants en temps réel pour déclencher des effets lumineux spectaculaires. Que ce soit pour l'hymne national ou la ferveur d'une célébration, votre bracelet réagira instantanément à l'émotion du moment.
 
-      Pour une expérience optimale, assurez-vous que votre bracelet est bien chargé avant le coup d'envoi. Vous pouvez également personnaliser l'intensité lumineuse et les motifs de clignotement directement depuis l'interface. Préparez-vous à briller autant que les étoiles sur le maillot des Bleus !
+      Pour une expérience optimale, assurez-vous que votre bracelet est bien chargé avant le coup d'envoi et restez à moins de 10 mètres de votre smartphone. Vous pouvez également personnaliser l'intensité lumineuse et les motifs de clignotement directement depuis l'interface. Préparez-vous à briller autant que les étoiles sur le maillot !
     `
   },
   {
@@ -154,9 +164,9 @@ export const BLOG_POSTS: BlogPost[] = [
     content: `
       L'achat d'un bracelet LED pour la Coupe du Monde 2026 ne doit pas se faire au hasard. Avec l'explosion de la "fan-tech", il est crucial de choisir un produit fiable, durable et surtout performant en termes de synchronisation. Ce guide vous aide à naviguer parmi les options disponibles pour trouver le bracelet qui vous fera vibrer.
 
-      Le critère numéro un est la connectivité. Recherchez des modèles utilisant le Bluetooth 5.0 ou supérieur pour garantir une latence minimale. Un bracelet qui s'allume trois secondes après le but perd tout son intérêt. Chez GlowWorld, nous utilisons une puce de dernière génération pour une réactivité quasi instantanée, synchronisée avec le signal TV ou streaming.
+      Le critère numéro un est la connectivité. Recherchez des modèles utilisant le Bluetooth 5.3 pour garantir une latence minimale. Un bracelet qui s'allume trois secondes après la célébration perd tout son intérêt. Chez GlowWorld, nous utilisons une puce de dernière génération capable de contrôler jusqu'à 8 bracelets simultanément dans un rayon de 10 mètres pour une réactivité quasi instantanée.
 
-      Enfin, ne négligez pas le confort et l'autonomie. Un match peut durer plus de 90 minutes, sans compter les prolongations. Nos bracelets sont conçus en silicone médical hypoallergénique et disposent d'une batterie longue durée capable de tenir tout au long du tournoi. Faites le choix de la qualité pour une Coupe du Monde inoubliable.
+      Enfin, ne négligez pas le confort et l'autonomie. Un match peut durer plus de 90 minutes, sans compter les prolongations. Nos bracelets sont conçus en silicone médical hypoallergénique et disposent d'une batterie longue durée (environ 12h) capable de tenir tout au long du tournoi. Faites le choix de la qualité pour une Coupe du Monde inoubliable.
     `
   },
   {

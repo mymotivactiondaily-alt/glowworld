@@ -41,10 +41,10 @@ export const AboutPage = ({ t }: AboutPageProps) => {
           </h3>
           <p className="text-sm text-white/60 leading-relaxed">
             {t._lang === 'fr'
-              ? "Une interface simple pour gérer vos bracelets, choisir votre équipe et recevoir des notifications de buts en temps réel."
+              ? "Une interface simple pour gérer vos bracelets, choisir votre équipe et activer le mode ambiance réactif aux sons du match."
               : t._lang === 'en'
-                ? 'A simple interface to manage your wristbands, choose your team, and receive real-time goal notifications.'
-                : 'Una interfaz sencilla para gestionar tus pulseras, elegir tu equipo y recibir notificaciones de goles en tiempo real.'}
+                ? 'A simple interface to manage your wristbands, choose your team, and activate the reactive ambient mode for match sounds.'
+                : 'Una interfaz sencilla para gestionar tus pulseras, elegir tu equipo y activar el modo ambiente reactivo a los sonidos del partido.'}
           </p>
         </div>
       </div>

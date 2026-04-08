@@ -198,20 +198,24 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
               a: { fr: "Oui, il est certifié IP67. Vous pouvez célébrer sous la pluie ou renverser votre boisson sans crainte.", en: 'Yes, it is IP67 certified. You can celebrate in the rain or spill your drink without worry.', es: 'Sí, cuenta con certificación IP67. Puedes celebrar bajo la lluvia o derramar tu bebida sin miedo.' },
             },
             {
+              q: { fr: 'Comment se synchronise-t-il ?', en: 'How does it synchronize?', es: '¿Cómo se sincroniza?' },
+              a: { fr: "Le bracelet utilise des capteurs de son et de mouvement haute précision. Une fois connecté via Bluetooth 5.3 à l'app GlowWorld, il analyse l'ambiance sonore du match (chants, cris, sifflets) pour déclencher les effets lumineux instantanément.", en: 'The wristband uses high-precision sound and motion sensors. Once connected via Bluetooth 5.3 to the GlowWorld app, it analyzes the match soundtrack (chants, shouts, whistles) to trigger light effects instantly.', es: 'La pulsera utiliza sensores de sonido y movimiento de alta precisión. Una vez conectada por Bluetooth 5.3 a la app GlowWorld, analiza el ambiente sonoro del partido (cánticos, gritos, silbatos) para activar los efectos de luces al instante.' },
+            },
+            {
+              q: { fr: 'Combien de bracelets par téléphone ?', en: 'How many wristbands per phone?', es: '¿Cuántas pulseras por teléfono?' },
+              a: { fr: "Un seul smartphone peut contrôler jusqu'à 8 bracelets simultanément via l'application, idéal pour les familles ou les groupes d'amis.", en: 'A single smartphone can control up to 8 wristbands simultaneously via the app, perfect for families or groups of friends.', es: 'Un solo smartphone puede controlar hasta 8 pulseras simultáneamente a través de la aplicación, ideal para familias o grupos de amigos.' },
+            },
+            {
+              q: { fr: 'Quelle est la portée du Bluetooth ?', en: 'What is the Bluetooth range?', es: '¿Cuál es el alcance del Bluetooth?' },
+              a: { fr: 'La connexion Bluetooth est stable jusqu\'à une distance de 5 à 10 mètres entre le téléphone et les bracelets.', en: 'The Bluetooth connection is stable up to a distance of 5 to 10 meters between the phone and the wristbands.', es: 'La conexión Bluetooth es estable hasta una distancia de 5 a 10 metros entre el teléfono y las pulseras.' },
+            },
+            {
               q: { fr: 'Quels sont les délais de livraison ?', en: 'What are the delivery times?', es: '¿Cuáles son los plazos de entrega?' },
-              a: { fr: 'En raison de la forte demande pour la Coupe du Monde 2026, comptez 10 à 15 jours ouvrés pour recevoir votre commande. La livraison est entièrement gratuite et suivie.', en: 'Due to high demand for the 2026 World Cup, allow 10 to 15 business days to receive your order. Shipping is completely free and tracked.', es: 'Debido a la alta demanda para el Mundial 2026, cuenta con 10 a 15 días hábiles para recibir tu pedido. El envío es totalmente gratuito y seguido.' },
+              a: { fr: 'Comptez 10 à 15 jours ouvrés pour recevoir votre commande. La livraison est entièrement gratuite et suivie par numéro de tracking.', en: 'Allow 10 to 15 business days to receive your order. Shipping is completely free and tracked with a tracking number.', es: 'Cuenta con 10 a 15 días hábiles para recibir tu pedido. El envío es totalmente gratuito y seguido con número de seguimiento.' },
             },
             {
               q: { fr: "Quelle est l'autonomie de la batterie ?", en: 'What is the battery life?', es: '¿Cuál es la autonomía de la batería?' },
-              a: { fr: 'La batterie dure environ 12 heures en utilisation continue (soit 4 à 5 matchs complets).', en: 'The battery lasts about 12 hours in continuous use (about 4 to 5 full matches).', es: 'La batería dura aproximadamente 12 horas en uso continuo (es decir, de 4 a 5 partidos completos).' },
-            },
-            {
-              q: { fr: 'Comment se synchronise-t-il ?', en: 'How does it synchronize?', es: '¿Cómo se sincroniza?' },
-              a: { fr: 'Via Bluetooth 5.3 avec notre application GlowWorld. La latence est inférieure à 0.1 seconde.', en: 'Via Bluetooth 5.3 with our GlowWorld app. Latency is less than 0.1 seconds.', es: 'A través de Bluetooth 5.3 con nuestra aplicación GlowWorld. La latencia es inferior a 0,1 segundos.' },
-            },
-            {
-              q: { fr: 'Fonctionne-t-il pour tous les matchs ?', en: 'Does it work for all matches?', es: '¿Funciona para todos los partidos?' },
-              a: { fr: 'Oui, tous les matchs de la Coupe du Monde 2026 sont supportés en temps réel.', en: 'Yes, all 2026 World Cup matches are supported in real-time.', es: 'Sí, todos los partidos de la Copa del Mundo 2026 son compatibles en tiempo real.' },
+              a: { fr: 'La batterie dure environ 12 heures en utilisation continue (soit 4 à 5 matchs complets). Les piles sont remplaçables.', en: 'The battery lasts about 12 hours in continuous use (about 4 to 5 full matches). Batteries are replaceable.', es: 'La batería dura aproximadamente 12 horas en uso continuo (es decir, de 4 a 5 partidos completos). Las pilas son reemplazables.' },
             },
           ].map((faq, i) => (
             <div key={i} className="p-6 bg-white/5 rounded-2xl border border-white/10">
