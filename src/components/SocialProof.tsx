@@ -5,17 +5,18 @@ import { Zap } from 'lucide-react';
 const NAMES = ['Thomas', 'Sophie', 'Jean', 'Marco', 'Elena', 'Lucas', 'Mateo', 'Hans', 'Yuki', 'Diego', 'Chloe', 'Liam'];
 const LOCATIONS = [
   { city: 'Paris', team: 'France', code: 'fr' },
-  { city: 'Rio', team: 'Brésil', code: 'br' },
-  { city: 'Buenos Aires', team: 'Argentine', code: 'ar' },
-  { city: 'Mexico', team: 'Mexique', code: 'mx' },
-  { city: 'New York', team: 'USA', code: 'us' },
-  { city: 'Berlin', team: 'Allemagne', code: 'de' },
+  { city: 'Bruxelles', team: 'Pack Hôte', code: 'be' },
+  { city: 'Genève', team: 'France', code: 'ch' },
+  { city: 'Montréal', team: 'Canada', code: 'ca' },
   { city: 'Madrid', team: 'Espagne', code: 'es' },
-  { city: 'London', team: 'Angleterre', code: 'gb' },
-  { city: 'Tokyo', team: 'Japon', code: 'jp' },
-  { city: 'Casablanca', team: 'Maroc', code: 'ma' },
-  { city: 'Dakar', team: 'Sénégal', code: 'sn' },
+  { city: 'New York', team: 'USA', code: 'us' },
+  { city: 'Londres', team: 'Pack Famille', code: 'gb' },
+  { city: 'Berlin', team: 'Allemagne', code: 'de' },
+  { city: 'Rome', team: 'Pack Duo', code: 'it' },
+  { city: 'Amsterdam', team: 'Pays-Bas', code: 'nl' },
+  { city: 'Lyon', team: 'Argentine', code: 'fr' },
   { city: 'Toronto', team: 'Canada', code: 'ca' },
+  { city: 'Miami', team: 'Mexique', code: 'us' },
 ];
 
 export const SocialProof = () => {
