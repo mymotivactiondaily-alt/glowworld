@@ -47,7 +47,11 @@ export const TRANSLATIONS: Record<Lang, Translation> = {
     logistics_title: "Logistique & Portée Mondiale",
     logistics_desc: "Grâce à nos centres de distribution stratégiques, nous assurons une livraison rapide et suivie dans plus de 50 pays, incluant les USA, le Mexique et le Canada.",
     production_title: "Audit & Production",
-    production_desc: "Nous sélectionnons et auditons rigoureusement nos usines partenaires pour garantir une capacité de production de masse (jusqu'à 50 000 unités/mois) tout en respectant les normes internationales CE et RoHS."
+    production_desc: "Nous sélectionnons et auditons rigoureusement nos usines partenaires pour garantir une capacité de production de masse (jusqu'à 50 000 unités/mois) tout en respectant les normes internationales CE et RoHS.",
+    login: "Connexion",
+    logout: "Déconnexion",
+    welcome: "Bienvenue",
+    profile: "Mon Profil"
   },
   en: {
     _lang: 'en',
@@ -95,7 +99,11 @@ export const TRANSLATIONS: Record<Lang, Translation> = {
     logistics_title: "Logistics & Global Reach",
     logistics_desc: "With our strategic distribution centers, we ensure fast and tracked delivery to over 50 countries, including the USA, Mexico, and Canada.",
     production_title: "Audit & Production",
-    production_desc: "We rigorously select and audit our partner factories to ensure mass production capacity (up to 50,000 units/month) while complying with international CE and RoHS standards."
+    production_desc: "We rigorously select and audit our partner factories to ensure mass production capacity (up to 50,000 units/month) while complying with international CE and RoHS standards.",
+    login: "Sign In",
+    logout: "Logout",
+    welcome: "Welcome",
+    profile: "Profile"
   },
   es: {
     _lang: 'es',
@@ -143,6 +151,10 @@ export const TRANSLATIONS: Record<Lang, Translation> = {
     logistics_title: "Logística y Alcance Global",
     logistics_desc: "Con nuestros centros de distribución estratégicos, garantizamos una entrega rápida y seguida a más de 50 países, incluidos EE. UU., México y Canadá.",
     production_title: "Auditoría y Producción",
-    production_desc: "Seleccionamos y auditamos rigurosamente nuestras fábricas asociadas para garantizar una capacidad de producción masiva (hasta 50.000 unidades/mes) cumpliendo con las normas internacionales CE y RoHS."
+    production_desc: "Seleccionamos y auditamos rigurosamente nuestras fábricas asociadas para garantizar una capacidad de producción masiva (hasta 50.000 unidades/mes) cumpliendo con las normas internacionales CE y RoHS.",
+    login: "Iniciar sesión",
+    logout: "Cerrar sesión",
+    welcome: "Bienvenido",
+    profile: "Perfil"
   }
 };

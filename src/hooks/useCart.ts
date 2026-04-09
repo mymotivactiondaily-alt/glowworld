@@ -1,11 +1,65 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '../lib/firebase';
+import { useAuth } from '../contexts/AuthContext';
 import { trackEvent } from '../lib/analytics';
 import type { Product, CartItem, Translation } from '../types';
 
 export const useCart = () => {
+  const { user } = useAuth();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const isInitialMount = useRef(true);
+
+  // Load cart from Firestore on login
+  useEffect(() => {
+    const loadCart = async () => {
+      if (user) {
+        try {
+          const cartRef = doc(db, 'carts', user.uid);
+          const cartSnap = await getDoc(cartRef);
+          if (cartSnap.exists()) {
+            const remoteCart = cartSnap.data().items || [];
+            if (remoteCart.length > 0) {
+              setCart(remoteCart);
+            }
+          }
+        } catch (error) {
+          console.error('Error loading cart:', error);
+        }
+      } else {
+        // Clear cart on logout if desired, or keep local
+        // setCart([]); 
+      }
+    };
+    loadCart();
+  }, [user]);
+
+  // Save cart to Firestore on changes
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    const saveCart = async () => {
+      if (user) {
+        try {
+          const cartRef = doc(db, 'carts', user.uid);
+          await setDoc(cartRef, {
+            items: cart,
+            updatedAt: new Date().toISOString(),
+          });
+        } catch (error) {
+          console.error('Error saving cart:', error);
+        }
+      }
+    };
+
+    const timeoutId = setTimeout(saveCart, 1000); // Debounce saves
+    return () => clearTimeout(timeoutId);
+  }, [cart, user]);
 
   const addToCart = (product: Product) => {
     trackEvent('add_to_cart', {
@@ -40,7 +94,17 @@ export const useCart = () => {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const clearCart = () => setCart([]);
+  const clearCart = async () => {
+    setCart([]);
+    if (user) {
+      try {
+        const cartRef = doc(db, 'carts', user.uid);
+        await setDoc(cartRef, { items: [], updatedAt: new Date().toISOString() });
+      } catch (error) {
+        console.error('Error clearing remote cart:', error);
+      }
+    }
+  };
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -63,7 +127,12 @@ export const useCart = () => {
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: cart, lang: t._lang }),
+        body: JSON.stringify({ 
+          items: cart, 
+          lang: t._lang,
+          userId: user?.uid,
+          userEmail: user?.email 
+        }),
       });
 
       const data = await response.json();

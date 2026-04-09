@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { HelmetProvider } from 'react-helmet-async';
 import { TRANSLATIONS } from './i18n/translations';
 import { trackEvent } from './lib/analytics';
+import { AuthProvider } from './contexts/AuthContext';
 import { useCart } from './hooks/useCart';
 import type { Lang } from './types';
 
@@ -109,9 +110,11 @@ function AppContent() {
 export default function App() {
   return (
     <HelmetProvider>
-      <Router>
-        <AppContent />
-      </Router>
+      <AuthProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AuthProvider>
     </HelmetProvider>
   );
 }

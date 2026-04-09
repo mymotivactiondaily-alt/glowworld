@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { ShoppingCart, Menu, X, Zap, Smartphone } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { UserMenu } from './UserMenu';
 import type { Lang, Translation } from '../types';
 
 interface NavbarProps {
@@ -67,6 +68,7 @@ export const Navbar = ({ cartCount, onOpenCart, lang, setLang, t }: NavbarProps)
               </React.Fragment>
             ))}
           </div>
+          <UserMenu t={t} />
           <button onClick={onOpenCart} className="relative p-2 hover:bg-white/10 rounded-full transition-colors">
             <ShoppingCart className="w-6 h-6" />
             {cartCount > 0 && (
@@ -95,19 +97,22 @@ export const Navbar = ({ cartCount, onOpenCart, lang, setLang, t }: NavbarProps)
             <Link to="/app" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-bold text-amber-400">{t.download_app}</Link>
             <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-bold">{t.blog}</Link>
             <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-bold">{t.about}</Link>
-            <div className="flex gap-3 pt-4 border-t border-white/10">
-              {(['fr', 'en', 'es'] as Lang[]).map((l) => (
-                <button
-                  key={l}
-                  onClick={() => { setLang(l); setIsMobileMenuOpen(false); }}
-                  className={cn(
-                    'px-4 py-2 rounded-full border text-xs font-bold uppercase transition-all',
-                    lang === l ? 'bg-france-blue border-france-blue text-white' : 'border-white/20 text-white/50',
-                  )}
-                >
-                  {l}
-                </button>
-              ))}
+            <div className="flex gap-3 pt-4 border-t border-white/10 items-center justify-between">
+              <div className="flex gap-2">
+                {(['fr', 'en', 'es'] as Lang[]).map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => { setLang(l); setIsMobileMenuOpen(false); }}
+                    className={cn(
+                      'px-4 py-2 rounded-full border text-xs font-bold uppercase transition-all',
+                      lang === l ? 'bg-france-blue border-france-blue text-white' : 'border-white/20 text-white/50',
+                    )}
+                  >
+                    {l}
+                  </button>
+                ))}
+              </div>
+              <UserMenu t={t} />
             </div>
           </motion.div>
         )}

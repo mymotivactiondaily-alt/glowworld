@@ -77,4 +77,8 @@ export interface Translation {
   logistics_desc: string;
   production_title: string;
   production_desc: string;
+  login: string;
+  logout: string;
+  welcome: string;
+  profile: string;
 }
