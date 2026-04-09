@@ -75,7 +75,7 @@ async function startServer() {
       if (resend && orderData.email) {
         try {
           await resend.emails.send({
-            from: 'GlowWorld <onboarding@resend.dev>',
+            from: 'GlowWorld 2026 <contact@glowworld2026.com>',
             to: orderData.email,
             subject: 'Confirmation de votre commande GlowWorld 2026 🎇',
             html: `
