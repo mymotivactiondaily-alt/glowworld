@@ -144,7 +144,9 @@ export const useCart = () => {
       }
     } catch (error) {
       console.error('Checkout error:', error);
-      alert(t._lang === 'fr' ? 'Erreur lors du paiement. Veuillez réessayer.' : 'Payment error. Please try again.');
+      alert(t._lang === 'fr' 
+        ? `Erreur lors du paiement : ${error instanceof Error ? error.message : 'Détail inconnu'}` 
+        : `Payment error: ${error instanceof Error ? error.message : 'Unknown detail'}`);
     } finally {
       setIsCheckingOut(false);
     }
