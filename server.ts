@@ -68,6 +68,16 @@ async function startServer() {
       res.status(500).json({ error: error.message });
     }
   });
+  // Servir sitemap.xml et robots.txt dans tous les environnements
+  app.get('/sitemap.xml', (req, res) => {
+    res.setHeader('Content-Type', 'application/xml');
+    res.sendFile(path.join(__dirname, 'public', 'sitemap.xml'));
+  });
+
+  app.get('/robots.txt', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain');
+    res.sendFile(path.join(__dirname, 'public', 'robots.txt'));
+  });
 
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {

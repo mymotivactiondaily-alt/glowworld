@@ -4,4 +4,4 @@ Disallow: /api/
 Disallow: /success
 Disallow: /cancel
 
-Sitemap: https://glowworld2026.com/sitemap.xml
+Sitemap: https://www.glowworld2026.com/sitemap.xml
