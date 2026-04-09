@@ -8,6 +8,7 @@ export interface Product {
   longDescription?: string;
   features: string[];
   isPremium?: boolean;
+  isAvailable?: boolean;
 }
 
 export interface CartItem extends Product {

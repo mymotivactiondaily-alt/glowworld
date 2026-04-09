@@ -70,13 +70,25 @@ export const ProductCard = ({ product, onAddToCart, t }: ProductCardProps) => {
             </span>
           )}
         </div>
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-slate-950 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className={cn(
+          "absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-slate-950 to-transparent transition-opacity",
+          product.isAvailable ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+        )}>
           <button
-            onClick={() => onAddToCart(product)}
-            className="w-full bg-white text-slate-950 font-bold py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-france-blue hover:text-white transition-colors"
+            onClick={() => product.isAvailable && onAddToCart(product)}
+            disabled={!product.isAvailable}
+            className={cn(
+              "w-full font-bold py-2 rounded-lg flex items-center justify-center gap-2 transition-colors",
+              product.isAvailable 
+                ? "bg-white text-slate-950 hover:bg-france-blue hover:text-white" 
+                : "bg-white/10 text-white/40 cursor-not-allowed border border-white/10"
+            )}
           >
             <ShoppingCart className="w-4 h-4" />
-            {t._lang === 'fr' ? 'Ajouter au panier' : t._lang === 'en' ? 'Add to cart' : 'Añadir al carrito'}
+            {product.isAvailable 
+              ? (t._lang === 'fr' ? 'Ajouter au panier' : t._lang === 'en' ? 'Add to cart' : 'Añadir al carrito')
+              : (t._lang === 'fr' ? 'Bientôt disponible' : t._lang === 'en' ? 'Coming Soon' : 'Próximamente')
+            }
           </button>
         </div>
       </div>

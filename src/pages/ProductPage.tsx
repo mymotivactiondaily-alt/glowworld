@@ -160,11 +160,20 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
           </div>
 
           <button
-            onClick={() => onAddToCart(product)}
-            className="w-full bg-white text-slate-950 font-black py-6 rounded-2xl uppercase tracking-[0.2em] hover:bg-france-blue hover:text-white transition-all neon-button flex items-center justify-center gap-3 shadow-2xl mb-8"
+            onClick={() => product.isAvailable && onAddToCart(product)}
+            disabled={!product.isAvailable}
+            className={cn(
+              "w-full font-black py-6 rounded-2xl uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 shadow-2xl mb-8",
+              product.isAvailable 
+                ? "bg-white text-slate-950 hover:bg-france-blue hover:text-white neon-button" 
+                : "bg-white/10 text-white/40 cursor-not-allowed border border-white/10"
+            )}
           >
             <ShoppingCart className="w-6 h-6" />
-            {t._lang === 'fr' ? 'Ajouter au panier' : t._lang === 'en' ? 'Add to cart' : 'Añadir al carrito'}
+            {product.isAvailable 
+              ? (t._lang === 'fr' ? 'Ajouter au panier' : t._lang === 'en' ? 'Add to cart' : 'Añadir al carrito')
+              : (t._lang === 'fr' ? 'Bientôt disponible' : t._lang === 'en' ? 'Coming Soon' : 'Próximamente')
+            }
           </button>
 
           <div className="grid grid-cols-3 gap-4">
