@@ -109,13 +109,15 @@ async function startServer() {
     try {
       const { items, lang, userId, userEmail } = req.body;
 
+      const origin = req.headers.origin || `https://${req.headers.host}`;
+      
       const lineItems = items.map((item: any) => ({
         price_data: {
           currency: "eur",
           product_data: {
             name: item.name,
-            images: [item.image],
-            description: item.description,
+            // Only send absolute URLs to Stripe
+            images: item.image && item.image.startsWith('http') ? [item.image] : [],
           },
           unit_amount: Math.round(item.price * 100),
         },
@@ -126,8 +128,8 @@ async function startServer() {
         payment_method_types: ["card"],
         line_items: lineItems,
         mode: "payment",
-        success_url: `${req.headers.origin}/success`,
-        cancel_url: `${req.headers.origin}/cancel`,
+        success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/cancel`,
         customer_email: userEmail,
         metadata: {
           userId: userId || 'guest',
