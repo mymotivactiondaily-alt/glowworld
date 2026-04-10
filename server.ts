@@ -209,6 +209,24 @@ async function startServer() {
       res.json({ success: true });
     } catch (err: any) {
       console.error("Welcome Email Error:", err);
+    }
+  });
+
+  // Admin Route for fetching recent orders
+  app.get("/api/admin/orders", async (req, res) => {
+    const adminKey = req.headers['x-admin-key'];
+    if (!adminKey || adminKey !== process.env.ADMIN_SECRET_KEY) {
+      return res.status(401).json({ error: "Non autorisé" });
+    }
+    try {
+      const snapshot = await db.collection('orders')
+        .orderBy('createdAt', 'desc')
+        .limit(20)
+        .get();
+      const orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      res.json(orders);
+    } catch (err: any) {
+      console.error("Admin Orders Error:", err);
       res.status(500).json({ error: err.message });
     }
   });

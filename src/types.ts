@@ -87,3 +87,30 @@ export interface Translation {
   cart_upsell_desc: string;
   cart_upsell_cta: string;
 }
+
+export interface Order {
+  id: string;
+  orderId: string;
+  email: string;
+  amount: number;
+  currency: string;
+  status: string;
+  items: Array<{ id: string; name: any; qty: number }>;
+  exported: boolean;
+  createdAt: any;
+  shipping?: {
+    name: string;
+    address: {
+      line1: string;
+      city: string;
+      postal_code: string;
+      country: string;
+    };
+  };
+}
+
+export interface DashboardStats {
+  totalSales: number;
+  totalOrders: number;
+  pendingExports: number;
+}

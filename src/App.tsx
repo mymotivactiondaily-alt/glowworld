@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { TRANSLATIONS } from './i18n/translations';
@@ -32,6 +32,7 @@ import { LegalPage } from './pages/LegalPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { TermsPage } from './pages/TermsPage';
 import { ShippingPage } from './pages/ShippingPage';
+import { AdminPage } from './pages/AdminPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 function AppContent() {
@@ -85,6 +86,7 @@ function AppContent() {
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/shipping" element={<ShippingPage />} />
+          <Route path="/admin" element={<AdminPage t={t} />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
