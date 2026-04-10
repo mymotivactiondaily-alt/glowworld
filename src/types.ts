@@ -81,4 +81,6 @@ export interface Translation {
   logout: string;
   welcome: string;
   profile: string;
+  cart_coming_soon: string;
+  cart_coming_soon_msg: string;
 }

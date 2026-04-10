@@ -126,9 +126,9 @@ export const CartDrawer = ({
                   disabled={true}
                   className="w-full bg-france-blue disabled:bg-blue-900 opacity-50 cursor-not-allowed text-white font-black py-4 rounded-xl uppercase tracking-widest transition-all relative flex items-center justify-center gap-2"
                 >
-                  Bientôt disponible
+                  {t.cart_coming_soon}
                 </button>
-                <p className="text-xs text-white/40 text-center mt-2">⚡ Ouverture des commandes très prochainement</p>
+                <p className="text-xs text-white/40 text-center mt-2">{t.cart_coming_soon_msg}</p>
                 <div className="mt-4 flex flex-col items-center gap-3">
                   <div className="flex items-center gap-2 text-[10px] font-bold text-white/40 uppercase tracking-widest">
                     <CheckCircle className="w-3 h-3 text-green-500" />

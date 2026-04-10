@@ -51,7 +51,9 @@ export const TRANSLATIONS: Record<Lang, Translation> = {
     login: "Connexion",
     logout: "Déconnexion",
     welcome: "Bienvenue",
-    profile: "Mon Profil"
+    profile: "Mon Profil",
+    cart_coming_soon: "Bientôt disponible",
+    cart_coming_soon_msg: "⚡ Ouverture des commandes très prochainement"
   },
   en: {
     _lang: 'en',
@@ -103,7 +105,9 @@ export const TRANSLATIONS: Record<Lang, Translation> = {
     login: "Sign In",
     logout: "Logout",
     welcome: "Welcome",
-    profile: "Profile"
+    profile: "Profile",
+    cart_coming_soon: "Coming Soon",
+    cart_coming_soon_msg: "⚡ Orders opening very soon"
   },
   es: {
     _lang: 'es',
@@ -155,6 +159,8 @@ export const TRANSLATIONS: Record<Lang, Translation> = {
     login: "Iniciar sesión",
     logout: "Cerrar sesión",
     welcome: "Bienvenido",
-    profile: "Perfil"
+    profile: "Perfil",
+    cart_coming_soon: "Muy pronto",
+    cart_coming_soon_msg: "⚡ Apertura de pedidos muy pronto"
   }
 };
