@@ -178,6 +178,7 @@ async function startServer() {
     }
   });
 
+  // Welcome Email Route for new registrations
   app.post("/api/welcome-email", async (req, res) => {
     const { email, displayName } = req.body;
     if (!email || !resend) return res.status(400).json({ error: "Missing data" });
