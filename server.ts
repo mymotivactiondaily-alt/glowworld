@@ -13,10 +13,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Initialize Firebase Admin
+const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT 
+  ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+  : null;
+
 if (!admin.apps.length) {
-  admin.initializeApp({
-    projectId: 'glowworld-2026'
-  });
+  if (serviceAccount) {
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount)
+    });
+    console.log("✓ Firebase Admin: Initialisé avec succès via Service Account.");
+  } else {
+    admin.initializeApp({
+      projectId: 'glowworld-2026'
+    });
+    console.log("! Firebase Admin: Initialisé avec Project ID par défaut (Attention: Risque de permission sur Railway).");
+  }
 }
 const db = admin.firestore();
 
@@ -34,21 +46,27 @@ async function startServer() {
 
   // Webhook needs raw response
   app.post("/api/webhook", express.raw({ type: 'application/json' }), async (req, res) => {
+    console.log("🔔 Stripe Webhook: Requête reçue.");
     const sig = req.headers['stripe-signature'] as string;
     let event;
 
     if (!stripe || !process.env.STRIPE_WEBHOOK_SECRET) {
+      console.error("❌ Webhook Error: Configurations manquantes (Stripe ou Secret).");
       return res.status(400).send("Webhook configurations missing");
     }
 
     try {
       event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
     } catch (err: any) {
+      console.error(`❌ Webhook Error (Signature/Format): ${err.message}`);
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
+    console.log(`✅ Webhook Event: ${event.type}`);
+
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session;
+      console.log(`📦 Session ${session.id}: Traitement de la commande...`);
       
       // 1. Save Order to Firestore
       const orderData = {
@@ -60,20 +78,27 @@ async function startServer() {
         currency: session.currency,
         status: 'paid',
         items: JSON.parse((session as any).metadata?.items || '[]'),
-        shipping: (session as any).shipping_details,
+        shipping: (session as any).shipping_details || null,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       };
 
-      await db.collection('orders').doc(session.id).set(orderData);
+      try {
+        await db.collection('orders').doc(session.id).set(orderData);
+        console.log(`💾 Session ${session.id}: Commande enregistrée dans Firestore.`);
 
-      // 2. Clear Cart in Firestore if userId exists
-      if (session.metadata?.userId) {
-        await db.collection('carts').doc(session.metadata.userId).set({ items: [], updatedAt: new Date().toISOString() });
+        // 2. Clear Cart in Firestore if userId exists
+        if (session.metadata?.userId && session.metadata?.userId !== 'guest') {
+          await db.collection('carts').doc(session.metadata.userId).set({ items: [], updatedAt: new Date().toISOString() });
+          console.log(`🧹 Session ${session.id}: Panier vidé pour l'utilisateur ${session.metadata.userId}.`);
+        }
+      } catch (dbErr) {
+        console.error(`❌ Firestore Error (Session ${session.id}):`, dbErr);
       }
 
       // 3. Send Thank You Email
       if (resend && orderData.email) {
         try {
+          console.log(`📧 Session ${session.id}: Envoi de l'email à ${orderData.email}...`);
           await resend.emails.send({
             from: 'GlowWorld 2026 <contact@glowworld2026.com>',
             to: orderData.email,
@@ -83,14 +108,15 @@ async function startServer() {
                 <h1 style="color: #002395; text-align: center;">Merci pour votre commande !</h1>
                 <p>Bonjour,</p>
                 <p>Nous avons bien reçu votre paiement pour votre commande <strong>${session.id.slice(-8)}</strong>.</p>
-                <p>Votre bracelet LED intelligent sera expédié dans les prochaines 24 heures vers <strong>${orderData.shipping?.address?.city}, ${orderData.shipping?.address?.country}</strong>.</p>
+                <p>Votre bracelet LED intelligent sera expédié dans les prochaines 24 heures vers <strong>${orderData.shipping?.address?.city || 'votre adresse'}, ${orderData.shipping?.address?.country || ''}</strong>.</p>
                 <hr />
                 <p style="font-size: 12px; color: #666; text-align: center;">GlowWorld 2026 - L'émotion en temps réel.</p>
               </div>
             `
           });
+          console.log(`✅ Session ${session.id}: Email envoyé.`);
         } catch (emailErr) {
-          console.error("Email Error:", emailErr);
+          console.error(`❌ Email Error (Session ${session.id}):`, emailErr);
         }
       }
     }
