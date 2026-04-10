@@ -13,6 +13,18 @@ import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db, googleProvider } from '../lib/firebase';
 import { trackEvent } from '../lib/analytics';
 
+const sendWelcomeEmail = async (email: string, displayName: string | null) => {
+  try {
+    await fetch('/api/welcome-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, displayName })
+    });
+  } catch (err) {
+    console.error('Welcome email error:', err);
+  }
+};
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -49,6 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             lastLogin: serverTimestamp(),
           });
           trackEvent('sign_up', { method: firebaseUser.providerData[0]?.providerId || 'email' });
+          await sendWelcomeEmail(firebaseUser.email!, firebaseUser.displayName);
         } else {
           await setDoc(userRef, { lastLogin: serverTimestamp() }, { merge: true });
           trackEvent('login', { method: firebaseUser.providerData[0]?.providerId || 'email' });

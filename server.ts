@@ -178,6 +178,40 @@ async function startServer() {
     }
   });
 
+  app.post("/api/welcome-email", async (req, res) => {
+    const { email, displayName } = req.body;
+    if (!email || !resend) return res.status(400).json({ error: "Missing data" });
+    try {
+      await resend.emails.send({
+        from: 'GlowWorld 2026 <contact@glowworld2026.com>',
+        to: email,
+        subject: '🎇 Bienvenue chez GlowWorld 2026 !',
+        html: `
+          <div style="font-family:sans-serif;max-width:600px;margin:auto;padding:20px;background:#0a0f1e;color:white;border-radius:12px;">
+            <h1 style="color:#003399;text-align:center;">Bienvenue ${displayName || ''} ! 🎇</h1>
+            <p>Merci de rejoindre GlowWorld 2026 — la technologie au service de la passion du foot.</p>
+            <p>Votre compte est maintenant actif. Vous pouvez dès maintenant :</p>
+            <ul>
+              <li>🛒 Commander votre bracelet LED</li>
+              <li>📦 Suivre vos commandes</li>
+              <li>⚡ Recevoir les offres exclusives</li>
+            </ul>
+            <div style="text-align:center;margin-top:30px;">
+              <a href="https://www.glowworld2026.com/boutique" style="background:#003399;color:white;padding:12px 30px;border-radius:8px;text-decoration:none;font-weight:bold;">
+                Découvrir la boutique
+              </a>
+            </div>
+            <p style="font-size:12px;color:#666;text-align:center;margin-top:30px;">GlowWorld 2026 - L'émotion en temps réel.</p>
+          </div>
+        `
+      });
+      res.json({ success: true });
+    } catch (err: any) {
+      console.error("Welcome Email Error:", err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   // Administration Route for Exporting CSV
   app.post("/api/export-csv", async (req, res) => {
     const adminKey = req.headers['x-admin-key'];
