@@ -64,7 +64,7 @@ export const useCart = () => {
   const addToCart = (product: Product) => {
     trackEvent('add_to_cart', {
       item_id: product.id,
-      item_name: product.name,
+      item_name: product.name.fr,
       price: product.price,
       currency: 'EUR',
     });
@@ -117,7 +117,7 @@ export const useCart = () => {
       currency: 'EUR',
       items: cart.map((item) => ({
         item_id: item.id,
-        item_name: item.name,
+        item_name: item.name.fr,
         price: item.price,
         quantity: item.quantity,
       })),

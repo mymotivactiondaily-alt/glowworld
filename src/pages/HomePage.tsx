@@ -18,13 +18,13 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
   return (
     <div className="pt-20">
       <Helmet>
-        <title>GlowWorld 2026 | Bracelets LED Connectés Coupe du Monde</title>
-        <meta name="description" content="Vivez la Coupe du Monde 2026 en immersion totale avec nos bracelets LED synchronisés en temps réel. Supportez votre équipe avec style !" />
-        <meta name="keywords" content="bracelet led, coupe du monde 2026, supporter, france, bresil, argentine, bluetooth, gadget foot" />
+        <title>{t.seo_home_title}</title>
+        <meta name="description" content={t.seo_home_desc} />
+        <meta name="keywords" content="bracelet led, coupe du monde 2026, world cup 2026, smart wristband, bluetooth" />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="GlowWorld 2026 | Bracelets LED Connectés" />
-        <meta property="og:description" content="Vivez la Coupe du Monde 2026 en immersion totale. Bracelets synchronisés en temps réel." />
+        <meta property="og:title" content={t.seo_home_title} />
+        <meta property="og:description" content={t.seo_home_desc} />
         <meta property="og:image" content="/images/led-wristbands-product.png" />
         <meta property="og:url" content={canonicalUrl} />
         <meta name="twitter:card" content="summary_large_image" />
@@ -33,7 +33,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
             '@context': 'https://schema.org',
             '@type': 'Store',
             name: 'GlowWorld 2026',
-            description: 'Boutique officielle de bracelets LED connectés pour la Coupe du Monde 2026.',
+            description: t.seo_home_desc,
             url: window.location.origin,
           })}
         </script>

@@ -41,14 +41,18 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
     );
   }
 
+  const currentLang = (t._lang as 'fr' | 'en' | 'es') || 'fr';
+  const localizedName = product.name[currentLang] || product.name.fr;
+  const localizedDesc = product.description[currentLang] || product.description.fr;
+
   return (
     <div className="pt-32 pb-24 px-6 max-w-7xl mx-auto">
       <Helmet>
-        <title>{product.name} | GlowWorld 2026</title>
-        <meta name="description" content={product.description} />
+        <title>{localizedName} | GlowWorld 2026</title>
+        <meta name="description" content={localizedDesc} />
         <link rel="canonical" href={canonicalUrl} />
-        <meta property="og:title" content={product.name} />
-        <meta property="og:description" content={product.description} />
+        <meta property="og:title" content={localizedName} />
+        <meta property="og:description" content={localizedDesc} />
         <meta property="og:image" content={product.image} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:type" content="product" />
@@ -56,9 +60,9 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
           {JSON.stringify({
             '@context': 'https://schema.org/',
             '@type': 'Product',
-            name: product.name,
+            name: localizedName,
             image: [product.image],
-            description: product.description,
+            description: localizedDesc,
             sku: product.id,
             brand: { '@type': 'Brand', name: 'GlowWorld' },
             offers: {
@@ -86,7 +90,7 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
           animate={{ opacity: 1, x: 0 }}
           className="rounded-3xl overflow-hidden border border-white/10 shadow-2xl sticky top-32"
         >
-          <img src={product.image} alt={product.name} className="w-full aspect-square object-cover" referrerPolicy="no-referrer" />
+          <img src={product.image} alt={localizedName} className="w-full aspect-square object-cover" referrerPolicy="no-referrer" />
         </motion.div>
 
         <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col">
@@ -113,7 +117,7 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4 leading-none">{product.name}</h1>
+          <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4 leading-none">{localizedName}</h1>
 
           <div className="flex items-center gap-4 mb-8">
             <p className="text-4xl font-black text-france-red">{product.price}€</p>
@@ -129,7 +133,7 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
             </div>
           </div>
 
-          <p className="text-xl text-white/70 mb-8 leading-relaxed">{product.longDescription || product.description}</p>
+          <p className="text-xl text-white/70 mb-8 leading-relaxed">{product.longDescription || localizedDesc}</p>
 
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-10">
             <div className="flex items-center justify-between mb-4">

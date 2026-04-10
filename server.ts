@@ -142,7 +142,7 @@ async function startServer() {
         price_data: {
           currency: "eur",
           product_data: {
-            name: item.name,
+            name: item.name[lang as 'fr' | 'en' | 'es'] || item.name.fr,
             // Only send absolute URLs to Stripe
             images: item.image && item.image.startsWith('http') ? [item.image] : [],
           },

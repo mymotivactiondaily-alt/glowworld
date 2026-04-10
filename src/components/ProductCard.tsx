@@ -8,15 +8,20 @@ interface ProductCardProps {
   product: Product;
   onAddToCart: (p: Product) => void;
   t: Translation;
+  key?: string | number;
 }
 
 export const ProductCard = ({ product, onAddToCart, t }: ProductCardProps) => {
+  const currentLang = (t._lang as 'fr' | 'en' | 'es') || 'fr';
+  const localizedName = product.name[currentLang] || product.name.fr;
+  const localizedDesc = product.description[currentLang] || product.description.fr;
+
   const schema = {
     '@context': 'https://schema.org/',
     '@type': 'Product',
-    name: product.name,
+    name: localizedName,
     image: product.image,
-    description: product.description,
+    description: localizedDesc,
     brand: { '@type': 'Brand', name: 'GlowWorld' },
     offers: {
       '@type': 'Offer',
@@ -39,7 +44,7 @@ export const ProductCard = ({ product, onAddToCart, t }: ProductCardProps) => {
         <Link to={`/product/${product.id}`}>
           <img
             src={product.image}
-            alt={`${product.name} - Bracelet LED GlowWorld2026`}
+            alt={`${localizedName} - Bracelet LED GlowWorld2026`}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             referrerPolicy="no-referrer"
           />
@@ -94,9 +99,9 @@ export const ProductCard = ({ product, onAddToCart, t }: ProductCardProps) => {
       </div>
       <div className="p-6">
         <Link to={`/product/${product.id}`}>
-          <h3 className="text-lg font-bold mb-1 hover:text-france-blue transition-colors">{product.name}</h3>
+          <h3 className="text-lg font-bold mb-1 hover:text-france-blue transition-colors">{localizedName}</h3>
         </Link>
-        <p className="text-white/60 text-sm mb-4 line-clamp-2">{product.description}</p>
+        <p className="text-white/60 text-sm mb-4 line-clamp-2">{localizedDesc}</p>
         <div className="flex items-center justify-between">
           <span className="text-2xl font-black text-france-red">{product.price}€</span>
           <div className="flex gap-1">

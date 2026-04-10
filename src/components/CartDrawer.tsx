@@ -63,17 +63,24 @@ export const CartDrawer = ({
                 </div>
               ) : (
                 cart.map((item) => (
-                  <div key={item.id} className="flex gap-4 group">
-                    <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border border-white/10">
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-start mb-1">
-                        <h4 className="font-bold text-sm leading-tight">{item.name}</h4>
-                        <button onClick={() => onRemove(item.id)} className="text-white/40 hover:text-france-red">
-                          <X className="w-4 h-4" />
-                        </button>
+                    <div key={item.id} className="flex gap-4 group">
+                      <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border border-white/10">
+                        <img 
+                          src={item.image} 
+                          alt={item.name[t._lang as 'fr' | 'en' | 'es'] || item.name.fr} 
+                          className="w-full h-full object-cover" 
+                          referrerPolicy="no-referrer" 
+                        />
                       </div>
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start mb-1">
+                          <h4 className="font-bold text-sm leading-tight">
+                            {item.name[t._lang as 'fr' | 'en' | 'es'] || item.name.fr}
+                          </h4>
+                          <button onClick={() => onRemove(item.id)} className="text-white/40 hover:text-france-red">
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
                       <p className="text-france-red font-bold text-sm mb-2">{item.price}€</p>
                       <div className="flex items-center gap-3">
                         <button
@@ -102,17 +109,13 @@ export const CartDrawer = ({
                 {cart.length === 1 && (
                   <div className="mb-6 p-4 bg-france-blue/20 border border-france-blue/30 rounded-xl">
                     <p className="text-xs font-bold mb-2 text-france-blue uppercase tracking-wider">
-                      {t._lang === 'fr' ? 'Offre Spéciale' : t._lang === 'en' ? 'Special Offer' : 'Oferta Especial'}
+                      {t.cart_upsell_title}
                     </p>
                     <p className="text-sm mb-3">
-                      {t._lang === 'fr'
-                        ? 'Passez au Pack Famille et économisez 20€ !'
-                        : t._lang === 'en'
-                          ? 'Upgrade to Family Pack and save 20€!'
-                          : '¡Mejora al Pack Familiar y ahorra 20€!'}
+                      {t.cart_upsell_desc}
                     </p>
                     <button className="text-xs font-black uppercase underline hover:text-france-blue">
-                      {t._lang === 'fr' ? 'Ajouter au pack' : t._lang === 'en' ? 'Add to pack' : 'Añadir al pack'}
+                      {t.cart_upsell_cta}
                     </button>
                   </div>
                 )}

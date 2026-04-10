@@ -1,10 +1,10 @@
 export interface Product {
   id: string;
-  name: string;
+  name: { fr: string; en: string; es: string };
   price: number;
   team: 'France' | 'Brésil' | 'Argentine' | 'USA' | 'Mexique' | 'Canada' | 'Portugal' | 'Pack';
   image: string;
-  description: string;
+  description: { fr: string; en: string; es: string };
   longDescription?: string;
   features: string[];
   isPremium?: boolean;
@@ -83,4 +83,7 @@ export interface Translation {
   profile: string;
   cart_coming_soon: string;
   cart_coming_soon_msg: string;
+  cart_upsell_title: string;
+  cart_upsell_desc: string;
+  cart_upsell_cta: string;
 }

@@ -4,122 +4,210 @@ export const PRODUCTS: Product[] = [
   {
     id: 'france-pro',
     isPremium: true,
-    name: 'Bracelet LED Connecté - Édition France',
+    name: {
+      fr: 'Bracelet LED Connecté - Édition France',
+      en: 'Connected LED Wristband - France Edition',
+      es: 'Pulsera LED Conectada - Edición Francia'
+    },
     price: 24.99,
     team: 'France',
     image: '/images/coming-soon.png',
     isAvailable: true,
-    description: 'Contrôle par App & Synchro Sonore. Éclairage Bleu/Blanc/Rouge ultra-puissant.',
+    description: {
+      fr: 'Contrôle par App & Synchro Sonore. Éclairage Bleu/Blanc/Rouge ultra-puissant.',
+      en: 'App Control & Sound Sync. Ultra-powerful Blue/White/Red lighting.',
+      es: 'Control por App & Sincronización Sonora. Iluminación Azul/Blanco/Rojo ultra potente.'
+    },
     features: ['Synchro Ambiance Stade', 'Silicone Premium Soft-Touch', 'QR Code Intégré', 'Effet Dégradé Premium'],
     longDescription: 'Vivez chaque match des Bleus intensément. Grâce à sa technologie de détection sonore, votre bracelet scintille au rythme de l\'ambiance du stade. Son design premium avec drapeau estompé et silicone soft-touch en fait l\'accessoire ultime du supporter.'
   },
   {
     id: 'brazil-pro',
-    name: 'Bracelet LED Connecté - Édition Brésil',
+    name: {
+      fr: 'Bracelet LED Connecté - Édition Brésil',
+      en: 'Connected LED Wristband - Brazil Edition',
+      es: 'Pulsera LED Conectada - Edición Brasil'
+    },
     price: 24.99,
     team: 'Brésil',
     image: '/images/coming-soon.png',
     isAvailable: true,
-    description: 'Vibrez au rythme de la Samba. Mode réactif au son et couleurs Jaune/Vert.',
+    description: {
+      fr: 'Vibrez au rythme de la Samba. Mode réactif au son et couleurs Jaune/Vert.',
+      en: 'Vibrate to the rhythm of Samba. Sound-reactive mode and Yellow/Green colors.',
+      es: 'Vibrar al ritmo de la Samba. Modo reactivo al sonido y colores Amarillo/Verde.'
+    },
     features: ['Réactif aux Cris', 'App Bluetooth incluse', 'Étanche IP65', 'Léger (25g)'],
     longDescription: 'L\'énergie de la Seleção à votre poignet. Ce bracelet réagit instantanément aux chants des supporters et aux percussions. Un indispensable pour transformer votre salon en véritable Copacabana.'
   },
   {
     id: 'argentina-pro',
-    name: 'Bracelet LED Connecté - Édition Argentine',
+    name: {
+      fr: 'Bracelet LED Connecté - Édition Argentine',
+      en: 'Connected LED Wristband - Argentina Edition',
+      es: 'Pulsera LED Conectada - Edición Argentina'
+    },
     price: 24.99,
     team: 'Argentine',
     image: '/images/coming-soon.png',
     isAvailable: true,
-    description: 'Célébrez comme un champion. Éclairage Bleu Céleste réactif au direct.',
+    description: {
+      fr: 'Célébrez comme un champion. Éclairage Bleu Céleste réactif au direct.',
+      en: 'Celebrate like a champion. Sky Blue lighting reactive to the direct.',
+      es: 'Celebre como un campeón. Iluminación Azul Celeste reactiva al directo.'
+    },
     features: ['Mode Pulsation', 'Bluetooth 5.0', 'Finition Premium', 'Batterie remplaçable'],
     longDescription: 'Portez les couleurs de l\'Albiceleste. Synchronisez votre bracelet avec l\'ambiance du match via l\'application mobile. Chaque moment fort devient une explosion de lumière bleu et blanc.'
   },
   {
     id: 'portugal-pro',
-    name: 'Bracelet LED Connecté - Édition Portugal',
+    name: {
+      fr: 'Bracelet LED Connecté - Édition Portugal',
+      en: 'Connected LED Wristband - Portugal Edition',
+      es: 'Pulsera LED Conectada - Edición Portugal'
+    },
     price: 24.99,
     team: 'Portugal',
     image: '/images/coming-soon.png',
     isAvailable: true,
-    description: 'L\'énergie de la Seleção à votre poignet. Mode réactif au son.',
+    description: {
+      fr: 'L\'énergie de la Seleção à votre poignet. Mode réactif au son.',
+      en: 'The energy of the Seleção on your wrist. Sound-reactive mode.',
+      es: 'La energía de la Seleção en tu muñeca. Modo reactivo al sonido.'
+    },
     features: ['Mode Synchro Sonore', 'App Bluetooth', 'Étanche IP65', 'Léger'],
     longDescription: 'Vibrez avec le Portugal. Ce bracelet s\'illumine aux couleurs de la Seleção à chaque action décisive.'
   },
   {
     id: 'usa-pro',
-    name: 'Bracelet LED Connecté - Édition USA',
+    name: {
+      fr: 'Bracelet LED Connecté - Édition USA',
+      en: 'Connected LED Wristband - USA Edition',
+      es: 'Pulsera LED Conectada - Edición USA'
+    },
     price: 24.99,
     team: 'USA',
     image: '/images/coming-soon.png',
     isAvailable: true,
-    description: 'Stars & Stripes edition. Parfait pour les fans de Team USA.',
+    description: {
+      fr: 'Stars & Stripes edition. Parfait pour les fans de Team USA.',
+      en: 'Stars & Stripes edition. Perfect for Team USA fans.',
+      es: 'Edición Stars & Stripes. Perfecto para los fans de Team USA.'
+    },
     features: ['Mode Pulsation', 'Bluetooth 5.0', 'Finition Premium', 'Batterie remplaçable'],
-    longDescription: 'Supportez les USA avec style. Synchronisation parfaite avec l\'ambiance des stades américains.'
+    longDescription: 'Supportez les USA with style. Synchronisation parfaite avec l\'ambiance des stades américains.'
   },
   {
     id: 'mexico-pro',
-    name: 'Bracelet LED Connecté - Édition Mexique',
+    name: {
+      fr: 'Bracelet LED Connecté - Édition Mexique',
+      en: 'Connected LED Wristband - Mexico Edition',
+      es: 'Pulsera LED Conectada - Edición México'
+    },
     price: 24.99,
     team: 'Mexique',
     image: '/images/coming-soon.png',
     isAvailable: true,
-    description: 'Vibrez avec El Tri. Éclairage Vert/Blanc/Rouge.',
+    description: {
+      fr: 'Vibrez avec El Tri. Éclairage Vert/Blanc/Rouge.',
+      en: 'Vibrate with El Tri. Green/White/Red lighting.',
+      es: 'Vive con El Tri. Iluminación Verde/Blanco/Rojo.'
+    },
     features: ['Mode Synchro Sonore', 'App Bluetooth', 'Étanche IP65', 'Léger'],
     longDescription: 'Le bracelet indispensable pour tous les fans du Mexique lors de cette Coupe du Monde à domicile.'
   },
   {
     id: 'canada-pro',
-    name: 'Bracelet LED Connecté - Édition Canada',
+    name: {
+      fr: 'Bracelet LED Connecté - Édition Canada',
+      en: 'Connected LED Wristband - Canada Edition',
+      es: 'Pulsera LED Conectada - Edición Canadá'
+    },
     price: 24.99,
     team: 'Canada',
     image: '/images/coming-soon.png',
     isAvailable: true,
-    description: 'Supportez les Canucks. Éclairage Rouge & Blanc.',
+    description: {
+      fr: 'Supportez les Canucks. Éclairage Rouge & Blanc.',
+      en: 'Support the Canucks. Red & White lighting.',
+      es: 'Apoya a los Canucks. Iluminación Roja y Blanca.'
+    },
     features: ['Mode Synchro Sonore', 'App Bluetooth', 'Étanche IP65', 'Léger'],
     longDescription: 'Célébrez chaque but du Canada avec une explosion de lumière rouge et blanche.'
   },
   {
     id: 'host-edition',
-    name: 'Bracelet LED - Édition Hôte (USA/MEX/CAN)',
+    name: {
+      fr: 'Bracelet LED - Édition Hôte (USA/MEX/CAN)',
+      en: 'LED Wristband - Host Edition (USA/MEX/CAN)',
+      es: 'Pulsera LED - Edición Anfitrión (USA/MEX/CAN)'
+    },
     price: 24.99,
     team: 'Pack',
     image: '/images/coming-soon.png',
     isAvailable: true,
-    description: 'L\'édition collector multicolore. Compatible avec tous les matchs.',
+    description: {
+      fr: 'L\'édition collector multicolore. Compatible avec tous les matchs.',
+      en: 'The multicolor collector edition. Compatible with all matches.',
+      es: 'La edición de coleccionista multicolor. Compatible con todos los partidos.'
+    },
     features: ['Toutes Couleurs', 'Synchro Musique', 'Mode Fête', 'Taille Unique'],
     longDescription: 'Le bracelet universel pour la Coupe du Monde 2026. Changez de couleur selon le match que vous regardez. Son capteur sonore haute précision garantit une immersion totale pendant 90 minutes.'
   },
   {
     id: 'supporter-pack',
-    name: 'Pack Supporter Ultime (2 Bracelets)',
+    name: {
+      fr: 'Pack Supporter Ultime (2 Bracelets)',
+      en: 'Ultimate Supporter Pack (2 Wristbands)',
+      es: 'Pack de Aficionado Definitivo (2 Pulseras)'
+    },
     price: 44.99,
     team: 'Pack',
     image: '/images/coming-soon.png',
     isAvailable: true,
-    description: 'Pack Duo pour vibrer ensemble. Économisez 5€ sur votre commande.',
+    description: {
+      fr: 'Pack Duo pour vibrer ensemble. Économisez 5€ sur votre commande.',
+      en: 'Duo Pack to vibrate together. Save 5€ on your order.',
+      es: 'Pack Dúo para vibrar juntos. Ahorra 5€ en tu pedido.'
+    },
     features: ['2 Bracelets', 'Contrôle Duo Simultané', 'App Gratuite', 'Portée 5-10m'],
     longDescription: 'Le football est plus beau quand on le partage. Ce pack contient deux bracelets connectés. Contrôlez les deux bracelets simultanément sur le même téléphone pour que vos deux poignets s\'illuminent en même temps au rythme de l\'ambiance !'
   },
   {
     id: 'family-pack-pro',
-    name: 'Pack Famille (4 Bracelets LED)',
+    name: {
+      fr: 'Pack Famille (4 Bracelets LED)',
+      en: 'Family Pack (4 LED Wristbands)',
+      es: 'Pack Familiar (4 Pulseras LED)'
+    },
     price: 79.99,
     team: 'Pack',
     image: '/images/coming-soon.png',
     isAvailable: true,
-    description: 'Transformez votre salon en stade. Le meilleur rapport qualité/prix.',
+    description: {
+      fr: 'Transformez votre salon en stade. Le meilleur rapport qualité/prix.',
+      en: 'Turn your living room into a stadium. Best value for money.',
+      es: 'Convierte tu sala en un estadio. La mejor relación calidad-precio.'
+    },
     features: ['4 Bracelets', 'Contrôle Centralisé', 'Rayon 5-10m', 'Piles Incluses'],
     longDescription: 'Le pack idéal pour les familles de fans. Un seul téléphone peut contrôler jusqu\'à 8 bracelets simultaneously. Créez une ambiance de stade incroyable chez vous et vivez la Coupe du Monde comme si vous y étiez.'
   },
   {
     id: 'team-pack-pro',
-    name: 'Pack Équipe Ultime (8 Bracelets)',
+    name: {
+      fr: 'Pack Équipe Ultime (8 Bracelets)',
+      en: 'Ultimate Team Pack (8 Wristbands)',
+      es: 'Pack de Equipo Definitivo (8 Pulseras)'
+    },
     price: 149.99,
     team: 'Pack',
     image: '/images/coming-soon.png',
     isAvailable: false,
-    description: 'La limite technologique ultime. Équipez tout votre groupe.',
+    description: {
+      fr: 'La limite technologique ultime. Équipez tout votre groupe.',
+      en: 'The ultimate technological limit. Equip your entire group.',
+      es: 'El límite tecnológico definitivo. Equipa a todo tu grupo.'
+    },
     features: ['8 Bracelets', 'Synchro Totale', 'Capacité Max Bluetooth', 'Livraison Express'],
     longDescription: 'Le summum de l\'expérience GlowWorld. Ce pack utilise la capacité maximale de l\'application pour synchroniser 8 bracelets sur un seul smartphone. Idéal pour les bars ou les grands groupes d\'amis.'
   }

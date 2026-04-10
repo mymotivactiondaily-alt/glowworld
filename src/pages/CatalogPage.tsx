@@ -20,11 +20,11 @@ export const CatalogPage = ({ onAddToCart, t }: CatalogPageProps) => {
   return (
     <div className="pt-32 pb-24 px-6 max-w-7xl mx-auto">
       <Helmet>
-        <title>Catalogue | GlowWorld 2026</title>
-        <meta name="description" content="Découvrez notre collection de bracelets LED pour toutes les nations de la Coupe du Monde 2026. France, Brésil, Argentine et plus !" />
+        <title>{t.seo_catalog_title}</title>
+        <meta name="description" content={t.seo_catalog_desc} />
         <link rel="canonical" href={canonicalUrl} />
-        <meta property="og:title" content="Catalogue | GlowWorld 2026" />
-        <meta property="og:description" content="Découvrez notre collection de bracelets LED pour toutes les nations de la Coupe du Monde 2026." />
+        <meta property="og:title" content={t.seo_catalog_title} />
+        <meta property="og:description" content={t.seo_catalog_desc} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:type" content="website" />
       </Helmet>
