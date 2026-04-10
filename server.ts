@@ -79,6 +79,7 @@ async function startServer() {
         status: 'paid',
         items: JSON.parse((session as any).metadata?.items || '[]'),
         shipping: (session as any).shipping_details || null,
+        exported: false,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       };
 
@@ -174,6 +175,90 @@ async function startServer() {
     } catch (error: any) {
       console.error("Stripe Error:", error);
       res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Administration Route for Exporting CSV
+  app.post("/api/export-csv", async (req, res) => {
+    const adminKey = req.headers['x-admin-key'];
+    
+    if (!adminKey || adminKey !== process.env.ADMIN_SECRET_KEY) {
+      return res.status(401).json({ error: "Non autorisé. Clé admin invalide ou manquante." });
+    }
+
+    try {
+      const ordersSnapshot = await db.collection('orders')
+        .where('exported', '==', false)
+        .get();
+
+      if (ordersSnapshot.empty) {
+        return res.status(404).json({ message: "Aucune nouvelle commande à exporter." });
+      }
+
+      const orders = ordersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() as any }));
+
+      // CSV Generation (RFC 4180 compliant)
+      const headers = ["Order ID", "Email", "Amount", "Currency", "Status", "Items", "Shipping Name", "Address", "City", "Postal Code", "Country", "Date"];
+      const csvRows = orders.map(order => {
+        const itemsStr = order.items.map((i: any) => `${i.name} (x${i.qty})`).join('; ');
+        const rowData = [
+          order.orderId || '',
+          order.email || '',
+          order.amount || 0,
+          order.currency || 'eur',
+          order.status || 'paid',
+          itemsStr,
+          order.shipping?.name || '',
+          order.shipping?.address?.line1 || '',
+          order.shipping?.address?.city || '',
+          order.shipping?.address?.postal_code || '',
+          order.shipping?.address?.country || '',
+          order.createdAt && typeof order.createdAt.toDate === 'function' 
+            ? order.createdAt.toDate().toISOString() 
+            : new Date().toISOString()
+        ];
+        // Escape quotes and wrap in quotes
+        return rowData.map(val => `"${String(val).replace(/"/g, '""')}"`).join(',');
+      });
+
+      const csvContent = [headers.join(','), ...csvRows].join('\n');
+
+      // Update Firestore: Mark as exported in a single batch
+      const batch = db.batch();
+      ordersSnapshot.docs.forEach(doc => {
+        batch.update(doc.ref, { exported: true });
+      });
+      await batch.commit();
+
+      // Send Email via Resend with attachment
+      if (resend) {
+        try {
+          await resend.emails.send({
+            from: 'GlowWorld 2026 Admin <contact@glowworld2026.com>',
+            to: 'contact@glowworld2026.com',
+            subject: `📦 Export Commandes - ${new Date().toLocaleDateString('fr-FR')}`,
+            text: `Bonjour,\n\nVeuillez trouver ci-joint l'export CSV des ${orders.length} nouvelles commandes.\n\nNombre de commandes : ${orders.length}\nDate de l'export : ${new Date().toLocaleString('fr-FR')}\n\nCordialement,\nLe système GlowWorld 2026`,
+            attachments: [
+              {
+                filename: `commandes_${new Date().toISOString().split('T')[0]}.csv`,
+                content: Buffer.from(csvContent),
+              }
+            ]
+          });
+          console.log(`✓ Export CSV: Email envoyé à contact@glowworld2026.com (${orders.length} commandes).`);
+        } catch (emailErr) {
+          console.error("❌ Export Email Error:", emailErr);
+        }
+      }
+
+      // Return CSV to browser for direct download
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', `attachment; filename=commandes_${new Date().toISOString().split('T')[0]}.csv`);
+      res.status(200).send(csvContent);
+
+    } catch (error: any) {
+      console.error("❌ Export Route Error:", error);
+      res.status(500).json({ error: "Erreur lors de la génération de l'export." });
     }
   });
 
