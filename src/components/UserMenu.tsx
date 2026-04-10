@@ -4,14 +4,16 @@ import { LogOut, User as UserIcon, LogIn, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import type { Translation } from '../types';
+import { AuthModal } from './AuthModal';
 
 interface UserMenuProps {
   t: Translation;
 }
 
 export const UserMenu = ({ t }: UserMenuProps) => {
-  const { user, signInWithGoogle, logout, loading } = useAuth();
+  const { user, logout, loading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,13 +32,21 @@ export const UserMenu = ({ t }: UserMenuProps) => {
 
   if (!user) {
     return (
-      <button
-        onClick={signInWithGoogle}
-        className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-all text-xs font-bold uppercase border border-white/10"
-      >
-        <LogIn className="w-4 h-4 text-france-blue" />
-        <span className="hidden sm:inline">{t.login}</span>
-      </button>
+      <>
+        <button
+          onClick={() => setIsAuthModalOpen(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-all text-xs font-bold uppercase border border-white/10 group"
+        >
+          <LogIn className="w-4 h-4 text-france-blue group-hover:scale-110 transition-transform" />
+          <span className="hidden sm:inline">{t.login}</span>
+        </button>
+
+        <AuthModal 
+          isOpen={isAuthModalOpen} 
+          onClose={() => setIsAuthModalOpen(false)} 
+          t={t} 
+        />
+      </>
     );
   }
 
