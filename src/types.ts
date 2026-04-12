@@ -36,7 +36,6 @@ export interface Translation {
   shop: string;
   blog: string;
   about: string;
-  download_app: string;
   h1_seo: string;
   hero_title: string;
   hero_subtitle: string;

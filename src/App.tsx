@@ -25,7 +25,6 @@ import { BlogPage } from './pages/BlogPage';
 import { BlogPostPage } from './pages/BlogPostPage';
 import { AboutPage } from './pages/AboutPage';
 import { PartnersPage } from './pages/PartnersPage';
-import { AppPage } from './pages/AppPage';
 import { SuccessPage } from './pages/SuccessPage';
 import { CancelPage } from './pages/CancelPage';
 import { LegalPage } from './pages/LegalPage';
@@ -79,7 +78,6 @@ function AppContent() {
           <Route path="/blog/:slug" element={<BlogPostPage t={t} />} />
           <Route path="/about" element={<AboutPage t={t} />} />
           <Route path="/partners" element={<PartnersPage t={t} />} />
-          <Route path="/app" element={<AppPage t={t} />} />
           <Route path="/success" element={<SuccessPage t={t} />} />
           <Route path="/cancel" element={<CancelPage t={t} />} />
           <Route path="/legal" element={<LegalPage />} />

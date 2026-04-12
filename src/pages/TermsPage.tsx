@@ -14,7 +14,7 @@ export const TermsPage = () => (
     <section className="mb-8">
       <h2 className="text-xl font-bold mb-4">Article 2 — Produits</h2>
       <p className="text-white/60">
-        Les bracelets LED connectés GlowWorld sont des accessoires électroniques conçus pour le divertissement.
+        Les bracelets LED Sound Reactive GlowWorld sont des accessoires électroniques conçus pour le divertissement.
         Les photographies et descriptions des produits sont les plus fidèles possibles mais ne sauraient engager 
         la responsabilité du vendeur en cas de légères différences.
       </p>

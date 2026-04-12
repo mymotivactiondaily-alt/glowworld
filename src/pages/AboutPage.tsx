@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { Zap, Smartphone } from 'lucide-react';
+import { Zap, Mic2 } from 'lucide-react';
 import type { Translation } from '../types';
 
 interface AboutPageProps {
@@ -22,10 +22,10 @@ export const AboutPage = ({ t }: AboutPageProps) => {
       </h1>
       <p className="text-xl text-white/70 leading-relaxed mb-12">
         {t._lang === 'fr'
-          ? "GlowWorld est né d'une idée simple : rendre l'expérience de la Coupe du Monde encore plus immersive. Nous croyons que le sport est plus qu'un jeu, c'est une émotion partagée. Nos bracelets intelligents utilisent la technologie Bluetooth pour connecter les supporters du monde entier."
+          ? "GlowWorld est né d'une idée simple : rendre l'expérience de la Coupe du Monde encore plus immersive. Nos bracelets LED Sound Reactive détectent automatiquement l'ambiance autour de toi et s'illuminent à chaque cri, chaque but, chaque hymne. Pas d'app, pas de configuration — juste la magie de la lumière au service de ta passion."
           : t._lang === 'en'
-            ? "GlowWorld was born from a simple idea: make the World Cup experience even more immersive. We believe sport is more than a game, it's a shared emotion. Our smart wristbands use Bluetooth technology to connect fans worldwide."
-            : 'GlowWorld nació de una idea simple: hacer que la experiencia de la Copa del Mundo sea aún más inmersiva. Creemos que el deporte es más que un juego, es una emoción compartida. Nuestras pulseras inteligentes utilizan tecnología Bluetooth para conectar a los aficionados de todo el mundo.'}
+            ? "GlowWorld was born from a simple idea: make the World Cup experience even more immersive. Our Sound Reactive LED wristbands automatically detect the atmosphere around you and light up with every cheer, every goal, every anthem. No app, no setup — just the magic of light serving your passion."
+            : 'GlowWorld nació de una idea simple: hacer la experiencia del Mundial aún más inmersiva. Nuestras pulseras LED Sound Reactive detectan automáticamente el ambiente a tu alrededor y se iluminan con cada grito, cada gol, cada himno. Sin app, sin configuración — solo la magia de la luz al servicio de tu pasión.'}
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 text-left">
@@ -35,16 +35,16 @@ export const AboutPage = ({ t }: AboutPageProps) => {
           <p className="text-sm text-white/60 leading-relaxed">{t.tech_desc}</p>
         </div>
         <div className="p-8 bg-white/5 rounded-3xl border border-white/10">
-          <Smartphone className="w-10 h-10 text-france-blue mb-4" />
+          <Mic2 className="w-10 h-10 text-france-blue mb-4" />
           <h3 className="text-xl font-bold mb-2">
-            {t._lang === 'fr' ? 'Application Intuitive' : t._lang === 'en' ? 'Intuitive App' : 'Aplicación Intuitiva'}
+            {t._lang === 'fr' ? 'Capteurs Intelligents' : t._lang === 'en' ? 'Smart Sensors' : 'Sensores Inteligentes'}
           </h3>
           <p className="text-sm text-white/60 leading-relaxed">
             {t._lang === 'fr'
-              ? "Une interface simple pour gérer vos bracelets, choisir votre équipe et activer le mode ambiance réactif aux sons du match."
+              ? "Une technologie de détection sonore et de mouvement ultra-précise qui réagit instantanément à l'ambiance du match sans aucune configuration complexe."
               : t._lang === 'en'
-                ? 'A simple interface to manage your wristbands, choose your team, and activate the reactive ambient mode for match sounds.'
-                : 'Una interfaz sencilla para gestionar tus pulseras, elegir tu equipo y activar el modo ambiente reactivo a los sonidos del partido.'}
+                ? 'Ultra-precise sound and motion detection technology that reacts instantly to the match atmosphere without any complex configuration.'
+                : 'Tecnología de detección de sonido y movimiento ultra precisa que reacciona instantáneamente al ambiente del partido sin ninguna configuración compleja.'}
           </p>
         </div>
       </div>

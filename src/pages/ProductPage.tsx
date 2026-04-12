@@ -188,7 +188,7 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
             <div className="text-center p-4 bg-white/5 rounded-xl border border-white/10">
               <Zap className="w-5 h-5 text-france-blue mx-auto mb-2" />
               <p className="text-[8px] font-black uppercase tracking-widest leading-tight">
-                {t._lang === 'fr' ? 'Sync Bluetooth' : 'Bluetooth Sync'}
+                {t._lang === 'fr' ? 'Sound-Sync Technology' : t._lang === 'en' ? 'Sound-Sync Technology' : 'Sound-Sync Technology'}
               </p>
             </div>
             <div className="text-center p-4 bg-white/5 rounded-xl border border-white/10">
@@ -212,15 +212,15 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
             },
             {
               q: { fr: 'Comment se synchronise-t-il ?', en: 'How does it synchronize?', es: '¿Cómo se sincroniza?' },
-              a: { fr: "Le bracelet utilise des capteurs de son et de mouvement haute précision. Une fois connecté via Bluetooth 5.3 à l'app GlowWorld, il analyse l'ambiance sonore du match (chants, cris, sifflets) pour déclencher les effets lumineux instantanément.", en: 'The wristband uses high-precision sound and motion sensors. Once connected via Bluetooth 5.3 to the GlowWorld app, it analyzes the match soundtrack (chants, shouts, whistles) to trigger light effects instantly.', es: 'La pulsera utiliza sensores de sonido y movimiento de alta precisión. Una vez conectada por Bluetooth 5.3 a la app GlowWorld, analiza el ambiente sonoro del partido (cánticos, gritos, silbatos) para activar los efectos de luces al instante.' },
+              a: { fr: "Le bracelet utilise des capteurs de son et de mouvement haute précision. En mode 'Stade', il analyse automatiquement l'ambiance sonore du match (chants, cris, sifflets) pour déclencher les effets lumineux instantanément.", en: "The wristband uses high-precision sound and motion sensors. In 'Stadium' mode, it automatically analyzes the match soundtrack (chants, shouts, whistles) to trigger light effects instantly.", es: "La pulsera utiliza sensores de sonido y movimiento de alta precisión. En modo 'Estadio', analiza automáticamente el ambiente sonoro del partido (cánticos, gritos, silbatos) para activar los efectos de luces al instante." },
             },
             {
-              q: { fr: 'Combien de bracelets par téléphone ?', en: 'How many wristbands per phone?', es: '¿Cuántas pulseras por teléfono?' },
-              a: { fr: "Un seul smartphone peut contrôler jusqu'à 8 bracelets simultanément via l'application, idéal pour les familles ou les groupes d'amis.", en: 'A single smartphone can control up to 8 wristbands simultaneously via the app, perfect for families or groups of friends.', es: 'Un solo smartphone puede controlar hasta 8 pulseras simultáneamente a través de la aplicación, ideal para familias o grupos de amigos.' },
+              q: { fr: 'Faut-il installer quelque chose ?', en: 'Do I need to install anything?', es: '¿Necesito instalar algo?' },
+              a: { fr: "Non, aucune application n'est nécessaire. Le bracelet est totalement autonome grâce à son micro intégré qui détecte automatiquement l'ambiance sonore.", en: 'No, no app is needed. The wristband is fully autonomous thanks to its built-in microphone that automatically detects the sound atmosphere.', es: 'No, no se necesita ninguna aplicación. La pulsera es totalmente autónoma gracias a su micrófono integrado que detecta automáticamente el ambiente sonoro.' },
             },
             {
-              q: { fr: 'Quelle est la portée du Bluetooth ?', en: 'What is the Bluetooth range?', es: '¿Cuál es el alcance del Bluetooth?' },
-              a: { fr: 'La connexion Bluetooth est stable jusqu\'à une distance de 5 à 10 mètres entre le téléphone et les bracelets.', en: 'The Bluetooth connection is stable up to a distance of 5 to 10 meters between the phone and the wristbands.', es: 'La conexión Bluetooth es estable hasta una distancia de 5 a 10 metros entre el teléfono y las pulseras.' },
+              q: { fr: 'Combien de modes lumineux sont disponibles ?', en: 'How many light modes are available?', es: '¿Cuántos modos de luz hay disponibles?' },
+              a: { fr: 'Le bracelet propose 7 modes lumineux différents : pulsation, dégradé, clignotement rapide, vague, stroboscope, fade et mode stade. Chaque mode réagit différemment au son ambiant.', en: 'The wristband offers 7 different light modes: pulse, gradient, rapid flash, wave, strobe, fade and stadium mode. Each mode reacts differently to ambient sound.', es: 'La pulsera ofrece 7 modos de luz diferentes: pulsación, degradado, destello rápido, ola, estroboscópico, fundido y modo estadio. Cada modo reacciona de forma diferente al sonido ambiente.' },
             },
             {
               q: { fr: 'Quels sont les délais de livraison ?', en: 'What are the delivery times?', es: '¿Cuáles son los plazos de entrega?' },

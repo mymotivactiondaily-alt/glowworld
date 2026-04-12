@@ -47,8 +47,8 @@ export const PartnersPage = ({ t }: PartnersPageProps) => (
             d: t._lang === 'fr' ? 'Engagement vers des matériaux durables et des processus de fabrication responsables.' : 'Commitment to sustainable materials and responsible manufacturing processes.',
           },
           {
-            t: t._lang === 'fr' ? 'Sécurité Bluetooth' : 'Bluetooth Security',
-            d: t._lang === 'fr' ? 'Protocoles de connexion sécurisés et cryptés pour une synchronisation sans faille.' : 'Secure and encrypted connection protocols for seamless synchronization.',
+            t: t._lang === 'fr' ? 'Sound-Sync Technology' : 'Sound-Sync Technology',
+            d: t._lang === 'fr' ? 'Micro intégré haute sensibilité et réaction sonore en 0.1 seconde pour une immersion totale.' : 'High-sensitivity built-in microphone and 0.1-second sound reaction for total immersion.',
           },
         ].map((item, i) => (
           <div key={i} className="p-6 bg-white/5 rounded-2xl border border-white/10">

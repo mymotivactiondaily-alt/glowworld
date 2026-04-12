@@ -20,7 +20,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
       <Helmet>
         <title>{t.seo_home_title}</title>
         <meta name="description" content={t.seo_home_desc} />
-        <meta name="keywords" content="bracelet led, coupe du monde 2026, world cup 2026, smart wristband, bluetooth" />
+        <meta name="keywords" content="bracelet led, coupe du monde 2026, world cup 2026, smart wristband, sound reactive" />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={t.seo_home_title} />
@@ -78,7 +78,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
               </p>
               <div className="mt-4 flex items-center justify-center gap-2 text-france-red font-black uppercase tracking-widest text-[10px]">
                 <Zap className="w-4 h-4 fill-current" />
-                {t._lang === 'fr' ? 'Technologie Bluetooth 5.3 brevetée' : t._lang === 'en' ? 'Patented Bluetooth 5.3 Technology' : 'Tecnología Bluetooth 5.3 patentada'}
+                {t._lang === 'fr' ? 'Sound-Sync Technology — Réactif en 0.1 sec' : t._lang === 'en' ? 'Sound-Sync Technology — Reactive in 0.1 sec' : 'Sound-Sync Technology — Reactiva en 0.1 seg'}
               </div>
             </motion.div>
 
@@ -104,9 +104,9 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
       <section className="py-12 bg-white/5 border-y border-white/10">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
-            { icon: Zap, text: 'Sync Bluetooth 5.3' },
-            { icon: Globe, text: t.shipping_info },
-            { icon: Trophy, text: t._lang === 'fr' ? 'Produit Officiel' : t._lang === 'en' ? 'Official Product' : 'Producto Oficial' },
+            { icon: Zap, text: t._lang === 'fr' ? 'Réactif au son en 0.1 sec' : t._lang === 'en' ? 'Sound reactive in 0.1 sec' : 'Reactiva al sonido en 0.1 seg' },
+            { icon: Globe, text: t._lang === 'fr' ? 'Livraison Internationale Offerte' : t._lang === 'en' ? 'Free International Shipping' : 'Envío Internacional Gratis' },
+            { icon: Trophy, text: t._lang === 'fr' ? '7 Éditions Nationales' : t._lang === 'en' ? '7 National Editions' : '7 Ediciones Nacionales' },
             { icon: CheckCircle, text: t._lang === 'fr' ? 'Garantie 2 ans' : t._lang === 'en' ? '2-Year Warranty' : 'Garantía 2 años' },
           ].map((item, i) => (
             <div key={i} className="flex items-center justify-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
@@ -167,10 +167,10 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
                 name: 'Sofia R.',
                 text:
                   t._lang === 'fr'
-                    ? "J'ai acheté le pack famille pour mes enfants, ils adorent changer les couleurs via l'appli."
+                    ? "J'ai acheté le pack famille pour mes enfants, ils adorent voir le bracelet s'illuminer lors des buts !"
                     : t._lang === 'en'
-                      ? 'Bought the family pack for my kids, they love changing colors via the app.'
-                      : 'Compré el pack familiar para mis hijos, les encanta cambiar los colores a través de la aplicación.',
+                      ? "Bought the family pack for my kids, they love seeing the wristband light up during goals!"
+                      : 'Compré el pack familiar para mis hijos, ¡les encanta ver la pulsera iluminarse con los goles!',
                 team: 'Brésil',
               },
               {

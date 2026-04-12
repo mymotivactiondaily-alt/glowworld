@@ -44,9 +44,6 @@ export const Navbar = ({ cartCount, onOpenCart, lang, setLang, t }: NavbarProps)
         <div className="hidden md:flex items-center gap-8 font-semibold uppercase text-sm tracking-widest">
           <Link to="/" className="hover:text-france-blue transition-colors">{t.home}</Link>
           <Link to="/catalog" className="hover:text-france-blue transition-colors">{t.shop}</Link>
-          <Link to="/app" className="text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1">
-            <Smartphone className="w-4 h-4" /> {t.download_app}
-          </Link>
           <Link to="/blog" className="hover:text-france-blue transition-colors">{t.blog}</Link>
           <Link to="/about" className="hover:text-france-blue transition-colors">{t.about}</Link>
         </div>
@@ -94,7 +91,6 @@ export const Navbar = ({ cartCount, onOpenCart, lang, setLang, t }: NavbarProps)
           >
             <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-bold">{t.home}</Link>
             <Link to="/catalog" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-bold">{t.shop}</Link>
-            <Link to="/app" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-bold text-amber-400">{t.download_app}</Link>
             <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-bold">{t.blog}</Link>
             <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-bold">{t.about}</Link>
             <div className="flex gap-3 pt-4 border-t border-white/10 items-center justify-between">
