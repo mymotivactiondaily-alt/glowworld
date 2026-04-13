@@ -11,13 +11,12 @@ export const Footer = ({ t }: FooterProps) => {
     <footer className="bg-slate-950 border-t border-white/10 pt-20 pb-10 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
         <div className="col-span-1 md:col-span-1">
-          <Link to="/" className="flex items-center gap-2 mb-6">
-            <div className="w-8 h-8 bg-france-blue rounded flex items-center justify-center">
-              <Zap className="text-white w-5 h-5 fill-current" />
-            </div>
-            <span className="text-xl font-extrabold tracking-tighter">
-              GLOWWORLD<span className="text-france-red">2026</span>
-            </span>
+          <Link to="/" className="inline-block mb-6">
+            <img 
+              src="/images/logo_final.png" 
+              alt="GlowWorld" 
+              className="h-8 w-auto hover:opacity-80 transition-opacity" 
+            />
           </Link>
           <p className="text-white/50 text-sm mb-6">
             {t._lang === 'fr'
