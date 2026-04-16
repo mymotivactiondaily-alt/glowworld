@@ -36,7 +36,7 @@ export const Navbar = ({ cartCount, onOpenCart, lang, setLang, t }: NavbarProps)
           <img 
             src="/images/logo_final.png" 
             alt="GlowWorld" 
-            className="h-10 w-auto group-hover:scale-105 transition-transform duration-300" 
+            className="h-16 md:h-20 w-auto drop-shadow-2xl group-hover:scale-105 transition-transform duration-300" 
           />
         </Link>
 
