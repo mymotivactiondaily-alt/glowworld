@@ -2,7 +2,7 @@ export interface Product {
   id: string;
   name: { fr: string; en: string; es: string };
   price: number;
-  team: 'France' | 'Brésil' | 'Argentine' | 'USA' | 'Mexique' | 'Canada' | 'Portugal' | 'Pack';
+  team: 'France' | 'Brésil' | 'Argentine' | 'USA' | 'Mexique' | 'Canada' | 'Portugal' | 'Espagne' | 'Pack';
   image: string;
   description: { fr: string; en: string; es: string };
   longDescription?: string;

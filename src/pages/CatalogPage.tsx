@@ -5,7 +5,7 @@ import { ProductCard } from '../components/ProductCard';
 import { PRODUCTS } from '../constants';
 import type { Product, Translation } from '../types';
 
-const TEAMS = ['Tous', 'France', 'Brésil', 'Argentine', 'Portugal', 'USA', 'Mexique', 'Canada', 'Pack'] as const;
+const TEAMS = ['Tous', 'France', 'Brésil', 'Argentine', 'Portugal', 'USA', 'Mexique', 'Canada', 'Espagne'] as const;
 
 interface CatalogPageProps {
   onAddToCart: (p: Product) => void;

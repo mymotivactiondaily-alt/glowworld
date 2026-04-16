@@ -104,7 +104,17 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
                     ? 'bg-yellow-500 text-black'
                     : product.team === 'Argentine'
                       ? 'bg-sky-400 text-black'
-                      : 'bg-white/20',
+                      : product.team === 'USA'
+                        ? 'bg-blue-900'
+                        : product.team === 'Mexique'
+                          ? 'bg-green-700'
+                          : product.team === 'Canada'
+                            ? 'bg-red-600'
+                            : product.team === 'Portugal'
+                              ? 'bg-red-700'
+                              : product.team === 'Espagne'
+                                ? 'bg-yellow-400 text-black'
+                                : 'bg-white/20',
               )}
             >
               {product.team}

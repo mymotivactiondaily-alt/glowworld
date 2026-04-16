@@ -106,7 +106,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
           {[
             { icon: Zap, text: t._lang === 'fr' ? 'Réactif au son en 0.1 sec' : t._lang === 'en' ? 'Sound reactive in 0.1 sec' : 'Reactiva al sonido en 0.1 seg' },
             { icon: Globe, text: t._lang === 'fr' ? 'Livraison Internationale Offerte' : t._lang === 'en' ? 'Free International Shipping' : 'Envío Internacional Gratis' },
-            { icon: Trophy, text: t._lang === 'fr' ? '7 Éditions Nationales' : t._lang === 'en' ? '7 National Editions' : '7 Ediciones Nacionales' },
+            { icon: Trophy, text: t._lang === 'fr' ? '8 Éditions Nationales' : t._lang === 'en' ? '8 National Editions' : '8 Ediciones Nacionales' },
             { icon: CheckCircle, text: t._lang === 'fr' ? 'Garantie 2 ans' : t._lang === 'en' ? '2-Year Warranty' : 'Garantía 2 años' },
           ].map((item, i) => (
             <div key={i} className="flex items-center justify-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
@@ -167,10 +167,10 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
                 name: 'Sofia R.',
                 text:
                   t._lang === 'fr'
-                    ? "J'ai acheté le pack famille pour mes enfants, ils adorent voir le bracelet s'illuminer lors des buts !"
+                    ? "J'ai commandé le Pack Duo pour mon fils et moi, on adore voir les bracelets s'illuminer ensemble lors des buts !"
                     : t._lang === 'en'
-                      ? "Bought the family pack for my kids, they love seeing the wristband light up during goals!"
-                      : 'Compré el pack familiar para mis hijos, ¡les encanta ver la pulsera iluminarse con los goles!',
+                      ? "Ordered the Duo Pack for my son and me, we love seeing the wristbands light up together during goals!"
+                      : 'Pedí el Pack Dúo para mi hijo y yo, ¡nos encanta ver las pulseras iluminarse juntas con los goles!',
                 team: 'Brésil',
               },
               {
@@ -181,7 +181,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
                     : t._lang === 'en'
                       ? 'Top quality, ultra-fast delivery. Ready for WC2026!'
                       : 'Calidad superior, entrega ultrarrápida. ¡Listo para el Mundial 2026!',
-                team: 'Pack',
+                team: 'France',
               },
             ].map((testimonial, i) => (
               <div key={i} className="bg-slate-900 p-8 rounded-2xl border border-white/10 text-left relative">
