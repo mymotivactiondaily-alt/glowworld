@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useState as useStateSquad } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft, Play, Users, Trophy, Target } from 'lucide-react';
@@ -42,6 +42,8 @@ export const FanPage = () => {
   const [liveMatch, setLiveMatch] = useState<any>(null);
   const [countdown, setCountdown] = useState({ d: 0, h: 0, m: 0, s: 0 });
   const [loading, setLoading] = useState(true);
+  const [selectedPlayer, setSelectedPlayer] = useState<number | null>(null);
+  const [squadView, setSquadView] = useState<'pitch' | 'list'>('pitch');
 
   useEffect(() => {
     if (!config) return;
@@ -217,6 +219,186 @@ export const FanPage = () => {
           </div>
         </div>
       )}
+
+      {/* Squad Section */}
+      <div style={{ padding: '0 20px 20px' }}>
+        <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, marginBottom: '12px' }}>
+          Formation — 4-3-3
+        </div>
+
+        {/* View toggle */}
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+          {(['pitch', 'list'] as const).map(v => (
+            <button key={v} onClick={() => setSquadView(v)} style={{
+              padding: '6px 14px', borderRadius: '20px', fontSize: '12px', fontWeight: 600,
+              letterSpacing: '1px', textTransform: 'uppercase', cursor: 'pointer',
+              background: squadView === v ? config.colors.primary : 'transparent',
+              border: `1px solid ${squadView === v ? config.colors.primary : config.colors.border}`,
+              color: squadView === v ? '#fff' : config.colors.muted,
+            }}>
+              {v === 'pitch' ? (config.lang === 'pt' ? 'Campo' : config.lang === 'es' ? 'Campo' : 'Terrain') : (config.lang === 'pt' ? 'Lista' : config.lang === 'es' ? 'Lista' : 'Liste')}
+            </button>
+          ))}
+        </div>
+
+        {squadView === 'pitch' && (
+          <div style={{ background: '#041504', border: `1px solid ${config.colors.border}`, borderRadius: '12px', padding: '16px', position: 'relative', minHeight: '400px', marginBottom: '12px', overflow: 'hidden' }}>
+            <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.12 }} viewBox="0 0 100 100" preserveAspectRatio="none">
+              <rect x="1" y="1" width="98" height="98" fill="none" stroke={config.colors.primary} strokeWidth="0.5"/>
+              <line x1="1" y1="50" x2="99" y2="50" stroke={config.colors.primary} strokeWidth="0.5"/>
+              <circle cx="50" cy="50" r="15" fill="none" stroke={config.colors.primary} strokeWidth="0.5"/>
+              <rect x="25" y="1" width="50" height="15" fill="none" stroke={config.colors.primary} strokeWidth="0.5"/>
+              <rect x="25" y="84" width="50" height="15" fill="none" stroke={config.colors.primary} strokeWidth="0.5"/>
+            </svg>
+
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', minHeight: '380px', padding: '8px 0', position: 'relative', zIndex: 1 }}>
+              {/* Attackers */}
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+                {config.squad.filter(p => p.posKey === 'att').map(p => (
+                  <div key={p.id} onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
+                    <div style={{
+                      width: '40px', height: '40px', borderRadius: '50%',
+                      background: selectedPlayer === p.id ? config.colors.secondary : config.colors.primary,
+                      border: `2px solid ${selectedPlayer === p.id ? config.colors.secondary : config.colors.border}`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '14px', fontWeight: 900, color: selectedPlayer === p.id ? config.colors.bg : '#fff',
+                      transition: 'all 0.2s', transform: selectedPlayer === p.id ? 'scale(1.15)' : 'scale(1)',
+                    }}>{p.num}</div>
+                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase' }}>
+                      {p.name.split(' ').pop()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Midfielders */}
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+                {config.squad.filter(p => p.posKey === 'mid').map(p => (
+                  <div key={p.id} onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
+                    <div style={{
+                      width: '40px', height: '40px', borderRadius: '50%',
+                      background: selectedPlayer === p.id ? config.colors.secondary : config.colors.primary,
+                      border: `2px solid ${selectedPlayer === p.id ? config.colors.secondary : config.colors.border}`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '14px', fontWeight: 900, color: selectedPlayer === p.id ? config.colors.bg : '#fff',
+                      transition: 'all 0.2s', transform: selectedPlayer === p.id ? 'scale(1.15)' : 'scale(1)',
+                    }}>{p.num}</div>
+                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase' }}>
+                      {p.name.split(' ').pop()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Defenders */}
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                {config.squad.filter(p => p.posKey === 'def').map(p => (
+                  <div key={p.id} onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
+                    <div style={{
+                      width: '40px', height: '40px', borderRadius: '50%',
+                      background: selectedPlayer === p.id ? config.colors.secondary : config.colors.primary,
+                      border: `2px solid ${selectedPlayer === p.id ? config.colors.secondary : config.colors.border}`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '14px', fontWeight: 900, color: selectedPlayer === p.id ? config.colors.bg : '#fff',
+                      transition: 'all 0.2s', transform: selectedPlayer === p.id ? 'scale(1.15)' : 'scale(1)',
+                    }}>{p.num}</div>
+                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase' }}>
+                      {p.name.split(' ').pop()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Goalkeeper */}
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {config.squad.filter(p => p.posKey === 'gk').map(p => (
+                  <div key={p.id} onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
+                    <div style={{
+                      width: '40px', height: '40px', borderRadius: '50%',
+                      background: selectedPlayer === p.id ? config.colors.secondary : '#1a3a0a',
+                      border: `2px solid ${selectedPlayer === p.id ? config.colors.secondary : '#2a6a1a'}`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '14px', fontWeight: 900, color: '#fff',
+                      transition: 'all 0.2s', transform: selectedPlayer === p.id ? 'scale(1.15)' : 'scale(1)',
+                    }}>{p.num}</div>
+                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase' }}>
+                      {p.name.split(' ').pop()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Player detail card */}
+        {selectedPlayer && (() => {
+          const p = config.squad.find(x => x.id === selectedPlayer);
+          if (!p) return null;
+          return (
+            <div style={{ background: config.colors.bgDark, border: `1px solid ${config.colors.primary}`, borderRadius: '12px', padding: '16px', marginBottom: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '12px' }}>
+                <div style={{
+                  width: '52px', height: '52px', borderRadius: '50%', flexShrink: 0,
+                  background: p.posKey === 'gk' ? '#1a3a0a' : config.colors.primary,
+                  border: `2px solid ${p.posKey === 'gk' ? '#2a6a1a' : config.colors.border}`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '20px', fontWeight: 900, color: '#fff',
+                }}>{p.num}</div>
+                <div>
+                  <div style={{ fontSize: '18px', fontWeight: 700, color: '#fff', lineHeight: 1 }}>{p.name}</div>
+                  <div style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', color: config.colors.muted, marginTop: '3px' }}>{p.pos}</div>
+                  <div style={{ fontSize: '13px', color: config.colors.muted, marginTop: '6px' }}>⚽ {p.club}</div>
+                </div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '8px' }}>
+                {[
+                  { v: p.caps, l: config.lang === 'pt' ? 'Seleções' : config.lang === 'es' ? 'Selecciones' : 'Sélections' },
+                  { v: p.goals, l: config.lang === 'pt' ? 'Gols' : config.lang === 'es' ? 'Goles' : 'Buts' },
+                  { v: p.age, l: config.lang === 'pt' ? 'Idade' : config.lang === 'es' ? 'Edad' : 'Âge' },
+                ].map(({ v, l }) => (
+                  <div key={l} style={{ background: config.colors.bg, border: `1px solid ${config.colors.border}`, borderRadius: '8px', padding: '10px', textAlign: 'center' }}>
+                    <div style={{ fontFamily: 'monospace', fontSize: '22px', fontWeight: 900, color: config.colors.primary, lineHeight: 1 }}>{v}</div>
+                    <div style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: config.colors.muted, marginTop: '2px' }}>{l}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* List view */}
+        {squadView === 'list' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            {(['gk','def','mid','att'] as const).map(posKey => {
+              const group = config.squad.filter(p => p.posKey === posKey);
+              const labels = { gk: { fr:'Gardiens', en:'Goalkeepers', es:'Porteros', pt:'Goleiros' }, def: { fr:'Défenseurs', en:'Defenders', es:'Defensas', pt:'Defensores' }, mid: { fr:'Milieux', en:'Midfielders', es:'Centrocampistas', pt:'Meio-campistas' }, att: { fr:'Attaquants', en:'Forwards', es:'Delanteros', pt:'Atacantes' } };
+              return (
+                <div key={posKey}>
+                  <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, margin: '12px 0 6px' }}>
+                    {labels[posKey][config.lang] || labels[posKey]['en']}
+                  </div>
+                  {group.map(p => (
+                    <div key={p.id} onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
+                      style={{ display: 'flex', alignItems: 'center', gap: '12px', background: selectedPlayer === p.id ? `${config.colors.primary}20` : config.colors.bgDark, border: `1px solid ${selectedPlayer === p.id ? config.colors.primary : config.colors.border}`, borderRadius: '10px', padding: '10px 14px', cursor: 'pointer', marginBottom: '6px', transition: 'all 0.2s' }}>
+                      <div style={{ fontFamily: 'monospace', fontSize: '18px', fontWeight: 900, color: config.colors.primary, width: '24px', textAlign: 'center' }}>{p.num}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '14px', fontWeight: 600, color: '#fff' }}>{p.name}</div>
+                        <div style={{ fontSize: '11px', color: config.colors.muted, marginTop: '1px' }}>{p.club}</div>
+                      </div>
+                      <div style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '4px', background: `${config.colors.primary}30`, color: config.colors.primary }}>{posKey.toUpperCase()}</div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
 
       {/* Hymne */}
       <div style={{ padding: '0 20px 20px' }}>
