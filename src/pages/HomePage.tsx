@@ -59,7 +59,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
 
             <h1 className="text-xl md:text-2xl font-bold mb-4 text-france-blue uppercase tracking-widest">{t.h1_seo}</h1>
 
-            <p className="text-5xl md:text-8xl font-black mb-8 tracking-tighter leading-none">
+            <p className="text-5xl md:text-8xl font-black mb-8 tracking-tighter leading-none" style={{ fontFamily: 'var(--font-display)' }}>
               {t.hero_title} <br />
               <span className="text-france-blue glow-text">{t.hero_subtitle}</span>
             </p>
@@ -68,7 +68,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 }}
-              className="bg-white/10 backdrop-blur-md border border-white/20 p-6 md:p-8 rounded-3xl mb-12 max-w-3xl mx-auto shadow-2xl"
+              className="glass-card-strong p-6 md:p-8 mb-12 max-w-3xl mx-auto shadow-2xl"
             >
               <p className="text-xl md:text-2xl text-white font-bold leading-tight">
                 {t.hero_desc_prefix}
@@ -102,7 +102,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
 
       {/* Trust Badges */}
       <section className="py-12 bg-white/5 border-y border-white/10">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 glass-card py-10">
           {[
             { icon: Zap, text: t._lang === 'fr' ? 'Réactif au son en 0.1 sec' : t._lang === 'en' ? 'Sound reactive in 0.1 sec' : 'Reactiva al sonido en 0.1 seg' },
             { icon: Globe, text: t._lang === 'fr' ? 'Livraison Internationale Offerte' : t._lang === 'en' ? 'Free International Shipping' : 'Envío Internacional Gratis' },
@@ -111,7 +111,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
           ].map((item, i) => (
             <div key={i} className="flex items-center justify-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
               <item.icon className="w-5 h-5 text-france-blue" />
-              <span className="text-xs font-bold uppercase tracking-widest">{item.text}</span>
+              <span className="text-xs font-bold uppercase tracking-widest" style={{ fontFamily: 'var(--font-mono)' }}>{item.text}</span>
             </div>
           ))}
         </div>
@@ -123,7 +123,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
           <div style={{ display: 'inline-block', background: '#ED2939', color: '#fff', fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', padding: '4px 12px', borderRadius: '3px', marginBottom: '16px' }}>
             {t._lang === 'fr' ? 'Exclusif avec votre bracelet' : t._lang === 'en' ? 'Exclusive with your wristband' : 'Exclusivo con tu pulsera'}
           </div>
-          <h2 style={{ fontSize: '36px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px' }}>
+          <h2 style={{ fontSize: '36px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', fontFamily: 'var(--font-display)' }}>
             {t._lang === 'fr' ? 'Votre espace fan digital' : t._lang === 'en' ? 'Your digital fan zone' : 'Tu zona fan digital'}
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.5)', maxWidth: '600px', margin: '0 auto 32px', fontSize: '16px', lineHeight: 1.6 }}>
@@ -140,11 +140,11 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
               { country: 'portugal', flag: '🇵🇹', name: 'Portugal' },
               { country: 'spain', flag: '🇪🇸', name: 'Espagne' },
             ].map(({ country, flag, name }) => (
-              <Link key={country} to={`/fan/${country}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '16px 8px', textDecoration: 'none', color: '#fff', transition: 'all 0.2s' }}
+              <Link key={country} to={`/fan/${country}`} className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', padding: '16px 8px', textDecoration: 'none', color: '#fff', transition: 'all 0.2s' }}
                 onMouseEnter={e => (e.currentTarget.style.borderColor = '#002395')}
                 onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)')}>
                 <span style={{ fontSize: '28px' }}>{flag}</span>
-                <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>{name}</span>
+                <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>{name}</span>
               </Link>
             ))}
           </div>
@@ -155,7 +155,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
       <section className="py-24 px-6 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
           <div>
-            <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">
+            <h2 className="text-4xl font-black uppercase tracking-tighter mb-4" style={{ fontFamily: 'var(--font-display)' }}>
               {t._lang === 'fr' ? 'Éditions Limitées' : t._lang === 'en' ? 'Limited Editions' : 'Ediciones Limitadas'}
             </h2>
             <p className="text-white/50 max-w-md">
@@ -182,7 +182,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
       {/* Testimonials */}
       <section className="py-24 bg-france-blue/10">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-black uppercase tracking-tighter mb-16">
+          <h2 className="text-4xl font-black uppercase tracking-tighter mb-16" style={{ fontFamily: 'var(--font-display)' }}>
             {t._lang === 'fr' ? "Le stade s'invite chez vous" : t._lang === 'en' ? 'The stadium comes to you' : 'El estadio llega a tu casa'}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -218,7 +218,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
                 team: 'France',
               },
             ].map((testimonial, i) => (
-              <div key={i} className="bg-slate-900 p-8 rounded-2xl border border-white/10 text-left relative">
+              <div key={i} className="glass-card p-8 text-left relative">
                 <div className="flex gap-1 mb-4">
                   {[1, 2, 3, 4, 5].map((s) => (
                     <Star key={s} className="w-4 h-4 fill-france-red text-france-red" />
