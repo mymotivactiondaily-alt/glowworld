@@ -117,6 +117,40 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
         </div>
       </section>
 
+      {/* Fan Page Section */}
+      <section style={{ padding: '60px 24px', background: 'rgba(0,35,149,0.08)', borderTop: '1px solid rgba(0,35,149,0.2)', borderBottom: '1px solid rgba(0,35,149,0.2)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
+          <div style={{ display: 'inline-block', background: '#ED2939', color: '#fff', fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', padding: '4px 12px', borderRadius: '3px', marginBottom: '16px' }}>
+            {t._lang === 'fr' ? 'Exclusif avec votre bracelet' : t._lang === 'en' ? 'Exclusive with your wristband' : 'Exclusivo con tu pulsera'}
+          </div>
+          <h2 style={{ fontSize: '36px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px' }}>
+            {t._lang === 'fr' ? 'Votre espace fan digital' : t._lang === 'en' ? 'Your digital fan zone' : 'Tu zona fan digital'}
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.5)', maxWidth: '600px', margin: '0 auto 32px', fontSize: '16px', lineHeight: 1.6 }}>
+            {t._lang === 'fr' ? 'Chaque bracelet donne accès à une page fan exclusive — matchs en direct, composition de l\'équipe, classement et hymne national.' : t._lang === 'en' ? 'Each wristband unlocks an exclusive fan page — live matches, team lineup, group standings and national anthem.' : 'Cada pulsera da acceso a una página fan exclusiva — partidos en directo, alineación del equipo, clasificación e himno nacional.'}
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', maxWidth: '800px', margin: '0 auto 32px' }}>
+            {[
+              { country: 'france', flag: '🇫🇷', name: 'France' },
+              { country: 'brazil', flag: '🇧🇷', name: 'Brésil' },
+              { country: 'usa', flag: '🇺🇸', name: 'USA' },
+              { country: 'argentina', flag: '🇦🇷', name: 'Argentine' },
+              { country: 'mexico', flag: '🇲🇽', name: 'Mexique' },
+              { country: 'canada', flag: '🇨🇦', name: 'Canada' },
+              { country: 'portugal', flag: '🇵🇹', name: 'Portugal' },
+              { country: 'spain', flag: '🇪🇸', name: 'Espagne' },
+            ].map(({ country, flag, name }) => (
+              <Link key={country} to={`/fan/${country}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '16px 8px', textDecoration: 'none', color: '#fff', transition: 'all 0.2s' }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = '#002395')}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)')}>
+                <span style={{ fontSize: '28px' }}>{flag}</span>
+                <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>{name}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Featured Products */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
@@ -157,10 +191,10 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
                 name: 'Lucas M.',
                 text:
                   t._lang === 'fr'
-                    ? "C'est incroyable, le bracelet s'est allumé en rouge au moment du but de Mbappé ! Une immersion totale."
+                    ? "Mon bracelet s'est illuminé au moment du but de Mbappé — il réagit automatiquement au son, c'est bluffant ! Une immersion totale."
                     : t._lang === 'en'
-                      ? "Incredible! The wristband lit up red the moment Mbappé scored! Total immersion."
-                      : '¡Increíble! ¡La pulsera se iluminó de rojo en el momento en que Mbappé marcó! Inmersión total.',
+                      ? "My wristband lit up the moment Mbappé scored — it reacts automatically to sound, absolutely stunning! Total immersion."
+                      : '¡Mi pulsera se iluminó en el momento en que Mbappé marcó — reacciona automáticamente al sonido, es increíble! Inmersión total.',
                 team: 'France',
               },
               {
