@@ -32,6 +32,7 @@ import { PrivacyPage } from './pages/PrivacyPage';
 import { TermsPage } from './pages/TermsPage';
 import { ShippingPage } from './pages/ShippingPage';
 import { AdminPage } from './pages/AdminPage';
+import { FanPage } from './pages/FanPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 function AppContent() {
@@ -76,6 +77,7 @@ function AppContent() {
           <Route path="/product/:id" element={<ProductPage onAddToCart={addToCart} t={t} />} />
           <Route path="/blog" element={<BlogPage t={t} />} />
           <Route path="/blog/:slug" element={<BlogPostPage t={t} />} />
+          <Route path="/fan/:country" element={<FanPage />} />
           <Route path="/about" element={<AboutPage t={t} />} />
           <Route path="/partners" element={<PartnersPage t={t} />} />
           <Route path="/success" element={<SuccessPage t={t} />} />
