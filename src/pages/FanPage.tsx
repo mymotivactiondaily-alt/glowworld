@@ -110,10 +110,10 @@ export const FanPage = () => {
 
       {/* Header */}
       <div style={{ backgroundColor: config.colors.bgDark, borderBottom: `2px solid ${config.colors.primary}`, padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', textDecoration: 'none', fontWeight: 700, fontSize: '18px', letterSpacing: '2px', fontFamily: 'var(--font-display)' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', textDecoration: 'none', fontWeight: 700, fontSize: '18px', letterSpacing: '2px', fontFamily: 'monospace' }}>
           <Zap size={18} style={{ color: config.colors.primary }} /> GLOWWORLD
         </Link>
-        <div style={{ background: config.colors.primary, borderRadius: '20px', padding: '6px 14px', fontSize: '13px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+        <div style={{ background: config.colors.primary, borderRadius: '20px', padding: '6px 14px', fontSize: '13px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>
           {config.flag} Fan Zone
         </div>
       </div>
@@ -123,10 +123,10 @@ export const FanPage = () => {
         <div style={{ display: 'inline-block', background: config.colors.secondary, color: config.colors.bg, fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', padding: '4px 12px', borderRadius: '3px', marginBottom: '12px' }}>
           {txt('worldCup')}
         </div>
-        <div style={{ fontSize: '48px', fontWeight: 900, letterSpacing: '3px', lineHeight: 1, textTransform: 'uppercase', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>
+        <div style={{ fontSize: '48px', fontWeight: 900, letterSpacing: '3px', lineHeight: 1, textTransform: 'uppercase', marginBottom: '8px' }}>
           {config.slogan[lang] || config.slogan.fr}
         </div>
-        <div style={{ fontSize: '13px', color: config.colors.muted, fontWeight: 500, letterSpacing: '1px', textTransform: 'uppercase', fontFamily: 'var(--font-display)' }}>
+        <div style={{ fontSize: '13px', color: config.colors.muted, fontWeight: 500, letterSpacing: '1px', textTransform: 'uppercase' }}>
           {config.flag} {txt('fanZone')}
         </div>
       </div>
@@ -142,10 +142,10 @@ export const FanPage = () => {
 
       {/* Prochain match + Countdown */}
       <div style={{ padding: '20px' }}>
-        <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, marginBottom: '12px', fontFamily: 'var(--font-mono)' }}>
+        <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, marginBottom: '12px' }}>
           {txt('nextMatch')}
         </div>
-        <div className="glass-card" style={{ padding: '20px' }}>
+        <div style={{ background: config.colors.bgDark, border: `1px solid ${config.colors.border}`, borderRadius: '12px', padding: '20px' }}>
           {nextMatch ? (
             <>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
@@ -169,8 +169,8 @@ export const FanPage = () => {
                   { v: countdown.s, l: txt('sec') },
                 ].map(({ v, l }) => (
                   <div key={l} style={{ background: config.colors.bg, border: `1px solid ${config.colors.border}`, borderRadius: '8px', padding: '12px 8px', textAlign: 'center' }}>
-                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '28px', color: config.colors.primary, fontWeight: 900, lineHeight: 1 }}>{pad(v)}</div>
-                    <div style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: config.colors.muted, marginTop: '3px', fontFamily: 'var(--font-display)' }}>{l}</div>
+                    <div style={{ fontFamily: 'monospace', fontSize: '28px', color: config.colors.primary, fontWeight: 900, lineHeight: 1 }}>{pad(v)}</div>
+                    <div style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: config.colors.muted, marginTop: '3px' }}>{l}</div>
                   </div>
                 ))}
               </div>
@@ -186,15 +186,15 @@ export const FanPage = () => {
       {/* Classement */}
       {standings.length > 0 && (
         <div style={{ padding: '0 20px 20px' }}>
-          <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, marginBottom: '12px', fontFamily: 'var(--font-mono)' }}>
+          <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, marginBottom: '12px' }}>
             {txt('standings')}
           </div>
-          <div className="glass-card" style={{ overflow: 'hidden' }}>
+          <div style={{ background: config.colors.bgDark, border: `1px solid ${config.colors.border}`, borderRadius: '12px', overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
               <thead>
                 <tr style={{ borderBottom: `1px solid ${config.colors.border}` }}>
                   {[txt('rank'), txt('team'), txt('played'), txt('won'), txt('draw'), txt('lost'), txt('pts')].map(h => (
-                    <th key={h} style={{ padding: '10px 8px', textAlign: h === txt('team') ? 'left' : 'center', fontSize: '10px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: config.colors.muted, fontFamily: 'var(--font-display)' }}>{h}</th>
+                    <th key={h} style={{ padding: '10px 8px', textAlign: h === txt('team') ? 'left' : 'center', fontSize: '10px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: config.colors.muted }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -222,7 +222,7 @@ export const FanPage = () => {
 
       {/* Squad Section */}
       <div style={{ padding: '0 20px 20px' }}>
-        <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, marginBottom: '12px', fontFamily: 'var(--font-mono)' }}>
+        <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, marginBottom: '12px' }}>
           Formation — 4-3-3
         </div>
 
@@ -264,9 +264,8 @@ export const FanPage = () => {
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '14px', fontWeight: 900, color: selectedPlayer === p.id ? config.colors.bg : '#fff',
                       transition: 'all 0.2s', transform: selectedPlayer === p.id ? 'scale(1.15)' : 'scale(1)',
-                      fontFamily: 'var(--font-display)'
                     }}>{p.num}</div>
-                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase', fontFamily: 'var(--font-display)' }}>
+                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase' }}>
                       {p.name.split(' ').pop()}
                     </div>
                   </div>
@@ -285,9 +284,8 @@ export const FanPage = () => {
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '14px', fontWeight: 900, color: selectedPlayer === p.id ? config.colors.bg : '#fff',
                       transition: 'all 0.2s', transform: selectedPlayer === p.id ? 'scale(1.15)' : 'scale(1)',
-                      fontFamily: 'var(--font-display)'
                     }}>{p.num}</div>
-                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase', fontFamily: 'var(--font-display)' }}>
+                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase' }}>
                       {p.name.split(' ').pop()}
                     </div>
                   </div>
@@ -306,9 +304,8 @@ export const FanPage = () => {
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '14px', fontWeight: 900, color: selectedPlayer === p.id ? config.colors.bg : '#fff',
                       transition: 'all 0.2s', transform: selectedPlayer === p.id ? 'scale(1.15)' : 'scale(1)',
-                      fontFamily: 'var(--font-display)'
                     }}>{p.num}</div>
-                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase', fontFamily: 'var(--font-display)' }}>
+                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase' }}>
                       {p.name.split(' ').pop()}
                     </div>
                   </div>
@@ -327,9 +324,8 @@ export const FanPage = () => {
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '14px', fontWeight: 900, color: '#fff',
                       transition: 'all 0.2s', transform: selectedPlayer === p.id ? 'scale(1.15)' : 'scale(1)',
-                      fontFamily: 'var(--font-display)'
                     }}>{p.num}</div>
-                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase', fontFamily: 'var(--font-display)' }}>
+                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase' }}>
                       {p.name.split(' ').pop()}
                     </div>
                   </div>
@@ -344,7 +340,7 @@ export const FanPage = () => {
           const p = config.squad.find(x => x.id === selectedPlayer);
           if (!p) return null;
           return (
-            <div className="glass-card-accent" style={{ padding: '16px', marginBottom: '12px' }}>
+            <div style={{ background: config.colors.bgDark, border: `1px solid ${config.colors.primary}`, borderRadius: '12px', padding: '16px', marginBottom: '12px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '12px' }}>
                 <div style={{
                   width: '52px', height: '52px', borderRadius: '50%', flexShrink: 0,
@@ -354,8 +350,8 @@ export const FanPage = () => {
                   fontSize: '20px', fontWeight: 900, color: '#fff',
                 }}>{p.num}</div>
                 <div>
-                  <div style={{ fontSize: '18px', fontWeight: 700, color: '#fff', lineHeight: 1, fontFamily: 'var(--font-display)' }}>{p.name}</div>
-                  <div style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', color: config.colors.muted, marginTop: '3px', fontFamily: 'var(--font-display)' }}>{p.pos}</div>
+                  <div style={{ fontSize: '18px', fontWeight: 700, color: '#fff', lineHeight: 1 }}>{p.name}</div>
+                  <div style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', color: config.colors.muted, marginTop: '3px' }}>{p.pos}</div>
                   <div style={{ fontSize: '13px', color: config.colors.muted, marginTop: '6px' }}>⚽ {p.club}</div>
                 </div>
               </div>
@@ -366,8 +362,8 @@ export const FanPage = () => {
                   { v: p.age, l: config.lang === 'pt' ? 'Idade' : config.lang === 'es' ? 'Edad' : 'Âge' },
                 ].map(({ v, l }) => (
                   <div key={l} style={{ background: config.colors.bg, border: `1px solid ${config.colors.border}`, borderRadius: '8px', padding: '10px', textAlign: 'center' }}>
-                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '22px', fontWeight: 900, color: config.colors.primary, lineHeight: 1 }}>{v}</div>
-                    <div style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: config.colors.muted, marginTop: '2px', fontFamily: 'var(--font-display)' }}>{l}</div>
+                    <div style={{ fontFamily: 'monospace', fontSize: '22px', fontWeight: 900, color: config.colors.primary, lineHeight: 1 }}>{v}</div>
+                    <div style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: config.colors.muted, marginTop: '2px' }}>{l}</div>
                   </div>
                 ))}
               </div>
@@ -383,13 +379,13 @@ export const FanPage = () => {
               const labels = { gk: { fr:'Gardiens', en:'Goalkeepers', es:'Porteros', pt:'Goleiros' }, def: { fr:'Défenseurs', en:'Defenders', es:'Defensas', pt:'Defensores' }, mid: { fr:'Milieux', en:'Midfielders', es:'Centrocampistas', pt:'Meio-campistas' }, att: { fr:'Attaquants', en:'Forwards', es:'Delanteros', pt:'Atacantes' } };
               return (
                 <div key={posKey}>
-                  <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, margin: '12px 0 6px', fontFamily: 'var(--font-mono)' }}>
+                  <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, margin: '12px 0 6px' }}>
                     {labels[posKey][config.lang] || labels[posKey]['en']}
                   </div>
                   {group.map(p => (
                     <div key={p.id} onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
                       style={{ display: 'flex', alignItems: 'center', gap: '12px', background: selectedPlayer === p.id ? `${config.colors.primary}20` : config.colors.bgDark, border: `1px solid ${selectedPlayer === p.id ? config.colors.primary : config.colors.border}`, borderRadius: '10px', padding: '10px 14px', cursor: 'pointer', marginBottom: '6px', transition: 'all 0.2s' }}>
-                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '18px', fontWeight: 900, color: config.colors.primary, width: '24px', textAlign: 'center' }}>{p.num}</div>
+                      <div style={{ fontFamily: 'monospace', fontSize: '18px', fontWeight: 900, color: config.colors.primary, width: '24px', textAlign: 'center' }}>{p.num}</div>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: '14px', fontWeight: 600, color: '#fff' }}>{p.name}</div>
                         <div style={{ fontSize: '11px', color: config.colors.muted, marginTop: '1px' }}>{p.club}</div>
@@ -406,10 +402,10 @@ export const FanPage = () => {
 
       {/* Hymne */}
       <div style={{ padding: '0 20px 20px' }}>
-        <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, marginBottom: '12px', fontFamily: 'var(--font-mono)' }}>
+        <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, marginBottom: '12px' }}>
           {txt('anthem')}
         </div>
-        <div className="glass-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div style={{ background: config.colors.bgDark, border: `1px solid ${config.colors.primary}`, borderRadius: '12px', padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: config.colors.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
             <Play size={16} color="#fff" style={{ marginLeft: '2px' }} />
           </div>
