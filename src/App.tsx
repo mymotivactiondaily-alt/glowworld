@@ -85,7 +85,7 @@ function AppContent() {
           <Route path="/legal" element={<LegalPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
-          <Route path="/shipping" element={<ShippingPage />} />
+          <Route path="/shipping" element={<ShippingPage t={t} />} />
           <Route path="/admin" element={<AdminPage t={t} />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
