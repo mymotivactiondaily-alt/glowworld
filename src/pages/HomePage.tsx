@@ -57,11 +57,11 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
               {t._lang === 'fr' ? 'Coupe du Monde 2026' : t._lang === 'en' ? 'World Cup 2026' : 'Copa del Mundo 2026'}
             </span>
 
-            <h1 className="text-xl md:text-2xl font-bold mb-4 text-france-blue uppercase tracking-widest">{t.h1_seo}</h1>
+            <h1 className="text-xl md:text-2xl font-bold mb-4 text-[#002395] uppercase tracking-widest">{t.h1_seo}</h1>
 
-            <p className="text-5xl md:text-8xl font-black mb-8 tracking-tighter leading-none">
+            <p className="text-white text-5xl md:text-8xl font-black mb-8 tracking-tighter leading-none">
               {t.hero_title} <br />
-              <span className="text-france-blue glow-text">{t.hero_subtitle}</span>
+              <span className="text-[#002395] glow-text">{t.hero_subtitle}</span>
             </p>
 
             <motion.div
@@ -72,7 +72,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
             >
               <p className="text-xl md:text-2xl text-white font-bold leading-tight">
                 {t.hero_desc_prefix}
-                <span className="text-france-blue glow-text drop-shadow-[0_0_10px_rgba(0,35,149,0.8)]">
+                <span className="text-[#002395] glow-text drop-shadow-[0_0_10px_rgba(0,35,149,0.8)]">
                   {t.hero_desc_highlight}
                 </span>
               </p>
@@ -85,7 +85,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-16">
               <Link
                 to="/catalog"
-                className="w-full md:w-auto bg-white text-slate-950 px-10 py-4 rounded-full font-black uppercase tracking-widest hover:bg-france-blue hover:text-white transition-all neon-button"
+                className="w-full md:w-auto bg-white text-slate-950 px-10 py-4 rounded-full font-black uppercase tracking-widest hover:bg-[#002395] hover:text-white transition-all neon-button"
               >
                 {t.hero_cta}
               </Link>
@@ -110,7 +110,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
             { icon: CheckCircle, text: t._lang === 'fr' ? 'Garantie 2 ans' : t._lang === 'en' ? '2-Year Warranty' : 'Garantía 2 años' },
           ].map((item, i) => (
             <div key={i} className="flex items-center justify-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
-              <item.icon className="w-5 h-5 text-france-blue" />
+              <item.icon className="w-5 h-5 text-[#002395]" />
               <span className="text-xs font-bold uppercase tracking-widest">{item.text}</span>
             </div>
           ))}
@@ -156,7 +156,13 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
           <div>
             <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">
-              {t._lang === 'fr' ? 'Éditions Limitées' : t._lang === 'en' ? 'Limited Editions' : 'Ediciones Limitadas'}
+              {t._lang === 'fr' ? (
+                <>Éditions <span className="text-[#ED2939]">Limitées</span></>
+              ) : t._lang === 'en' ? (
+                <>Limited <span className="text-[#ED2939]">Editions</span></>
+              ) : (
+                <>Ediciones <span className="text-[#ED2939]">Limitadas</span></>
+              )}
             </h2>
             <p className="text-white/50 max-w-md">
               {t._lang === 'fr'
@@ -166,7 +172,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
                   : 'Elige tu equipo y prepárate para el espectáculo más grande del planeta.'}
             </p>
           </div>
-          <Link to="/catalog" className="group flex items-center gap-2 font-bold uppercase tracking-widest text-sm hover:text-france-blue">
+          <Link to="/catalog" className="group flex items-center gap-2 font-bold uppercase tracking-widest text-sm hover:text-[#002395]">
             {t._lang === 'fr' ? 'Voir tout le catalogue' : t._lang === 'en' ? 'View full catalog' : 'Ver todo el catálogo'}{' '}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
           </Link>
@@ -183,7 +189,13 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
       <section className="py-24 bg-france-blue/10">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h2 className="text-4xl font-black uppercase tracking-tighter mb-16">
-            {t._lang === 'fr' ? "Le stade s'invite chez vous" : t._lang === 'en' ? 'The stadium comes to you' : 'El estadio llega a tu casa'}
+            {t._lang === 'fr' ? (
+              <>Le <span className="text-[#002395]">stade</span> s'invite chez vous</>
+            ) : t._lang === 'en' ? (
+              <>The <span className="text-[#002395]">stadium</span> comes to you</>
+            ) : (
+              <>El <span className="text-[#002395]">estadio</span> llega a tu casa</>
+            )}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
