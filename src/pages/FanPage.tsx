@@ -94,6 +94,22 @@ export const FanPage = () => {
       .catch(() => setAccessState('gate'));
   }, [country]);
 
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.id = 'fanpage-styles';
+    if (!document.getElementById('fanpage-styles')) {
+      style.textContent = `
+        .fp-player-group { cursor: pointer; }
+        .fp-player-group:hover ellipse { filter: brightness(1.2); }
+        .fp-player-detail { animation: fpFadeIn 0.22s ease; }
+        @keyframes fpFadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+        .fp-squad-item:hover { border-color: var(--fp-primary) !important; }
+      `;
+      document.head.appendChild(style);
+    }
+    return () => { const s = document.getElementById('fanpage-styles'); if(s) s.remove(); };
+  }, []);
+
   const handleRequestAccess = async () => {
     if (!email || !email.includes('@')) {
       setEmailError('Entrez un email valide');
@@ -357,102 +373,114 @@ export const FanPage = () => {
               border: `1px solid ${squadView === v ? config.colors.primary : config.colors.border}`,
               color: squadView === v ? '#fff' : config.colors.muted,
             }}>
-              {v === 'pitch' ? (config.lang === 'pt' ? 'Campo' : config.lang === 'es' ? 'Campo' : 'Terrain') : (config.lang === 'pt' ? 'Lista' : config.lang === 'es' ? 'Lista' : 'Liste')}
+              {v === 'pitch'
+                ? (config.lang === 'pt' ? 'Campo' : config.lang === 'es' ? 'Campo' : 'Terrain')
+                : (config.lang === 'pt' ? 'Lista' : config.lang === 'es' ? 'Lista' : 'Liste')}
             </button>
           ))}
         </div>
 
         {squadView === 'pitch' && (
-          <div style={{ background: '#041504', border: `1px solid ${config.colors.border}`, borderRadius: '12px', padding: '16px', position: 'relative', minHeight: '400px', marginBottom: '12px', overflow: 'hidden' }}>
-            <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.12 }} viewBox="0 0 100 100" preserveAspectRatio="none">
-              <rect x="1" y="1" width="98" height="98" fill="none" stroke={config.colors.primary} strokeWidth="0.5"/>
-              <line x1="1" y1="50" x2="99" y2="50" stroke={config.colors.primary} strokeWidth="0.5"/>
-              <circle cx="50" cy="50" r="15" fill="none" stroke={config.colors.primary} strokeWidth="0.5"/>
-              <rect x="25" y="1" width="50" height="15" fill="none" stroke={config.colors.primary} strokeWidth="0.5"/>
-              <rect x="25" y="84" width="50" height="15" fill="none" stroke={config.colors.primary} strokeWidth="0.5"/>
+          <div style={{ background: '#0a180a', borderRadius: '12px', overflow: 'hidden', marginBottom: '12px' }}>
+            <svg viewBox="0 0 380 310" width="100%" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
+              <defs>
+                <linearGradient id={`pg_${config.code}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#0c1e0c"/>
+                  <stop offset="100%" stopColor="#07100a"/>
+                </linearGradient>
+                <linearGradient id={`ll_${config.code}`} x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#fffde0" stopOpacity="0.10"/>
+                  <stop offset="100%" stopColor="#fffde0" stopOpacity="0"/>
+                </linearGradient>
+                <linearGradient id={`lr_${config.code}`} x1="1" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#fffde0" stopOpacity="0.10"/>
+                  <stop offset="100%" stopColor="#fffde0" stopOpacity="0"/>
+                </linearGradient>
+                <radialGradient id={`h3d_${config.code}`} cx="38%" cy="32%" r="60%">
+                  <stop offset="0%" stopColor={config.colors.primary} stopOpacity="0.5"/>
+                  <stop offset="100%" stopColor={config.colors.primary} stopOpacity="1"/>
+                </radialGradient>
+                <linearGradient id={`b3d_${config.code}`} x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor={config.colors.primary} stopOpacity="0.6"/>
+                  <stop offset="50%" stopColor={config.colors.primary}/>
+                  <stop offset="100%" stopColor={config.colors.primary} stopOpacity="0.4"/>
+                </linearGradient>
+                <filter id={`sh_${config.code}`} x="-30%" y="-30%" width="160%" height="160%">
+                  <feDropShadow dx="1" dy="2" stdDeviation="2" floodColor="#000" floodOpacity="0.6"/>
+                </filter>
+              </defs>
+
+              {/* Pitch */}
+              <rect width="380" height="310" fill={`url(#pg_${config.code})`}/>
+              <polygon points="25,300 355,300 315,55 65,55" fill="none" stroke="#1e3e1e" strokeWidth="0.8"/>
+              <line x1="30" y1="177" x2="350" y2="177" stroke="#1e3e1e" strokeWidth="0.6"/>
+              <ellipse cx="190" cy="177" rx="52" ry="20" fill="none" stroke="#1e3e1e" strokeWidth="0.6"/>
+              <circle cx="190" cy="177" r="2.5" fill="#1e3e1e"/>
+              <path d="M110,55 L270,55 L270,95 L110,95 Z" fill="none" stroke="#1e3e1e" strokeWidth="0.5"/>
+              <path d="M140,55 L240,55 L240,75 L140,75 Z" fill="none" stroke="#1e3e1e" strokeWidth="0.4"/>
+              <path d="M90,300 L290,300 L290,260 L90,260 Z" fill="none" stroke="#1e3e1e" strokeWidth="0.5"/>
+              <path d="M125,300 L255,300 L255,280 L125,280 Z" fill="none" stroke="#1e3e1e" strokeWidth="0.4"/>
+              <polygon points="0,0 90,0 140,310 0,310" fill={`url(#ll_${config.code})`}/>
+              <polygon points="380,0 290,0 240,310 380,310" fill={`url(#lr_${config.code})`}/>
+
+              {/* Players — helper to render one player */}
+              {config.squad.map((p, idx) => {
+                const positions: Record<string, {cx:number,cy:number}[]> = {
+                  att: [{cx:105,cy:82},{cx:190,cy:74},{cx:275,cy:82}],
+                  mid: [{cx:118,cy:152},{cx:190,cy:145},{cx:262,cy:152}],
+                  def: [{cx:72,cy:212},{cx:140,cy:217},{cx:240,cy:217},{cx:308,cy:212}],
+                  gk:  [{cx:190,cy:272}],
+                };
+                const posArr = positions[p.posKey] || [];
+                const samePos = config.squad.filter(x => x.posKey === p.posKey);
+                const posIdx = samePos.findIndex(x => x.id === p.id);
+                const pos = posArr[posIdx] || {cx:190,cy:180};
+                const isGk = p.posKey === 'gk';
+                const isSel = selectedPlayer === p.id;
+                const pColor = isGk ? '#1a5a0a' : config.colors.primary;
+                const pLight = isGk ? '#5aba5a' : '#8ab4ff';
+
+                return (
+                  <g key={p.id} className="fp-player-group"
+                    onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
+                    filter={`url(#sh_${config.code})`}
+                    transform={`translate(${pos.cx},${pos.cy})`}>
+                    {/* Glow ring when selected */}
+                    {isSel && <ellipse cx="0" cy="4" rx="18" ry="18" fill={pColor} opacity="0.25"/>}
+                    {/* Body trapeze 3D */}
+                    <path d={`M-9,8 L9,8 L11,26 L-11,26 Z`}
+                      fill={pColor}
+                      stroke={isSel ? pLight : 'none'}
+                      strokeWidth={isSel ? 1.2 : 0}
+                    />
+                    {/* Left highlight — 3D volume */}
+                    <path d="M-9,8 L-6,8 L-8,26 L-11,26 Z" fill="#fff" opacity="0.12"/>
+                    {/* Head 3D */}
+                    <circle cx="0" cy="2" r="9" fill={pColor}
+                      stroke={isSel ? pLight : 'none'}
+                      strokeWidth={isSel ? 1.2 : 0}
+                    />
+                    {/* Head shine */}
+                    <circle cx="-3" cy="-2" r="3.5" fill="#fff" opacity="0.15"/>
+                    {/* Number */}
+                    <text x="0" y="20" fill="#fff" fontSize="8" fontWeight="700"
+                      textAnchor="middle" fontFamily="Inter,sans-serif" opacity="0.95">{p.num}</text>
+                    {/* Name label */}
+                    <text x="0" y="37" fill="#fff" fontSize="7.5" fontWeight="700"
+                      textAnchor="middle" fontFamily="Inter,sans-serif" opacity="0.85"
+                      style={{textTransform:'uppercase',letterSpacing:'0.5px'}}>
+                      {p.name.split(' ').pop()}
+                    </text>
+                  </g>
+                );
+              })}
+
+              {/* Row labels */}
+              <text x="10" y="85" fill="#ffffff" fontSize="8" fontWeight="700" opacity="0.2" fontFamily="Inter,sans-serif">ATT</text>
+              <text x="10" y="155" fill="#ffffff" fontSize="8" fontWeight="700" opacity="0.2" fontFamily="Inter,sans-serif">MIL</text>
+              <text x="10" y="215" fill="#ffffff" fontSize="8" fontWeight="700" opacity="0.2" fontFamily="Inter,sans-serif">DEF</text>
+              <text x="10" y="275" fill="#ffffff" fontSize="8" fontWeight="700" opacity="0.2" fontFamily="Inter,sans-serif">GK</text>
             </svg>
-
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', minHeight: '380px', padding: '8px 0', position: 'relative', zIndex: 1 }}>
-              {/* Attackers */}
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
-                {config.squad.filter(p => p.posKey === 'att').map(p => (
-                  <div key={p.id} onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
-                    <div style={{
-                      width: '40px', height: '40px', borderRadius: '50%',
-                      background: selectedPlayer === p.id ? config.colors.secondary : config.colors.primary,
-                      border: `2px solid ${selectedPlayer === p.id ? config.colors.secondary : config.colors.border}`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '14px', fontWeight: 900, color: selectedPlayer === p.id ? config.colors.bg : '#fff',
-                      transition: 'all 0.2s', transform: selectedPlayer === p.id ? 'scale(1.15)' : 'scale(1)',
-                    }}>{p.num}</div>
-                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase' }}>
-                      {p.name.split(' ').pop()}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Midfielders */}
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
-                {config.squad.filter(p => p.posKey === 'mid').map(p => (
-                  <div key={p.id} onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
-                    <div style={{
-                      width: '40px', height: '40px', borderRadius: '50%',
-                      background: selectedPlayer === p.id ? config.colors.secondary : config.colors.primary,
-                      border: `2px solid ${selectedPlayer === p.id ? config.colors.secondary : config.colors.border}`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '14px', fontWeight: 900, color: selectedPlayer === p.id ? config.colors.bg : '#fff',
-                      transition: 'all 0.2s', transform: selectedPlayer === p.id ? 'scale(1.15)' : 'scale(1)',
-                    }}>{p.num}</div>
-                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase' }}>
-                      {p.name.split(' ').pop()}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Defenders */}
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
-                {config.squad.filter(p => p.posKey === 'def').map(p => (
-                  <div key={p.id} onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
-                    <div style={{
-                      width: '40px', height: '40px', borderRadius: '50%',
-                      background: selectedPlayer === p.id ? config.colors.secondary : config.colors.primary,
-                      border: `2px solid ${selectedPlayer === p.id ? config.colors.secondary : config.colors.border}`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '14px', fontWeight: 900, color: selectedPlayer === p.id ? config.colors.bg : '#fff',
-                      transition: 'all 0.2s', transform: selectedPlayer === p.id ? 'scale(1.15)' : 'scale(1)',
-                    }}>{p.num}</div>
-                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase' }}>
-                      {p.name.split(' ').pop()}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Goalkeeper */}
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                {config.squad.filter(p => p.posKey === 'gk').map(p => (
-                  <div key={p.id} onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
-                    <div style={{
-                      width: '40px', height: '40px', borderRadius: '50%',
-                      background: selectedPlayer === p.id ? config.colors.secondary : '#1a3a0a',
-                      border: `2px solid ${selectedPlayer === p.id ? config.colors.secondary : '#2a6a1a'}`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '14px', fontWeight: 900, color: '#fff',
-                      transition: 'all 0.2s', transform: selectedPlayer === p.id ? 'scale(1.15)' : 'scale(1)',
-                    }}>{p.num}</div>
-                    <div style={{ fontSize: '9px', fontWeight: 700, color: '#fff', textAlign: 'center', maxWidth: '52px', lineHeight: 1.2, textTransform: 'uppercase' }}>
-                      {p.name.split(' ').pop()}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         )}
 
@@ -461,19 +489,13 @@ export const FanPage = () => {
           const p = config.squad.find(x => x.id === selectedPlayer);
           if (!p) return null;
           return (
-            <div style={{ background: config.colors.bgDark, border: `1px solid ${config.colors.primary}`, borderRadius: '12px', padding: '16px', marginBottom: '12px' }}>
+            <div className="fp-player-detail" style={{ background: config.colors.bgDark, border: `1px solid ${config.colors.primary}`, borderRadius: '12px', padding: '16px', marginBottom: '12px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '12px' }}>
-                <div style={{
-                  width: '52px', height: '52px', borderRadius: '50%', flexShrink: 0,
-                  background: p.posKey === 'gk' ? '#1a3a0a' : config.colors.primary,
-                  border: `2px solid ${p.posKey === 'gk' ? '#2a6a1a' : config.colors.border}`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '20px', fontWeight: 900, color: '#fff',
-                }}>{p.num}</div>
+                <div style={{ fontFamily: 'Bebas Neue', fontSize: '28px', color: config.colors.primary, width: '36px' }}>{p.num}</div>
                 <div>
                   <div style={{ fontSize: '18px', fontWeight: 700, color: '#fff', lineHeight: 1 }}>{p.name}</div>
                   <div style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', color: config.colors.muted, marginTop: '3px' }}>{p.pos}</div>
-                  <div style={{ fontSize: '13px', color: config.colors.muted, marginTop: '6px' }}>⚽ {p.club}</div>
+                  <div style={{ fontSize: '13px', color: config.colors.muted, marginTop: '5px' }}>⚽ {p.club}</div>
                 </div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '8px' }}>
@@ -483,7 +505,7 @@ export const FanPage = () => {
                   { v: p.age, l: config.lang === 'pt' ? 'Idade' : config.lang === 'es' ? 'Edad' : 'Âge' },
                 ].map(({ v, l }) => (
                   <div key={l} style={{ background: config.colors.bg, border: `1px solid ${config.colors.border}`, borderRadius: '8px', padding: '10px', textAlign: 'center' }}>
-                    <div style={{ fontFamily: 'monospace', fontSize: '22px', fontWeight: 900, color: config.colors.primary, lineHeight: 1 }}>{v}</div>
+                    <div style={{ fontFamily: 'Bebas Neue', fontSize: '24px', color: config.colors.primary, lineHeight: 1 }}>{v}</div>
                     <div style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: config.colors.muted, marginTop: '2px' }}>{l}</div>
                   </div>
                 ))}
@@ -504,7 +526,8 @@ export const FanPage = () => {
                     {labels[posKey][config.lang] || labels[posKey]['en']}
                   </div>
                   {group.map(p => (
-                    <div key={p.id} onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
+                    <div key={p.id} className="fp-squad-item"
+                      onClick={() => setSelectedPlayer(selectedPlayer === p.id ? null : p.id)}
                       style={{ display: 'flex', alignItems: 'center', gap: '12px', background: selectedPlayer === p.id ? `${config.colors.primary}20` : config.colors.bgDark, border: `1px solid ${selectedPlayer === p.id ? config.colors.primary : config.colors.border}`, borderRadius: '10px', padding: '10px 14px', cursor: 'pointer', marginBottom: '6px', transition: 'all 0.2s' }}>
                       <div style={{ fontFamily: 'monospace', fontSize: '18px', fontWeight: 900, color: config.colors.primary, width: '24px', textAlign: 'center' }}>{p.num}</div>
                       <div style={{ flex: 1 }}>
@@ -519,6 +542,40 @@ export const FanPage = () => {
             })}
           </div>
         )}
+      </div>
+
+      {/* Stade Section */}
+      <div style={{ padding: '0 20px 20px' }}>
+        <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, marginBottom: '12px' }}>
+          {config.lang === 'pt' ? 'Estádio do próximo jogo' : config.lang === 'es' ? 'Estadio del próximo partido' : 'Stade du prochain match'}
+        </div>
+        <div style={{ background: config.colors.bgDark, border: `1px solid ${config.colors.border}`, borderRadius: '12px', overflow: 'hidden' }}>
+          <svg width="100%" height="80" viewBox="0 0 380 80" style={{ display: 'block', background: '#071407' }}>
+            <ellipse cx="190" cy="78" rx="165" ry="38" fill="none" stroke="#2a5a2a" strokeWidth="0.8"/>
+            <ellipse cx="190" cy="78" rx="125" ry="28" fill="none" stroke="#1a4a1a" strokeWidth="0.6"/>
+            <path d="M25,78 Q80,12 190,4 Q300,12 355,78" fill="none" stroke="#3a6a3a" strokeWidth="1.5"/>
+            <path d="M55,78 Q105,25 190,16 Q275,25 325,78" fill="none" stroke="#2a5a2a" strokeWidth="1"/>
+            <line x1="18" y1="8" x2="12" y2="78" stroke="#4a7a4a" strokeWidth="2"/>
+            <line x1="362" y1="8" x2="368" y2="78" stroke="#4a7a4a" strokeWidth="2"/>
+            <line x1="8" y1="8" x2="28" y2="8" stroke="#4a7a4a" strokeWidth="1"/>
+            <line x1="352" y1="8" x2="372" y2="8" stroke="#4a7a4a" strokeWidth="1"/>
+            <circle cx="18" cy="7" r="3.5" fill="#fffce0" opacity="0.55"/>
+            <circle cx="362" cy="7" r="3.5" fill="#fffce0" opacity="0.55"/>
+            <ellipse cx="190" cy="78" rx="85" ry="22" fill="#0d2a0d"/>
+            <ellipse cx="190" cy="78" rx="85" ry="22" fill="none" stroke="#1a4a1a" strokeWidth="0.5"/>
+            <text x="190" y="11" fill="#4a8a4a" fontSize="8" textAnchor="middle" fontFamily="Inter,sans-serif" fontWeight="600" letterSpacing="2">
+              {nextMatch?.venue || 'STADE À CONFIRMER'}
+            </text>
+          </svg>
+          <div style={{ padding: '14px 16px' }}>
+            <div style={{ fontFamily: 'Bebas Neue', fontSize: '20px', letterSpacing: '1px', color: '#fff', marginBottom: '6px' }}>
+              {nextMatch?.venue || (config.lang === 'pt' ? 'Estádio a confirmar' : config.lang === 'es' ? 'Estadio por confirmar' : 'Stade à confirmer')}
+            </div>
+            <div style={{ fontSize: '12px', color: config.colors.muted, lineHeight: 1.6 }}>
+              {config.lang === 'pt' ? 'O estádio será confirmado com o calendrier oficial da Copa do Mundo 2026.' : config.lang === 'es' ? 'El estadio se confirmará con el calendario oficial de la Copa del Mundo 2026.' : "Le stade sera confirmé avec le calendrier officiel de la Coupe du Monde 2026."}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Hymne */}
