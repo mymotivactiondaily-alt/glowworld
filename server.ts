@@ -216,57 +216,46 @@ async function startServer() {
   app.post("/api/fan/request-access", async (req, res) => {
     const { email, country } = req.body;
     if (!email || !country) return res.status(400).json({ error: "Missing data" });
-
     try {
-      // Check if email has an order in Firestore
       const ordersSnap = await db.collection('orders')
         .where('email', '==', email.toLowerCase().trim())
         .where('status', '==', 'paid')
         .limit(1)
         .get();
-
-      if (ordersSnap.empty) {
-        return res.status(404).json({ error: "no_order" });
-      }
-
-      // Generate magic token
+      if (ordersSnap.empty) return res.status(404).json({ error: "no_order" });
       const token = Math.random().toString(36).substring(2) + Date.now().toString(36);
-      const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
-
-      // Store token in Firestore
+      const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
       await db.collection('fan_tokens').doc(token).set({
         email: email.toLowerCase().trim(),
         country,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
-        expiresAt: expiresAt.toISOString(),
+        expiresAt,
         used: false,
       });
-
-      // Send magic link email via Resend
       const origin = req.headers.origin || 'https://www.glowworld2026.com';
       const magicLink = `${origin}/fan/${country}?token=${token}`;
-
       if (resend) {
         await resend.emails.send({
           from: 'GlowWorld 2026 <contact@glowworld2026.com>',
           to: email,
-          subject: `Votre acces Fan Zone ${country.toUpperCase()} est pret !`,
+          subject: `Votre accès Fan Zone ${country.toUpperCase()} est prêt !`,
           html: `
             <div style="font-family:sans-serif;max-width:500px;margin:auto;padding:24px;background:#0A0F1E;color:white;border-radius:12px">
-              <h2 style="color:#002395;text-align:center">Acces Fan Zone confirme !</h2>
+              <h2 style="color:#002395;text-align:center">Accès Fan Zone confirmé !</h2>
               <p>Bonjour,</p>
-              <p>Votre achat a ete verifie. Cliquez sur le bouton ci-dessous pour acceder a votre espace fan exclusif.</p>
+              <p>Votre achat a été vérifié. Cliquez sur le bouton ci-dessous pour accéder à votre espace fan exclusif.</p>
               <div style="text-align:center;margin:32px 0">
                 <a href="${magicLink}" style="background:#002395;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px">
-                  Acceder a ma Fan Zone
+                  Accéder à ma Fan Zone
                 </a>
               </div>
               <p style="font-size:12px;color:#666;text-align:center">Ce lien est valable 30 jours.</p>
+              <hr style="border-color:#1a2040;margin:20px 0"/>
+              <p style="font-size:12px;color:#666;text-align:center">GlowWorld 2026 · L'émotion en temps réel</p>
             </div>
           `
         });
       }
-
       res.json({ success: true });
     } catch (err: any) {
       console.error("Fan access error:", err);
@@ -278,18 +267,12 @@ async function startServer() {
   app.get("/api/fan/verify-token", async (req, res) => {
     const { token } = req.query;
     if (!token) return res.status(400).json({ valid: false });
-
     try {
       const doc = await db.collection('fan_tokens').doc(token as string).get();
       if (!doc.exists) return res.json({ valid: false });
-
       const data = doc.data()!;
-      const expired = new Date(data.expiresAt) < new Date();
-      if (expired) return res.json({ valid: false, reason: 'expired' });
-
-      // Mark token as used and extend expiry on each valid access
+      if (new Date(data.expiresAt) < new Date()) return res.json({ valid: false, reason: 'expired' });
       await doc.ref.update({ used: true, lastAccess: new Date().toISOString() });
-
       res.json({ valid: true, email: data.email, country: data.country });
     } catch (err: any) {
       res.status(500).json({ valid: false });
