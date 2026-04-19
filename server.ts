@@ -224,7 +224,7 @@ async function startServer() {
         .get();
       if (ordersSnap.empty) return res.status(404).json({ error: "no_order" });
       const token = Math.random().toString(36).substring(2) + Date.now().toString(36);
-      const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+      const expiresAt = new Date(Date.now() + 75 * 24 * 60 * 60 * 1000).toISOString();
       await db.collection('fan_tokens').doc(token).set({
         email: email.toLowerCase().trim(),
         country,
