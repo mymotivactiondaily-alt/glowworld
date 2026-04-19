@@ -1,5 +1,5 @@
 import { useState, useEffect, useState as useStateSquad } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft, Play, Users, Trophy, Target } from 'lucide-react';
 import { COUNTRY_CONFIGS } from '../config/fanConfig';
@@ -43,6 +43,12 @@ export const FanPage = () => {
   const [countdown, setCountdown] = useState({ d: 0, h: 0, m: 0, s: 0 });
   const [loading, setLoading] = useState(true);
   const [selectedPlayer, setSelectedPlayer] = useState<number | null>(null);
+  const [searchParams] = useSearchParams();
+  const [accessState, setAccessState] = useState<'checking' | 'gate' | 'granted'>('checking');
+  const [email, setEmail] = useState('');
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [squadView, setSquadView] = useState<'pitch' | 'list'>('pitch');
 
   useEffect(() => {
@@ -63,6 +69,62 @@ export const FanPage = () => {
     }, 1000);
     return () => clearInterval(interval);
   }, [nextMatch]);
+
+  useEffect(() => {
+    const token = searchParams.get('token');
+    const savedToken = localStorage.getItem(`fan_token_${country}`);
+    const tokenToCheck = token || savedToken;
+
+    if (!tokenToCheck) {
+      setAccessState('gate');
+      return;
+    }
+
+    fetch(`/api/fan/verify-token?token=${tokenToCheck}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.valid) {
+          localStorage.setItem(`fan_token_${country}`, tokenToCheck);
+          setAccessState('granted');
+        } else {
+          localStorage.removeItem(`fan_token_${country}`);
+          setAccessState('gate');
+        }
+      })
+      .catch(() => setAccessState('gate'));
+  }, [country]);
+
+  const handleRequestAccess = async () => {
+    if (!email || !email.includes('@')) {
+      setEmailError('Entrez un email valide');
+      return;
+    }
+    setIsSubmitting(true);
+    setEmailError('');
+    try {
+      const res = await fetch('/api/fan/request-access', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          country
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setEmailSent(true);
+      } else if (data.error === 'no_order') {
+        setEmailError('Aucune commande trouvée avec cet email.');
+      } else {
+        setEmailError('Une erreur est survenue. Réessayez.');
+      }
+    } catch {
+      setEmailError('Une erreur est survenue. Réessayez.');
+    }
+    setIsSubmitting(false);
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -101,6 +163,65 @@ export const FanPage = () => {
   }
 
   const pad = (n: number) => n.toString().padStart(2, '0');
+
+  if (accessState === 'checking') {
+    return (
+      <div style={{ minHeight: '100vh', background: config?.colors?.bg || '#05080F', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ color: '#fff', fontSize: '16px' }}>Vérification...</div>
+      </div>
+    );
+  }
+
+  if (accessState === 'gate') {
+    return (
+      <div style={{ minHeight: '100vh', background: config?.colors?.bg || '#05080F', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+        <div style={{ maxWidth: '400px', width: '100%', background: config?.colors?.bgDark || '#0A0F1E', border: `1px solid ${config?.colors?.primary || '#002395'}`, borderRadius: '16px', padding: '32px', textAlign: 'center' }}>
+          <div style={{ fontSize: '40px', marginBottom: '16px' }}>{config?.flag || '⚡'}</div>
+          <h2 style={{ color: '#fff', fontSize: '22px', fontFamily: 'Bebas Neue', letterSpacing: '2px', marginBottom: '8px' }}>
+            ACCÈS EXCLUSIF
+          </h2>
+          <p style={{ color: config?.colors?.muted || '#6B7DB3', fontSize: '14px', marginBottom: '24px', lineHeight: 1.6 }}>
+            Cet espace est réservé aux acheteurs du bracelet GlowWorld 2026. Entrez l'email utilisé lors de votre commande.
+          </p>
+
+          {!emailSent ? (
+            <>
+              <input
+                type="email"
+                placeholder="votre@email.com"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleRequestAccess()}
+                style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: `1px solid ${config?.colors?.border || '#1a2040'}`, background: config?.colors?.bg || '#05080F', color: '#fff', fontSize: '15px', marginBottom: '12px', boxSizing: 'border-box' }}
+              />
+              {emailError && (
+                <p style={{ color: '#ED2939', fontSize: '13px', marginBottom: '12px' }}>{emailError}</p>
+              )}
+              <button
+                onClick={handleRequestAccess}
+                disabled={isSubmitting}
+                style={{ width: '100%', padding: '14px', borderRadius: '8px', background: config?.colors?.primary || '#002395', color: '#fff', fontSize: '15px', fontWeight: 700, border: 'none', cursor: isSubmitting ? 'not-allowed' : 'pointer', opacity: isSubmitting ? 0.7 : 1 }}
+              >
+                {isSubmitting ? 'Vérification...' : 'Accéder à ma Fan Zone'}
+              </button>
+              <p style={{ marginTop: '20px', fontSize: '12px', color: config?.colors?.muted || '#6B7DB3' }}>
+                Pas encore de bracelet ?{' '}
+                <a href="/catalog" style={{ color: config?.colors?.primary || '#002395', fontWeight: 600 }}>Commander ici</a>
+              </p>
+            </>
+          ) : (
+            <div style={{ background: `${config?.colors?.primary || '#002395'}20`, border: `1px solid ${config?.colors?.primary || '#002395'}`, borderRadius: '10px', padding: '20px' }}>
+              <div style={{ fontSize: '32px', marginBottom: '12px' }}>📧</div>
+              <p style={{ color: '#fff', fontWeight: 700, marginBottom: '8px' }}>Email envoyé !</p>
+              <p style={{ color: config?.colors?.muted || '#6B7DB3', fontSize: '13px', lineHeight: 1.6 }}>
+                Vérifiez votre boîte mail. Cliquez sur le lien pour accéder à votre Fan Zone.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ backgroundColor: config.colors.bg, minHeight: '100vh', color: '#fff' }}>
