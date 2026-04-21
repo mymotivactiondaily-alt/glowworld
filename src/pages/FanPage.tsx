@@ -7,6 +7,102 @@ import { COUNTRY_CONFIGS } from '../config/fanConfig';
 const API_KEY = import.meta.env.VITE_FOOTBALL_API_KEY || '';
 const API_BASE = 'https://api.football-data.org/v4';
 
+const FlagCircle = ({ country }: { country?: string }) => {
+  const c = country?.toLowerCase();
+  
+  const renderFlag = () => {
+    switch (c) {
+      case 'france':
+        return (
+          <>
+            <rect width="24" height="72" fill="#002395" />
+            <rect x="24" width="24" height="72" fill="#FFFFFF" />
+            <rect x="48" width="24" height="72" fill="#ED2939" />
+          </>
+        );
+      case 'usa':
+        return (
+          <>
+            <rect width="72" height="72" fill="#FFFFFF" />
+            {[...Array(13)].map((_, i) => (
+              <rect key={i} y={i * (72 / 13)} width="72" height={72 / 13} fill={i % 2 === 0 ? "#B22234" : "#FFFFFF"} />
+            ))}
+            <rect width="32" height="38" fill="#3C3B6E" />
+            {[...Array(5)].map((_, r) => 
+              [...Array(6)].map((_, col) => (
+                <circle key={`${r}-${col}`} cx={3 + col * 5} cy={4 + r * 7} r="1" fill="#FFFFFF" />
+              ))
+            )}
+          </>
+        );
+      case 'brazil':
+        return (
+          <g fill="#009C3B">
+            <rect width="72" height="72" />
+            <path d="M36 8 L64 36 L36 64 L8 36 Z" fill="#FFDF00" />
+            <circle cx="36" cy="36" r="14" fill="#002776" />
+            <path d="M22 36 Q36 32 50 36" fill="none" stroke="#FFFFFF" strokeWidth="2" />
+          </g>
+        );
+      case 'argentina':
+        return (
+          <>
+            <rect width="72" height="24" fill="#74ACDF" />
+            <rect y="24" width="72" height="24" fill="#FFFFFF" />
+            <rect y="48" width="72" height="24" fill="#74ACDF" />
+            <circle cx="36" cy="36" r="5" fill="#F6B40E" />
+          </>
+        );
+      case 'mexico':
+        return (
+          <>
+            <rect width="24" height="72" fill="#006847" />
+            <rect x="24" width="24" height="72" fill="#FFFFFF" />
+            <rect x="48" width="24" height="72" fill="#CE1126" />
+            <circle cx="36" cy="36" r="4" fill="#7B3F00" />
+          </>
+        );
+      case 'canada':
+        return (
+          <>
+            <rect width="18" height="72" fill="#FF0000" />
+            <rect x="18" width="36" height="72" fill="#FFFFFF" />
+            <rect x="54" width="18" height="72" fill="#FF0000" />
+            <path d="M36 24 L39 34 L49 34 L41 40 L44 50 L36 44 L28 50 L31 40 L23 34 L33 34 Z" fill="#FF0000" />
+          </>
+        );
+      case 'portugal':
+        return (
+          <>
+            <rect width="28" height="72" fill="#006600" />
+            <rect x="28" width="44" height="72" fill="#FF0000" />
+            <circle cx="28" cy="36" r="10" fill="#FFD700" />
+            <rect x="25" y="33" width="6" height="6" fill="#0000FF" opacity="0.5" />
+          </>
+        );
+      case 'spain':
+        return (
+          <>
+            <rect width="72" height="18" fill="#AA151B" />
+            <rect y="18" width="72" height="36" fill="#F1BF00" />
+            <rect y="54" width="72" height="18" fill="#AA151B" />
+            <rect x="15" y="24" width="8" height="12" fill="#AA151B" opacity="0.6" />
+          </>
+        );
+      default:
+        return <rect width="72" height="72" fill="#333" />;
+    }
+  };
+
+  return (
+    <div className="flag-pulse" style={{ width: '72px', height: '72px', borderRadius: '50%', overflow: 'hidden', margin: '0 auto 16px', border: '2px solid rgba(255,255,255,0.1)' }}>
+      <svg width="72" height="72" viewBox="0 0 72 72">
+        {renderFlag()}
+      </svg>
+    </div>
+  );
+};
+
 export const FanPage = () => {
   const { country } = useParams<{ country: string }>();
   const config = COUNTRY_CONFIGS[country?.toLowerCase() || ''];
@@ -34,7 +130,38 @@ export const FanPage = () => {
     footer: { fr: "GLOWWORLD 2026 · L'émotion en temps réel", en: 'GLOWWORLD 2026 · Feel it in real time', es: 'GLOWWORLD 2026 · La emoción en tiempo real', pt: 'GLOWWORLD 2026 · A emoção em tempo real' },
     backHome: { fr: "Retour à l'accueil", en: 'Back to home', es: 'Volver al inicio', pt: 'Voltar ao início' },
     countryNotFound: { fr: 'Pays non trouvé', en: 'Country not found', es: 'País no encontrado', pt: 'País não encontrado' },
+    exclusiveAccessTitle: { fr: 'ACCÈS EXCLUSIF', en: 'EXCLUSIVE ACCESS', es: 'ACCESO EXCLUSIVO', pt: 'ACESSO EXCLUSIVO' },
+    exclusiveAccessDesc: { 
+      fr: "Cet espace est réservé aux acheteurs du bracelet GlowWorld 2026. Entrez l'email utilisé lors de votre commande.", 
+      en: "This space is reserved for GlowWorld 2026 bracelet buyers. Enter the email used during your order.", 
+      es: "Este espacio es reservado para compradores de la pulsera GlowWorld 2026. Ingresa el email de tu pedido.", 
+      pt: "Este espaço é reservado para compradores da pulseira GlowWorld 2026. Insira o email do seu pedido." 
+    },
+    emailPlaceholder: { fr: 'votre@email.com', en: 'your@email.com', es: 'tu@email.com', pt: 'seu@email.com' },
+    accessButton: { fr: 'Accéder à ma Fan Zone', en: 'Access my Fan Zone', es: 'Acceder a mi Fan Zone', pt: 'Acessar minha Fan Zone' },
+    checkingButton: { fr: 'Vérification...', en: 'Checking...', es: 'Verificando...', pt: 'Verificando...' },
+    noBraceletLabel: { fr: 'Pas encore de bracelet ?', en: "Don't have a bracelet yet?", es: '¿Aún sin pulsera?', pt: 'Ainda sem pulseira?' },
+    orderHereLink: { fr: 'Commander ici', en: 'Order here', es: 'Pedir aquí', pt: 'Compre aqui' },
+    emailSentTitle: { fr: 'Email envoyé !', en: 'Email sent!', es: '¡Email enviado!', pt: 'Email enviado!' },
+    emailSentDesc: { 
+      fr: "Vérifiez votre boîte mail. Cliquez sur le lien pour accéder à votre Fan Zone.", 
+      en: "Check your inbox. Click the link to access your Fan Zone.", 
+      es: "Revisa tu correo. Haz clic en el enlace para acceder a tu Fan Zone.", 
+      pt: "Verifique sua caixa de entrada. Clique no link para acessar sua Fan Zone." 
+    },
+    errorNoOrder: { fr: 'Aucune commande trouvée avec cet email.', en: 'No order found with this email.', es: 'No se encontró ningún pedido con este email.', pt: 'Nenhum pedido encontrado com este email.' },
+    errorGeneric: { fr: 'Une erreur est survenue. Réessayez.', en: 'An error occurred. Please try again.', es: 'Ocurrió un error. Inténtalo de nuevo.', pt: 'Ocorreu um erro. Tente novamente.' },
+    formation: { fr: 'Formation', en: 'Formation', es: 'Formación', pt: 'Formação' },
+    pitch: { fr: 'Terrain', en: 'Pitch', es: 'Campo', pt: 'Campo' },
+    list: { fr: 'Liste', en: 'List', es: 'Lista', pt: 'Lista' },
+    venueTitle: { fr: 'Stade du prochain match', en: 'Next match stadium', es: 'Estadio del próximo partido', pt: 'Estádio do próximo jogo' },
+    venueTbc: { fr: 'Stade à confirmer', en: 'Venue to be confirmed', es: 'Estadio por confirmar', pt: 'Estádio a confirmar' },
+    venueDesc: { fr: "Le stade sera confirmé avec le calendrier officiel de la Coupe du Monde 2026.", en: "The stadium will be confirmed with the official 2026 World Cup schedule.", es: "El estadio se confirmará con el calendario oficial de la Copa del Mundo 2026.", pt: "O estádio será confirmado com o calendário oficial da Copa do Mundo 2026." },
+    caps: { fr: 'Sélections', en: 'Caps', es: 'Selecciones', pt: 'Seleções' },
+    goals: { fr: 'Buts', en: 'Goals', es: 'Goles', pt: 'Gols' },
+    age: { fr: 'Âge', en: 'Age', es: 'Edad', pt: 'Idade' }
   };
+
   const txt = (key: keyof typeof t) => t[key][lang] || t[key]['en'];
 
   const [nextMatch, setNextMatch] = useState<any>(null);
@@ -104,6 +231,14 @@ export const FanPage = () => {
         .fp-player-detail { animation: fpFadeIn 0.22s ease; }
         @keyframes fpFadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
         .fp-squad-item:hover { border-color: var(--fp-primary) !important; }
+        @keyframes fpPulse {
+          0% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.05); opacity: 0.9; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .flag-pulse {
+          animation: fpPulse 2.5s ease-in-out infinite;
+        }
       `;
       document.head.appendChild(style);
     }
@@ -132,12 +267,12 @@ export const FanPage = () => {
       if (data.success) {
         setEmailSent(true);
       } else if (data.error === 'no_order') {
-        setEmailError('Aucune commande trouvée avec cet email.');
+        setEmailError(txt('errorNoOrder'));
       } else {
-        setEmailError('Une erreur est survenue. Réessayez.');
+        setEmailError(txt('errorGeneric'));
       }
     } catch {
-      setEmailError('Une erreur est survenue. Réessayez.');
+      setEmailError(txt('errorGeneric'));
     }
     setIsSubmitting(false);
   };
@@ -183,7 +318,7 @@ export const FanPage = () => {
   if (accessState === 'checking') {
     return (
       <div style={{ minHeight: '100vh', background: config?.colors?.bg || '#05080F', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ color: '#fff', fontSize: '16px' }}>Vérification...</div>
+        <div style={{ color: '#fff', fontSize: '16px' }}>{txt('checkingButton')}</div>
       </div>
     );
   }
@@ -192,19 +327,19 @@ export const FanPage = () => {
     return (
       <div style={{ minHeight: '100vh', background: config?.colors?.bg || '#05080F', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
         <div style={{ maxWidth: '400px', width: '100%', background: config?.colors?.bgDark || '#0A0F1E', border: `1px solid ${config?.colors?.primary || '#002395'}`, borderRadius: '16px', padding: '32px', textAlign: 'center' }}>
-          <div style={{ fontSize: '40px', marginBottom: '16px' }}>{config?.flag || '⚡'}</div>
+          <FlagCircle country={country} />
           <h2 style={{ color: '#fff', fontSize: '22px', fontFamily: 'Bebas Neue', letterSpacing: '2px', marginBottom: '8px' }}>
-            ACCÈS EXCLUSIF
+            {txt('exclusiveAccessTitle')}
           </h2>
           <p style={{ color: config?.colors?.muted || '#6B7DB3', fontSize: '14px', marginBottom: '24px', lineHeight: 1.6 }}>
-            Cet espace est réservé aux acheteurs du bracelet GlowWorld 2026. Entrez l'email utilisé lors de votre commande.
+            {txt('exclusiveAccessDesc')}
           </p>
 
           {!emailSent ? (
             <>
               <input
                 type="email"
-                placeholder="votre@email.com"
+                placeholder={txt('emailPlaceholder')}
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleRequestAccess()}
@@ -218,19 +353,19 @@ export const FanPage = () => {
                 disabled={isSubmitting}
                 style={{ width: '100%', padding: '14px', borderRadius: '8px', background: config?.colors?.primary || '#002395', color: '#fff', fontSize: '15px', fontWeight: 700, border: 'none', cursor: isSubmitting ? 'not-allowed' : 'pointer', opacity: isSubmitting ? 0.7 : 1 }}
               >
-                {isSubmitting ? 'Vérification...' : 'Accéder à ma Fan Zone'}
+                {isSubmitting ? txt('checkingButton') : txt('accessButton')}
               </button>
               <p style={{ marginTop: '20px', fontSize: '12px', color: config?.colors?.muted || '#6B7DB3' }}>
-                Pas encore de bracelet ?{' '}
-                <a href="/catalog" style={{ color: config?.colors?.primary || '#002395', fontWeight: 600 }}>Commander ici</a>
+                {txt('noBraceletLabel')}{' '}
+                <a href="/catalog" style={{ color: config?.colors?.primary || '#002395', fontWeight: 600 }}>{txt('orderHereLink')}</a>
               </p>
             </>
           ) : (
             <div style={{ background: `${config?.colors?.primary || '#002395'}20`, border: `1px solid ${config?.colors?.primary || '#002395'}`, borderRadius: '10px', padding: '20px' }}>
               <div style={{ fontSize: '32px', marginBottom: '12px' }}>📧</div>
-              <p style={{ color: '#fff', fontWeight: 700, marginBottom: '8px' }}>Email envoyé !</p>
+              <p style={{ color: '#fff', fontWeight: 700, marginBottom: '8px' }}>{txt('emailSentTitle')}</p>
               <p style={{ color: config?.colors?.muted || '#6B7DB3', fontSize: '13px', lineHeight: 1.6 }}>
-                Vérifiez votre boîte mail. Cliquez sur le lien pour accéder à votre Fan Zone.
+                {txt('emailSentDesc')}
               </p>
             </div>
           )}
@@ -360,7 +495,7 @@ export const FanPage = () => {
       {/* Squad Section */}
       <div style={{ padding: '0 20px 20px' }}>
         <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, marginBottom: '12px' }}>
-          Formation — 4-3-3
+          {txt('formation')} — 4-3-3
         </div>
 
         {/* View toggle */}
@@ -373,9 +508,7 @@ export const FanPage = () => {
               border: `1px solid ${squadView === v ? config.colors.primary : config.colors.border}`,
               color: squadView === v ? '#fff' : config.colors.muted,
             }}>
-              {v === 'pitch'
-                ? (config.lang === 'pt' ? 'Campo' : config.lang === 'es' ? 'Campo' : 'Terrain')
-                : (config.lang === 'pt' ? 'Lista' : config.lang === 'es' ? 'Lista' : 'Liste')}
+              {v === 'pitch' ? txt('pitch') : txt('list')}
             </button>
           ))}
         </div>
@@ -500,9 +633,9 @@ export const FanPage = () => {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '8px' }}>
                 {[
-                  { v: p.caps, l: config.lang === 'pt' ? 'Seleções' : config.lang === 'es' ? 'Selecciones' : 'Sélections' },
-                  { v: p.goals, l: config.lang === 'pt' ? 'Gols' : config.lang === 'es' ? 'Goles' : 'Buts' },
-                  { v: p.age, l: config.lang === 'pt' ? 'Idade' : config.lang === 'es' ? 'Edad' : 'Âge' },
+                  { v: p.caps, l: txt('caps') },
+                  { v: p.goals, l: txt('goals') },
+                  { v: p.age, l: txt('age') },
                 ].map(({ v, l }) => (
                   <div key={l} style={{ background: config.colors.bg, border: `1px solid ${config.colors.border}`, borderRadius: '8px', padding: '10px', textAlign: 'center' }}>
                     <div style={{ fontFamily: 'Bebas Neue', fontSize: '24px', color: config.colors.primary, lineHeight: 1 }}>{v}</div>
@@ -547,7 +680,7 @@ export const FanPage = () => {
       {/* Stade Section */}
       <div style={{ padding: '0 20px 20px' }}>
         <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: config.colors.muted, marginBottom: '12px' }}>
-          {config.lang === 'pt' ? 'Estádio do próximo jogo' : config.lang === 'es' ? 'Estadio del próximo partido' : 'Stade du prochain match'}
+          {txt('venueTitle')}
         </div>
         <div style={{ background: config.colors.bgDark, border: `1px solid ${config.colors.border}`, borderRadius: '12px', overflow: 'hidden' }}>
           <svg width="100%" height="80" viewBox="0 0 380 80" style={{ display: 'block', background: '#071407' }}>
@@ -564,15 +697,15 @@ export const FanPage = () => {
             <ellipse cx="190" cy="78" rx="85" ry="22" fill="#0d2a0d"/>
             <ellipse cx="190" cy="78" rx="85" ry="22" fill="none" stroke="#1a4a1a" strokeWidth="0.5"/>
             <text x="190" y="11" fill="#4a8a4a" fontSize="8" textAnchor="middle" fontFamily="Inter,sans-serif" fontWeight="600" letterSpacing="2">
-              {nextMatch?.venue || 'STADE À CONFIRMER'}
+              {nextMatch?.venue || txt('venueTbc')}
             </text>
           </svg>
           <div style={{ padding: '14px 16px' }}>
             <div style={{ fontFamily: 'Bebas Neue', fontSize: '20px', letterSpacing: '1px', color: '#fff', marginBottom: '6px' }}>
-              {nextMatch?.venue || (config.lang === 'pt' ? 'Estádio a confirmar' : config.lang === 'es' ? 'Estadio por confirmar' : 'Stade à confirmer')}
+              {nextMatch?.venue || txt('venueTbc')}
             </div>
             <div style={{ fontSize: '12px', color: config.colors.muted, lineHeight: 1.6 }}>
-              {config.lang === 'pt' ? 'O estádio será confirmado com o calendrier oficial da Copa do Mundo 2026.' : config.lang === 'es' ? 'El estadio se confirmará con el calendario oficial de la Copa del Mundo 2026.' : "Le stade sera confirmé avec le calendrier officiel de la Coupe du Monde 2026."}
+              {txt('venueDesc')}
             </div>
           </div>
         </div>

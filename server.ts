@@ -1,6 +1,7 @@
 import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
+import fs from 'fs';
 import { fileURLToPath } from "url";
 import Stripe from "stripe";
 import dotenv from "dotenv";
@@ -13,9 +14,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Initialize Firebase Admin
-const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT 
-  ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
-  : null;
+let serviceAccount: any = null;
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  // Production (Railway) — JSON dans variable d'environnement
+  try {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+    console.log("🔑 Firebase: Credentials chargés depuis variable d'environnement.");
+  } catch (err) {
+    console.error("❌ FIREBASE_SERVICE_ACCOUNT : JSON invalide.", err);
+  }
+} else if (process.env.FIREBASE_SERVICE_ACCOUNT_PATH) {
+  // Local — lire le fichier JSON référencé
+  try {
+    const keyPath = path.resolve(process.cwd(), process.env.FIREBASE_SERVICE_ACCOUNT_PATH);
+    serviceAccount = JSON.parse(fs.readFileSync(keyPath, 'utf-8'));
+    console.log(`🔑 Firebase: Credentials chargés depuis ${keyPath}`);
+  } catch (err) {
+    console.error("❌ Impossible de lire le fichier Firebase Service Account:", err);
+  }
+}
 
 if (!admin.apps.length) {
   if (serviceAccount) {
@@ -32,11 +49,11 @@ if (!admin.apps.length) {
 }
 const db = admin.firestore();
 
-const stripe = process.env.STRIPE_SECRET_KEY 
-  ? new Stripe(process.env.STRIPE_SECRET_KEY) 
+const stripe = process.env.STRIPE_SECRET_KEY
+  ? new Stripe(process.env.STRIPE_SECRET_KEY)
   : null;
 
-const resend = process.env.RESEND_API_KEY 
+const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
@@ -67,7 +84,7 @@ async function startServer() {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session;
       console.log(`📦 Session ${session.id}: Traitement de la commande...`);
-      
+
       // 1. Save Order to Firestore
       const orderData = {
         orderId: session.id,
@@ -137,7 +154,7 @@ async function startServer() {
       const { items, lang, userId, userEmail } = req.body;
 
       const origin = req.headers.origin || `https://${req.headers.host}`;
-      
+
       const lineItems = items.map((item: any) => ({
         price_data: {
           currency: "eur",
@@ -212,19 +229,34 @@ async function startServer() {
     }
   });
 
-  // Fan Page — Request Magic Link
+  // ============================================
+  // FAN PAGE - Request Access (Magic Link)
+  // ============================================
   app.post("/api/fan/request-access", async (req, res) => {
-    const { email, country } = req.body;
-    if (!email || !country) return res.status(400).json({ error: "Missing data" });
     try {
-      const ordersSnap = await db.collection('orders')
+      const { email, country } = req.body;
+
+      if (!email || !country) {
+        return res.status(400).json({ error: "missing_fields" });
+      }
+
+      // 1. Vérifier qu'une commande PAID existe pour cet email
+      const ordersSnapshot = await db.collection('orders')
         .where('email', '==', email.toLowerCase().trim())
         .where('status', '==', 'paid')
         .limit(1)
         .get();
-      if (ordersSnap.empty) return res.status(404).json({ error: "no_order" });
-      const token = Math.random().toString(36).substring(2) + Date.now().toString(36);
-      const expiresAt = new Date(Date.now() + 75 * 24 * 60 * 60 * 1000).toISOString();
+
+      if (ordersSnapshot.empty) {
+        console.log(`🚫 Fan access refused: no order for ${email}`);
+        return res.json({ success: false, error: "no_order" });
+      }
+
+      // 2. Générer un token unique (75 jours validity)
+      const token = `fan_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+      const expiresAt = Date.now() + (75 * 24 * 60 * 60 * 1000);
+
+      // 3. Sauvegarder dans Firestore collection fan_tokens
       await db.collection('fan_tokens').doc(token).set({
         email: email.toLowerCase().trim(),
         country,
@@ -232,50 +264,64 @@ async function startServer() {
         expiresAt,
         used: false,
       });
-      const origin = req.headers.origin || 'https://www.glowworld2026.com';
-      const magicLink = `${origin}/fan/${country}?token=${token}`;
+
+      // 4. Envoyer magic link par email via Resend
       if (resend) {
+        const origin = req.headers.origin || `https://${req.headers.host}`;
+        const magicLink = `${origin}/fan/${country}?token=${token}`;
+
         await resend.emails.send({
           from: 'GlowWorld 2026 <contact@glowworld2026.com>',
           to: email,
-          subject: `Votre accès Fan Zone ${country.toUpperCase()} est prêt !`,
+          subject: '🎇 Votre accès Fan Zone GlowWorld 2026',
           html: `
-            <div style="font-family:sans-serif;max-width:500px;margin:auto;padding:24px;background:#0A0F1E;color:white;border-radius:12px">
-              <h2 style="color:#002395;text-align:center">Accès Fan Zone confirmé !</h2>
-              <p>Bonjour,</p>
-              <p>Votre achat a été vérifié. Cliquez sur le bouton ci-dessous pour accéder à votre espace fan exclusif.</p>
-              <div style="text-align:center;margin:32px 0">
-                <a href="${magicLink}" style="background:#002395;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px">
-                  Accéder à ma Fan Zone
-                </a>
-              </div>
-              <p style="font-size:12px;color:#666;text-align:center">Ce lien est valable 30 jours.</p>
-              <hr style="border-color:#1a2040;margin:20px 0"/>
-              <p style="font-size:12px;color:#666;text-align:center">GlowWorld 2026 · L'émotion en temps réel</p>
+          <div style="font-family:sans-serif;max-width:600px;margin:auto;padding:24px;background:#0a0f1e;color:white;border-radius:12px;">
+            <h1 style="color:#003399;text-align:center;">Accès Fan Zone débloqué 🎇</h1>
+            <p>Bonjour,</p>
+            <p>Cliquez sur le bouton ci-dessous pour accéder à votre espace Fan exclusif.</p>
+            <div style="text-align:center;margin:30px 0;">
+              <a href="${magicLink}" style="background:#003399;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;">
+                Accéder à ma Fan Zone
+              </a>
             </div>
-          `
+            <p style="font-size:12px;color:#999;">Ce lien est valable 75 jours. Ne le partagez pas.</p>
+            <p style="font-size:12px;color:#666;text-align:center;margin-top:30px;">GlowWorld 2026 - L'émotion en temps réel.</p>
+          </div>
+        `
         });
+        console.log(`✅ Fan access granted: magic link sent to ${email}`);
       }
-      res.json({ success: true });
+
+      return res.json({ success: true });
     } catch (err: any) {
-      console.error("Fan access error:", err);
-      res.status(500).json({ error: err.message });
+      console.error("❌ Fan request-access Error:", err);
+      return res.status(500).json({ success: false, error: "server_error" });
     }
   });
 
-  // Fan Page — Verify Token
+  // ============================================
+  // FAN PAGE - Verify Token
+  // ============================================
   app.get("/api/fan/verify-token", async (req, res) => {
-    const { token } = req.query;
-    if (!token) return res.status(400).json({ valid: false });
     try {
-      const doc = await db.collection('fan_tokens').doc(token as string).get();
+      const token = req.query.token as string;
+      if (!token) return res.json({ valid: false });
+
+      const doc = await db.collection('fan_tokens').doc(token).get();
       if (!doc.exists) return res.json({ valid: false });
-      const data = doc.data()!;
-      if (new Date(data.expiresAt) < new Date()) return res.json({ valid: false, reason: 'expired' });
-      await doc.ref.update({ used: true, lastAccess: new Date().toISOString() });
-      res.json({ valid: true, email: data.email, country: data.country });
+
+      const data = doc.data();
+      if (!data) return res.json({ valid: false });
+
+      // Token expiré ?
+      if (data.expiresAt && Date.now() > data.expiresAt) {
+        return res.json({ valid: false, reason: 'expired' });
+      }
+
+      return res.json({ valid: true, email: data.email, country: data.country });
     } catch (err: any) {
-      res.status(500).json({ valid: false });
+      console.error("❌ Fan verify-token Error:", err);
+      return res.json({ valid: false });
     }
   });
 
@@ -301,7 +347,7 @@ async function startServer() {
   // Administration Route for Exporting CSV
   app.post("/api/export-csv", async (req, res) => {
     const adminKey = req.headers['x-admin-key'];
-    
+
     if (!adminKey || adminKey !== process.env.ADMIN_SECRET_KEY) {
       return res.status(401).json({ error: "Non autorisé. Clé admin invalide ou manquante." });
     }
@@ -333,8 +379,8 @@ async function startServer() {
           order.shipping?.address?.city || '',
           order.shipping?.address?.postal_code || '',
           order.shipping?.address?.country || '',
-          order.createdAt && typeof order.createdAt.toDate === 'function' 
-            ? order.createdAt.toDate().toISOString() 
+          order.createdAt && typeof order.createdAt.toDate === 'function'
+            ? order.createdAt.toDate().toISOString()
             : new Date().toISOString()
         ];
         // Escape quotes and wrap in quotes
