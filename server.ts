@@ -240,16 +240,66 @@ async function startServer() {
         return res.status(400).json({ error: "missing_fields" });
       }
 
-      // 1. Vérifier qu'une commande PAID existe pour cet email
-      const ordersSnapshot = await db.collection('orders')
-        .where('email', '==', email.toLowerCase().trim())
-        .where('status', '==', 'paid')
-        .limit(1)
-        .get();
+      const ADMIN_EMAILS = [
+        'mymotivactiondaily@gmail.com'
+      ];
 
-      if (ordersSnapshot.empty) {
-        console.log(`🚫 Fan access refused: no order for ${email}`);
-        return res.json({ success: false, error: "no_order" });
+      const emailToCheck = email.toLowerCase().trim();
+
+      // ÉTAPE 0 — WHITELIST ADMIN (vérifier EN PREMIER)
+      if (!ADMIN_EMAILS.includes(emailToCheck)) {
+        // ÉTAPE 1 — Pour les autres emails : Récupérer TOUTES les commandes paid
+        const ordersSnapshot = await db.collection('orders')
+          .where('email', '==', emailToCheck)
+          .where('status', '==', 'paid')
+          .get();
+
+        if (ordersSnapshot.empty) {
+          console.log(`🚫 Fan access refused: no order for ${email}`);
+          return res.json({ success: false, error: "no_order" });
+        }
+
+        // ÉTAPE 2 : Construire la liste de tous les product IDs achetés
+        const purchasedProductIds: string[] = [];
+        ordersSnapshot.forEach(doc => {
+          const order = doc.data();
+          if (order.items && Array.isArray(order.items)) {
+            order.items.forEach((item: any) => {
+              if (item.id) purchasedProductIds.push(item.id);
+            });
+          }
+        });
+
+        // ÉTAPE 3 : Mapper le country reçu en body vers son product ID correspondant
+        const COUNTRY_TO_PRODUCT: Record<string, string> = {
+          france: 'france-pro',
+          brazil: 'brazil-pro',
+          usa: 'usa-pro',
+          argentina: 'argentina-pro',
+          mexico: 'mexico-pro',
+          canada: 'canada-pro',
+          portugal: 'portugal-pro',
+          spain: 'spain-pro'
+        };
+
+        const UNIVERSAL_PACKS = [
+          'supporter-pack',
+          'family-pack-pro',
+          'team-pack-pro',
+          'host-edition'
+        ];
+
+        const requiredProductId = COUNTRY_TO_PRODUCT[country.toLowerCase()];
+
+        // ÉTAPE 4 : Vérifier que le product ID du pays est dans la liste OU pack universel
+        const hasAccess = UNIVERSAL_PACKS.some(id => purchasedProductIds.includes(id)) || 
+                          (requiredProductId && purchasedProductIds.includes(requiredProductId));
+
+        // ÉTAPE 5 — Si non trouvé
+        if (!hasAccess) {
+          console.log(`🚫 Fan access refused: country mismatch for ${email} (requested: ${country})`);
+          return res.json({ success: false, error: "no_order_for_country" });
+        }
       }
 
       // 2. Générer un token unique (75 jours validity)

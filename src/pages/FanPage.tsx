@@ -150,6 +150,12 @@ export const FanPage = () => {
       pt: "Verifique sua caixa de entrada. Clique no link para acessar sua Fan Zone." 
     },
     errorNoOrder: { fr: 'Aucune commande trouvée avec cet email.', en: 'No order found with this email.', es: 'No se encontró ningún pedido con este email.', pt: 'Nenhum pedido encontrado com este email.' },
+    errorNoOrderForCountry: { 
+      fr: "Vous n'avez pas commandé le bracelet de ce pays.", 
+      en: "You haven't ordered this country's bracelet.", 
+      es: "No has pedido la pulsera de este país.", 
+      pt: "Você não pediu a pulseira deste país." 
+    },
     errorGeneric: { fr: 'Une erreur est survenue. Réessayez.', en: 'An error occurred. Please try again.', es: 'Ocurrió un error. Inténtalo de nuevo.', pt: 'Ocorreu um erro. Tente novamente.' },
     formation: { fr: 'Formation', en: 'Formation', es: 'Formación', pt: 'Formação' },
     pitch: { fr: 'Terrain', en: 'Pitch', es: 'Campo', pt: 'Campo' },
@@ -266,10 +272,14 @@ export const FanPage = () => {
       const data = await res.json();
       if (data.success) {
         setEmailSent(true);
-      } else if (data.error === 'no_order') {
-        setEmailError(txt('errorNoOrder'));
       } else {
-        setEmailError(txt('errorGeneric'));
+        if (data.error === 'no_order') {
+          setEmailError(txt('errorNoOrder'));
+        } else if (data.error === 'no_order_for_country') {
+          setEmailError(txt('errorNoOrderForCountry'));
+        } else {
+          setEmailError(txt('errorGeneric'));
+        }
       }
     } catch {
       setEmailError(txt('errorGeneric'));
