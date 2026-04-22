@@ -49,6 +49,117 @@ if (!admin.apps.length) {
 }
 const db = admin.firestore();
 
+// --- Shopify 2026 Integration (Shipbear/Dianxiaomi) ---
+let cachedShopifyToken: string | null = null;
+
+/**
+ * Gets a Shopify Admin API Access Token using the Client Credentials grant flow.
+ * Caches the token globally for efficiency.
+ */
+async function getShopifyToken(): Promise<string> {
+  if (cachedShopifyToken) return cachedShopifyToken;
+
+  const store = process.env.SHOPIFY_STORE_URL;
+  const clientId = process.env.SHOPIFY_API_KEY;
+  const clientSecret = process.env.SHOPIFY_API_SECRET;
+
+  if (!store || !clientId || !clientSecret) {
+    throw new Error("Missing Shopify configuration in .env");
+  }
+
+  console.log(`🔐 Shopify: Requesting new access token for ${store}...`);
+  
+  const response = await fetch(`https://${store}/admin/oauth/access_token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      client_id: clientId,
+      client_secret: clientSecret,
+      grant_type: "client_credentials"
+    })
+  });
+
+  const data: any = await response.json();
+  
+  if (data.access_token) {
+    cachedShopifyToken = data.access_token;
+    console.log("✅ Shopify: Access token obtained and cached.");
+    return data.access_token;
+  }
+  
+  // Fallback: If client_credentials fails, use Client Secret directly (Legacy/Dev mode)
+  console.warn("⚠️ Shopify: client_credentials failed, attempting direct secret auth.");
+  return clientSecret;
+}
+
+/**
+ * Creates an order in Shopify for dropshipping via Shipbear.
+ */
+async function createShopifyOrder(orderData: any, session: any) {
+  if (!process.env.SHOPIFY_API_KEY) {
+    console.warn("⚠️ Shopify: API Key missing, skipping order creation.");
+    return;
+  }
+
+  try {
+    const token = await getShopifyToken();
+    const items = JSON.parse(session.metadata?.items || '[]');
+    
+    const shopifyOrder = {
+      order: {
+        email: orderData.email,
+        financial_status: "paid",
+        send_receipt: false,
+        send_fulfillment_receipt: false,
+        note: "GlowWorld 2026 - Blind dropshipping Shipbear",
+        line_items: items.map((item: any) => ({
+          title: typeof item.name === 'object' 
+            ? (item.name.fr || item.name.en || item.name.es) 
+            : item.name,
+          quantity: item.qty || 1,
+          price: "24.99", // Base price for fulfillment
+          requires_shipping: true,
+        })),
+        shipping_address: session.shipping_details?.address ? {
+          first_name: session.shipping_details.name?.split(' ')[0] || '',
+          last_name: session.shipping_details.name?.split(' ').slice(1).join(' ') || '',
+          address1: session.shipping_details.address.line1 || '',
+          address2: session.shipping_details.address.line2 || '',
+          city: session.shipping_details.address.city || '',
+          zip: session.shipping_details.address.postal_code || '',
+          country_code: session.shipping_details.address.country || 'FR',
+        } : undefined,
+        tags: "glowworld2026,dropshipping,shipbear"
+      }
+    };
+    
+    const response = await fetch(
+      `https://${process.env.SHOPIFY_STORE_URL}/admin/api/2026-01/orders.json`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Access-Token': token,
+        },
+        body: JSON.stringify(shopifyOrder),
+      }
+    );
+    
+    const data: any = await response.json();
+    if (data.order?.id) {
+      console.log(`✅ Shopify order created: #${data.order.order_number}`);
+      await db.collection('orders').doc(session.id).update({
+        shopifyOrderId: data.order.id,
+        shopifyOrderNumber: data.order.order_number,
+      });
+    } else {
+      console.error('❌ Shopify Order Failed:', JSON.stringify(data));
+    }
+  } catch(err) {
+    console.error('❌ Shopify Integration Error:', err);
+  }
+}
+
 const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY)
   : null;
@@ -113,7 +224,12 @@ async function startServer() {
         console.error(`❌ Firestore Error (Session ${session.id}):`, dbErr);
       }
 
-      // 3. Send Thank You Email
+      // 3. Create Shopify Order for Dropshipping (Async, non-blocking)
+      createShopifyOrder(orderData, session).catch(err => {
+        console.error(`❌ Shopify Trigger Error (Session ${session.id}):`, err);
+      });
+
+      // 4. Send Thank You Email
       if (resend && orderData.email) {
         try {
           console.log(`📧 Session ${session.id}: Envoi de l'email à ${orderData.email}...`);
