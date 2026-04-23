@@ -142,6 +142,28 @@ async function startServer() {
   const app = express();
   const PORT = parseInt(process.env.PORT || '3000', 10);
 
+  app.get('/shopify/install', (req, res) => {
+    const shop = 'glowworld-2026.myshopify.com';
+    const clientId = process.env.SHOPIFY_API_KEY;
+    const redirectUri = `https://web-production-194108.up.railway.app/shopify/callback`;
+    const scopes = 'read_orders,write_orders,read_customers,write_customers';
+    const installUrl = `https://${shop}/admin/oauth/authorize?client_id=${clientId}&scope=${scopes}&redirect_uri=${redirectUri}`;
+    res.redirect(installUrl);
+  });
+
+  app.get('/shopify/callback', async (req, res) => {
+    const { code } = req.query;
+    const shop = 'glowworld-2026.myshopify.com';
+    const response = await fetch(`https://${shop}/admin/oauth/access_token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ client_id: process.env.SHOPIFY_API_KEY, client_secret: process.env.SHOPIFY_API_SECRET, code })
+    });
+    const data = await response.json() as any;
+    console.log('🔑 SHOPIFY TOKEN:', data.access_token);
+    res.send(`Token généré ! Copie ce token dans Railway : ${data.access_token}`);
+  });
+
   // Webhook needs raw response
   app.post("/api/webhook", express.raw({ type: 'application/json' }), async (req, res) => {
     console.log("🔔 Stripe Webhook: Requête reçue.");
