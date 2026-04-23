@@ -57,39 +57,9 @@ let cachedShopifyToken: string | null = null;
  * Caches the token globally for efficiency.
  */
 async function getShopifyToken(): Promise<string> {
-  if (cachedShopifyToken) return cachedShopifyToken;
-
-  const store = process.env.SHOPIFY_STORE_URL;
-  const clientId = process.env.SHOPIFY_API_KEY;
-  const clientSecret = process.env.SHOPIFY_API_SECRET;
-
-  if (!store || !clientId || !clientSecret) {
-    throw new Error("Missing Shopify configuration in .env");
-  }
-
-  console.log(`🔐 Shopify: Requesting new access token for ${store}...`);
-  
-  const response = await fetch(`https://${store}/admin/oauth/access_token`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      client_id: clientId,
-      client_secret: clientSecret,
-      grant_type: "client_credentials"
-    })
-  });
-
-  const data: any = await response.json();
-  
-  if (data.access_token) {
-    cachedShopifyToken = data.access_token;
-    console.log("✅ Shopify: Access token obtained and cached.");
-    return data.access_token;
-  }
-  
-  // Fallback: If client_credentials fails, use Client Secret directly (Legacy/Dev mode)
-  console.warn("⚠️ Shopify: client_credentials failed, attempting direct secret auth.");
-  return clientSecret;
+  const token = process.env.SHOPIFY_ACCESS_TOKEN;
+  if (!token) throw new Error('SHOPIFY_ACCESS_TOKEN manquant dans les variables Railway');
+  return token;
 }
 
 /**
