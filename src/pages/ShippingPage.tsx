@@ -1,6 +1,7 @@
 import { Translation } from '../types';
 import { Truck, Info, Calendar, MapPin, Mail, Zap } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { SITE_CONFIG } from '../config/siteConfig';
 
 interface ShippingPageProps {
   t: Translation;
@@ -113,7 +114,19 @@ export const ShippingPage = ({ t }: ShippingPageProps) => {
               </h2>
             </div>
             <p className="text-lg font-bold leading-tight">
-              Toutes les commandes passées avant le <span className="text-[#ED2939]">1er juin 2026</span> sont garanties livrées avant le coup d'envoi du <span className="text-[#ED2939]">11 juin 2026</span>.
+              {t._lang === 'fr' ? (
+                <>
+                  Toutes les commandes passées avant le <span className="text-[#ED2939]">{SITE_CONFIG.deliveryGuaranteeDate.fr}</span> sont garanties livrées avant le coup d'envoi du <span className="text-[#ED2939]">{SITE_CONFIG.launchDateDisplay.fr}</span>.
+                </>
+              ) : t._lang === 'en' ? (
+                <>
+                  All orders placed before <span className="text-[#ED2939]">{SITE_CONFIG.deliveryGuaranteeDate.en}</span> are guaranteed to be delivered before the kickoff on <span className="text-[#ED2939]">{SITE_CONFIG.launchDateDisplay.en}</span>.
+                </>
+              ) : (
+                <>
+                  Todos los pedidos realizados antes del <span className="text-[#ED2939]">{SITE_CONFIG.deliveryGuaranteeDate.es}</span> están garantizados para ser entregados antes del inicio del <span className="text-[#ED2939]">{SITE_CONFIG.launchDateDisplay.es}</span>.
+                </>
+              )}
             </p>
           </section>
         </div>
