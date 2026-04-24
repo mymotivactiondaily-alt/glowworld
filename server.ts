@@ -100,18 +100,20 @@ async function createShopifyOrder(orderData: any, session: any) {
           price: "24.99", // Base price for fulfillment
           requires_shipping: true,
         })),
-        shipping_address: session.shipping_details?.address ? {
+        shipping_address: session.shipping_details ? {
           first_name: session.shipping_details.name?.split(' ')[0] || '',
           last_name: session.shipping_details.name?.split(' ').slice(1).join(' ') || '',
-          address1: session.shipping_details.address.line1 || '',
-          address2: session.shipping_details.address.line2 || '',
-          city: session.shipping_details.address.city || '',
-          zip: session.shipping_details.address.postal_code || '',
-          country_code: session.shipping_details.address.country || 'FR',
+          address1: session.shipping_details.address?.line1 || '',
+          address2: session.shipping_details.address?.line2 || '',
+          city: session.shipping_details.address?.city || '',
+          zip: session.shipping_details.address?.postal_code || '',
+          country_code: session.shipping_details.address?.country || 'FR',
         } : undefined,
         tags: "glowworld2026,dropshipping,shipbear"
       }
     };
+
+    console.log(`🏠 Shopify Address Prep: ${JSON.stringify(shopifyOrder.order.shipping_address)}`);
     
     const response = await fetch(
       `https://${process.env.SHOPIFY_STORE_URL}/admin/api/2026-01/orders.json`,
