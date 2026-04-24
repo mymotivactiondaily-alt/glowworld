@@ -33,11 +33,22 @@ export const Navbar = ({ cartCount, onOpenCart, lang, setLang, t }: NavbarProps)
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center group">
-          <img 
-            src="/images/logo_final.png" 
-            alt="GlowWorld" 
-            className="h-16 md:h-20 w-auto drop-shadow-2xl group-hover:scale-105 transition-transform duration-300" 
-          />
+          <svg width="180" height="40" viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-2xl group-hover:scale-105 transition-transform duration-300">
+            <defs>
+              <radialGradient id="boltGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#60A5FA" stopOpacity="0.4"/>
+                <stop offset="100%" stopColor="#1E3A8A" stopOpacity="0"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="52" cy="60" rx="44" ry="44" fill="url(#boltGlow)"/>
+            <polygon points="52,14 34,58 46,58 30,106 70,50 56,50 72,14" 
+                     fill="#2563EB" stroke="#93C5FD" strokeWidth="1.5"/>
+            <text x="98" y="74" fontFamily="Arial Black, sans-serif" 
+                  fontSize="48" fontWeight="900" letterSpacing="1">
+              <tspan fill="#FFFFFF">GLOW</tspan>
+              <tspan fill="#ED2939">WORLD</tspan>
+            </text>
+          </svg>
         </Link>
 
         <div className="hidden md:flex items-center gap-8 font-semibold uppercase text-sm tracking-widest">
