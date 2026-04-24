@@ -162,8 +162,9 @@ async function startServer() {
   });
 
   app.get('/shopify/callback', async (req, res) => {
-    const { code } = req.query;
+    const { code, shop: incomingShop } = req.query;
     const shop = 'glowworld-2026.myshopify.com';
+    console.log(`ℹ️ Shopify Callback: Received request for ${incomingShop}, but forcing ${shop}`);
     const clientId = 'afd5865d77cdecc6bd1733fafd82f961';
     const clientSecret = process.env.SHOPIFY_API_SECRET;
 
