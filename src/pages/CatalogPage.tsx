@@ -14,7 +14,8 @@ interface CatalogPageProps {
 
 export const CatalogPage = ({ onAddToCart, t }: CatalogPageProps) => {
   const [filter, setFilter] = useState('Tous');
-  const filtered = filter === 'Tous' ? PRODUCTS : PRODUCTS.filter((p) => p.team === filter);
+  const baseProducts = PRODUCTS.filter(p => p.id !== 'supporter-pack');
+  const filtered = filter === 'Tous' ? baseProducts : baseProducts.filter((p) => p.team === filter);
   const canonicalUrl = window.location.origin + '/catalog';
 
   return (
