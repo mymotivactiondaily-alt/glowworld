@@ -298,7 +298,10 @@ async function startServer() {
         currency: session.currency,
         status: 'paid',
         items: JSON.parse((session as any).metadata?.items || '[]'),
-        shipping: (session as any).shipping_details || null,
+        shipping: {
+          name: session.customer_details?.name || null,
+          address: session.customer_details?.address || null
+        },
         exported: false,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       };
