@@ -9,7 +9,7 @@ export const PRODUCTS: Product[] = [
       en: 'Sound Reactive LED Wristband - France Edition',
       es: 'Pulsera LED Sound Reactive - Edición Francia'
     },
-    price: 29.99,
+    price: 24.99,
     team: 'France',
     image: '/images/flag_france.png',
     isAvailable: true,
@@ -28,7 +28,7 @@ export const PRODUCTS: Product[] = [
       en: 'Sound Reactive LED Wristband - Brazil Edition',
       es: 'Pulsera LED Sound Reactive - Edición Brasil'
     },
-    price: 29.99,
+    price: 24.99,
     team: 'Brésil',
     image: '/images/flag_brazil.png',
     isAvailable: true,
@@ -47,7 +47,7 @@ export const PRODUCTS: Product[] = [
       en: 'Sound Reactive LED Wristband - Argentina Edition',
       es: 'Pulsera LED Sound Reactive - Edición Argentina'
     },
-    price: 29.99,
+    price: 24.99,
     team: 'Argentine',
     image: '/images/flag_argentina.png',
     isAvailable: true,
@@ -66,7 +66,7 @@ export const PRODUCTS: Product[] = [
       en: 'Sound Reactive LED Wristband - Portugal Edition',
       es: 'Pulsera LED Sound Reactive - Edición Portugal'
     },
-    price: 29.99,
+    price: 24.99,
     team: 'Portugal',
     image: '/images/flag_portugal.png',
     isAvailable: true,
@@ -85,7 +85,7 @@ export const PRODUCTS: Product[] = [
       en: 'Sound Reactive LED Wristband - USA Edition',
       es: 'Pulsera LED Sound Reactive - Edición USA'
     },
-    price: 29.99,
+    price: 24.99,
     team: 'USA',
     image: '/images/flag_usa.png',
     isAvailable: true,
@@ -104,7 +104,7 @@ export const PRODUCTS: Product[] = [
       en: 'Sound Reactive LED Wristband - Mexico Edition',
       es: 'Pulsera LED Sound Reactive - Edición México'
     },
-    price: 29.99,
+    price: 24.99,
     team: 'Mexique',
     image: '/images/flag_mexico.png',
     isAvailable: true,
@@ -123,7 +123,7 @@ export const PRODUCTS: Product[] = [
       en: 'Sound Reactive LED Wristband - Canada Edition',
       es: 'Pulsera LED Sound Reactive - Edición Canadá'
     },
-    price: 29.99,
+    price: 24.99,
     team: 'Canada',
     image: '/images/flag_canada.png',
     isAvailable: true,
@@ -142,7 +142,7 @@ export const PRODUCTS: Product[] = [
       en: 'Sound Reactive LED Wristband - Spain Edition',
       es: 'Pulsera LED Sound Reactive - Edición España'
     },
-    price: 29.99,
+    price: 24.99,
     team: 'Espagne',
     image: '/images/flag_spain.png',
     isAvailable: true,
