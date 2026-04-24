@@ -57,8 +57,18 @@ let cachedShopifyToken: string | null = null;
  * Caches the token globally for efficiency.
  */
 async function getShopifyToken(): Promise<string> {
+  try {
+    const doc = await db.collection('shopify_tokens').doc('glowworld-2026').get();
+    if (doc.exists) {
+      const data = doc.data();
+      if (data?.token) return data.token;
+    }
+  } catch (err) {
+    console.error("❌ Error fetching Shopify token from Firestore:", err);
+  }
+  
   const token = process.env.SHOPIFY_ACCESS_TOKEN;
-  if (!token) throw new Error('SHOPIFY_ACCESS_TOKEN manquant dans les variables Railway');
+  if (!token) throw new Error('SHOPIFY_ACCESS_TOKEN manquant dans Firestore et dans les variables Railway');
   return token;
 }
 
@@ -144,7 +154,7 @@ async function startServer() {
 
   app.get('/shopify/install', (req, res) => {
     const shop = 'glowworld-2026.myshopify.com';
-    const clientId = process.env.SHOPIFY_API_KEY;
+    const clientId = 'afd5865d77cdecc6bd1733fafd82f961';
     const redirectUri = `https://web-production-194108.up.railway.app/shopify/callback`;
     const scopes = 'read_orders,write_orders,read_customers,write_customers';
     const installUrl = `https://${shop}/admin/oauth/authorize?client_id=${clientId}&scope=${scopes}&redirect_uri=${redirectUri}`;
@@ -154,14 +164,61 @@ async function startServer() {
   app.get('/shopify/callback', async (req, res) => {
     const { code } = req.query;
     const shop = 'glowworld-2026.myshopify.com';
-    const response = await fetch(`https://${shop}/admin/oauth/access_token`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ client_id: process.env.SHOPIFY_API_KEY, client_secret: process.env.SHOPIFY_API_SECRET, code })
-    });
-    const data = await response.json() as any;
-    console.log('🔑 SHOPIFY TOKEN:', data.access_token);
-    res.send(`Token généré ! Copie ce token dans Railway : ${data.access_token}`);
+    const clientId = 'afd5865d77cdecc6bd1733fafd82f961';
+    const clientSecret = process.env.SHOPIFY_API_SECRET;
+
+    if (!code) return res.status(400).send("Code manquant");
+
+    try {
+      const response = await fetch(`https://${shop}/admin/oauth/access_token`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          client_id: clientId, 
+          client_secret: clientSecret, 
+          code 
+        })
+      });
+      const data = await response.json() as any;
+      
+      if (data.access_token) {
+        await db.collection('shopify_tokens').doc('glowworld-2026').set({
+          token: data.access_token,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+        console.log('✅ Shopify token generated and saved to Firestore:', data.access_token);
+        res.send(`Token permanent généré et sauvegardé dans Firestore ! Vous pouvez maintenant fermer cette fenêtre.`);
+      } else {
+        res.status(500).send(`Erreur Shopify : ${JSON.stringify(data)}`);
+      }
+    } catch (err) {
+      console.error("❌ OAuth Callback Error:", err);
+      res.status(500).send("Erreur lors de l'échange du token.");
+    }
+  });
+
+  app.get('/shopify/get-token', async (req, res) => {
+    const shop = 'glowworld-2026.myshopify.com';
+    const clientId = 'afd5865d77cdecc6bd1733fafd82f961';
+    const clientSecret = process.env.SHOPIFY_API_SECRET;
+
+    console.log(`🔐 Shopify: Tentative d'échange direct pour ${shop}...`);
+
+    try {
+      const response = await fetch(`https://${shop}/admin/oauth/access_token`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          client_id: clientId, 
+          client_secret: clientSecret, 
+          grant_type: 'client_credentials' 
+        })
+      });
+      const data = await response.json() as any;
+      res.json(data);
+    } catch (err) {
+      res.status(500).json({ error: "Erreur lors de l'appel Shopify", details: err });
+    }
   });
 
   // Webhook needs raw response
