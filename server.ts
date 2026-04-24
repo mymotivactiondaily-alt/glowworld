@@ -158,7 +158,13 @@ async function startServer() {
     const redirectUri = `https://web-production-194108.up.railway.app/shopify/callback`;
     const scopes = 'read_orders,write_orders,read_customers,write_customers';
     const installUrl = `https://${shop}/admin/oauth/authorize?client_id=${clientId}&scope=${scopes}&redirect_uri=${redirectUri}`;
-    res.redirect(installUrl);
+    res.send(`
+      <div style="font-family: sans-serif; padding: 20px;">
+        <h2>🔗 URL d'installation Shopify générée :</h2>
+        <pre style="background: #f4f4f4; padding: 15px; border-radius: 5px; white-space: pre-wrap; word-break: break-all;">${installUrl}</pre>
+        <p><a href="${installUrl}" style="display: inline-block; padding: 10px 20px; background: #008060; color: white; text-decoration: none; border-radius: 5px;">Cliquer ici pour installer manuellement</a></p>
+      </div>
+    `);
   });
 
   app.get('/shopify/callback', async (req, res) => {
