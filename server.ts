@@ -167,6 +167,12 @@ async function startServer() {
     const clientId = 'afd5865d77cdecc6bd1733fafd82f961';
     const clientSecret = process.env.SHOPIFY_API_SECRET;
 
+    if (!clientSecret) {
+      console.error("❌ SHOPIFY_API_SECRET is missing from environment variables.");
+    } else {
+      console.log(`🔐 SHOPIFY_API_SECRET is present (length: ${clientSecret.length})`);
+    }
+
     if (!code) return res.status(400).send("Code manquant");
 
     try {
@@ -187,7 +193,17 @@ async function startServer() {
           updatedAt: admin.firestore.FieldValue.serverTimestamp()
         });
         console.log('✅ Shopify token generated and saved to Firestore:', data.access_token);
-        res.send(`Token permanent généré et sauvegardé dans Firestore ! Vous pouvez maintenant fermer cette fenêtre.`);
+        res.send(`
+          <div style="font-family: sans-serif; padding: 20px;">
+            <h2>✅ Token généré avec succès !</h2>
+            <p>Le token a été sauvegardé dans Firestore.</p>
+            <div style="background: #f4f4f4; padding: 15px; border-radius: 5px; word-break: break-all;">
+              <strong>TOKEN:</strong> <br/>
+              <code>${data.access_token}</code>
+            </div>
+            <p style="margin-top: 20px;">Vous pouvez maintenant fermer cette fenêtre.</p>
+          </div>
+        `);
       } else {
         res.status(500).send(`Erreur Shopify : ${JSON.stringify(data)}`);
       }
