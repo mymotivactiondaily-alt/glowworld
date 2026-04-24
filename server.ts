@@ -100,9 +100,9 @@ async function createShopifyOrder(orderData: any, session: any) {
         send_fulfillment_receipt: false,
         note: "GlowWorld 2026 - Blind dropshipping Shipbear",
         line_items: items.map((item: any) => ({
-          title: typeof item.name === 'object' 
-            ? (item.name.fr || item.name.en || item.name.es) 
-            : item.name,
+          title: item.name 
+            ? (typeof item.name === 'object' ? (item.name.fr || item.name.en || item.name.es) : item.name)
+            : item.id,
           quantity: item.qty || 1,
           price: item.price ? String(item.price) : "24.99", // Dynamic price from metadata
           requires_shipping: true,
@@ -388,7 +388,7 @@ async function startServer() {
         customer_email: userEmail,
         metadata: {
           userId: userId || 'guest',
-          items: JSON.stringify(items.map((i: any) => ({ id: i.id, name: i.name, qty: i.quantity, price: i.price })))
+          items: JSON.stringify(items.map((i: any) => ({ id: i.id, qty: i.quantity, price: i.price }))).slice(0, 490)
         },
         locale: lang === 'fr' ? 'fr' : lang === 'es' ? 'es' : 'en',
         shipping_address_collection: {
