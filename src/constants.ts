@@ -160,7 +160,7 @@ export const PRODUCTS: Product[] = [
     price: 44.99,
     team: 'Pack',
     image: '/images/led-wristbands-product.png',
-    isAvailable: true,
+    isAvailable: false,
     description: { fr: '2 bracelets LED Sound Reactive au choix.', en: '2 Sound Reactive LED wristbands of your choice.', es: '2 pulseras LED Sound Reactive a tu elección.' },
     features: ['2 Bracelets au choix', 'Sound-Sync Technology', 'Micro Intégré'],
     longDescription: 'Le Pack Supporter vous permet de choisir 2 bracelets pour vous et un ami. Économisez sur le prix unitaire.'

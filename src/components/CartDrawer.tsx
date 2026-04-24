@@ -108,15 +108,24 @@ export const CartDrawer = ({
 
             {cart.length > 0 && (
               <div className="pt-8 border-t border-white/10 mt-auto">
-                {/* Upsell — Pack Duo */}
+                {/* Upsell — Pack Duo Dynamique */}
                 {(() => {
-                  const PACK_IDS = ['supporter-pack', 'family-pack-pro', 'team-pack-pro', 'host-edition'];
-                  const hasPack = cart.some(item => PACK_IDS.includes(item.id));
-                  const singleBracelet = cart.length === 1 && cart[0].quantity === 1 && !PACK_IDS.includes(cart[0].id);
+                  const BRACELET_TO_PACK: Record<string, string> = {
+                    'france-pro': 'pack-france',
+                    'brazil-pro': 'pack-brazil',
+                    'usa-pro': 'pack-usa',
+                    'argentina-pro': 'pack-argentina',
+                    'mexico-pro': 'pack-mexico',
+                    'canada-pro': 'pack-canada',
+                    'portugal-pro': 'pack-portugal',
+                    'spain-pro': 'pack-spain',
+                  };
 
-                  if (!singleBracelet || hasPack) return null;
+                  const targetPackId = cart.length === 1 && cart[0].quantity === 1 ? BRACELET_TO_PACK[cart[0].id] : null;
+                  if (!targetPackId) return null;
 
-                  const duoPack = PRODUCTS.find(p => p.id === 'supporter-pack')!;
+                  const duoPack = PRODUCTS.find(p => p.id === targetPackId);
+                  if (!duoPack) return null;
 
                   return (
                     <div className="mb-6 p-4 bg-france-blue/20 border border-france-blue/30 rounded-xl">
@@ -124,7 +133,7 @@ export const CartDrawer = ({
                         🔥 OFFRE DU MOMENT
                       </p>
                       <p className="text-sm mb-3">
-                        Offrez un 2ème bracelet et économisez 5€ avec le <strong>Pack Duo à 44.99€ !</strong>
+                        Offrez un 2ème bracelet <strong>{duoPack.team}</strong> et économisez 5€ avec le <strong>Pack Duo à 44.99€ !</strong>
                       </p>
                       <button 
                         onClick={() => {
