@@ -84,7 +84,14 @@ async function createShopifyOrder(orderData: any, session: any) {
   try {
     const token = await getShopifyToken();
     const items = JSON.parse(session.metadata?.items || '[]');
-    
+
+    console.log('🔍 Debug Shopify Order creation:');
+    console.log('Full session shipping:', JSON.stringify(session.shipping_details));
+    console.log('Full session customer:', JSON.stringify(session.customer_details));
+
+    const shipping = session.shipping_details || session.customer_details;
+    const address = shipping?.address;
+
     const shopifyOrder = {
       order: {
         email: orderData.email,
@@ -100,14 +107,14 @@ async function createShopifyOrder(orderData: any, session: any) {
           price: "24.99", // Base price for fulfillment
           requires_shipping: true,
         })),
-        shipping_address: session.shipping_details ? {
-          first_name: session.shipping_details.name?.split(' ')[0] || '',
-          last_name: session.shipping_details.name?.split(' ').slice(1).join(' ') || '',
-          address1: session.shipping_details.address?.line1 || '',
-          address2: session.shipping_details.address?.line2 || '',
-          city: session.shipping_details.address?.city || '',
-          zip: session.shipping_details.address?.postal_code || '',
-          country_code: session.shipping_details.address?.country || 'FR',
+        shipping_address: shipping ? {
+          first_name: (session.shipping_details?.name || session.customer_details?.name)?.split(' ')[0] || '',
+          last_name: (session.shipping_details?.name || session.customer_details?.name)?.split(' ').slice(1).join(' ') || '',
+          address1: address?.line1 || '',
+          address2: address?.line2 || '',
+          city: address?.city || '',
+          zip: address?.postal_code || '',
+          country_code: address?.country || 'FR',
         } : undefined,
         tags: "glowworld2026,dropshipping,shipbear"
       }
