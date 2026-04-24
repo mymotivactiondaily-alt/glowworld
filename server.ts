@@ -104,7 +104,7 @@ async function createShopifyOrder(orderData: any, session: any) {
             ? (item.name.fr || item.name.en || item.name.es) 
             : item.name,
           quantity: item.qty || 1,
-          price: "24.99", // Base price for fulfillment
+          price: item.price ? String(item.price) : "24.99", // Dynamic price from metadata
           requires_shipping: true,
         })),
         shipping_address: shipping ? {
@@ -388,7 +388,7 @@ async function startServer() {
         customer_email: userEmail,
         metadata: {
           userId: userId || 'guest',
-          items: JSON.stringify(items.map((i: any) => ({ id: i.id, name: i.name, qty: i.quantity })))
+          items: JSON.stringify(items.map((i: any) => ({ id: i.id, name: i.name, qty: i.quantity, price: i.price })))
         },
         locale: lang === 'fr' ? 'fr' : lang === 'es' ? 'es' : 'en',
         shipping_address_collection: {

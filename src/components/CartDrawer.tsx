@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { ShoppingCart, X, CheckCircle, Loader2 } from 'lucide-react';
 import type { CartItem, Translation } from '../types';
+import { PRODUCTS } from '../constants';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface CartDrawerProps {
   t: Translation;
   onCheckout: () => void;
   isCheckingOut: boolean;
+  onAddToCart: (product: any) => void;
 }
 
 export const CartDrawer = ({
@@ -22,6 +24,7 @@ export const CartDrawer = ({
   t,
   onCheckout,
   isCheckingOut,
+  onAddToCart,
 }: CartDrawerProps) => {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -105,20 +108,36 @@ export const CartDrawer = ({
 
             {cart.length > 0 && (
               <div className="pt-8 border-t border-white/10 mt-auto">
-                {/* Upsell */}
-                {cart.length === 1 && (
-                  <div className="mb-6 p-4 bg-france-blue/20 border border-france-blue/30 rounded-xl">
-                    <p className="text-xs font-bold mb-2 text-france-blue uppercase tracking-wider">
-                      {t.cart_upsell_title}
-                    </p>
-                    <p className="text-sm mb-3">
-                      {t.cart_upsell_desc}
-                    </p>
-                    <button className="text-xs font-black uppercase underline hover:text-france-blue">
-                      {t.cart_upsell_cta}
-                    </button>
-                  </div>
-                )}
+                {/* Upsell — Pack Duo */}
+                {(() => {
+                  const PACK_IDS = ['supporter-pack', 'family-pack-pro', 'team-pack-pro', 'host-edition'];
+                  const hasPack = cart.some(item => PACK_IDS.includes(item.id));
+                  const singleBracelet = cart.length === 1 && cart[0].quantity === 1 && !PACK_IDS.includes(cart[0].id);
+
+                  if (!singleBracelet || hasPack) return null;
+
+                  const duoPack = PRODUCTS.find(p => p.id === 'supporter-pack')!;
+
+                  return (
+                    <div className="mb-6 p-4 bg-france-blue/20 border border-france-blue/30 rounded-xl">
+                      <p className="text-xs font-bold mb-2 text-france-blue uppercase tracking-wider">
+                        🔥 OFFRE DU MOMENT
+                      </p>
+                      <p className="text-sm mb-3">
+                        Offrez un 2ème bracelet et économisez 5€ avec le <strong>Pack Duo à 44.99€ !</strong>
+                      </p>
+                      <button 
+                        onClick={() => {
+                          onRemove(cart[0].id);
+                          onAddToCart(duoPack);
+                        }}
+                        className="text-xs font-black uppercase underline hover:text-france-blue decoration-2 underline-offset-4"
+                      >
+                        AJOUTER LE PACK DUO →
+                      </button>
+                    </div>
+                  );
+                })()}
 
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-white/60 font-bold uppercase tracking-widest text-xs">{t.cart_total}</span>

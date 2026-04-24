@@ -102,6 +102,7 @@ function AppContent() {
         t={t}
         onCheckout={() => handleCheckout(t)}
         isCheckingOut={isCheckingOut}
+        onAddToCart={addToCart}
       />
 
       <CookieConsent />

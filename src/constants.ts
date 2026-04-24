@@ -155,66 +155,77 @@ export const PRODUCTS: Product[] = [
     longDescription: 'Supportez la Roja avec style. Le micro intégré capte l\'ambiance du stade et chaque but devient une explosion de lumière rouge et jaune.'
   },
   {
+    id: 'supporter-pack',
+    name: { fr: 'Pack Supporter (2 Bracelets)', en: 'Supporter Pack (2 Wristbands)', es: 'Pack Supporter (2 Pulseras)' },
+    price: 44.99,
+    team: 'Pack',
+    image: '/images/led-wristbands-product.png',
+    isAvailable: true,
+    description: { fr: '2 bracelets LED Sound Reactive au choix.', en: '2 Sound Reactive LED wristbands of your choice.', es: '2 pulseras LED Sound Reactive a tu elección.' },
+    features: ['2 Bracelets au choix', 'Sound-Sync Technology', 'Micro Intégré'],
+    longDescription: 'Le Pack Supporter vous permet de choisir 2 bracelets pour vous et un ami. Économisez sur le prix unitaire.'
+  },
+  {
     id: 'pack-france',
     name: { fr: 'Pack Duo France (2 Bracelets)', en: 'France Duo Pack (2 Wristbands)', es: 'Pack Dúo Francia (2 Pulseras)' },
-    price: 49.99, team: 'France', image: '/images/flag_france.png', isAvailable: true,
-    description: { fr: 'Vibrez ensemble aux couleurs des Bleus. Économisez 10€.', en: 'Vibrate together in Les Bleus colors. Save 10€.', es: 'Vibrad juntos con Les Bleus. Ahorra 10€.' },
+    price: 44.99, team: 'France', image: '/images/flag_france.png', isAvailable: true,
+    description: { fr: 'Vibrez ensemble aux couleurs des Bleus. Économisez 5€.', en: 'Vibrate together in Les Bleus colors. Save 5€.', es: 'Vibrad juntos con Les Bleus. Ahorra 5€.' },
     features: ['2 Bracelets France', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: 'Le football est plus beau quand on le partage. 2 bracelets France Sound Reactive qui s\'illuminent simultanément.'
   },
   {
     id: 'pack-brazil',
     name: { fr: 'Pack Duo Brésil (2 Bracelets)', en: 'Brazil Duo Pack (2 Wristbands)', es: 'Pack Dúo Brasil (2 Pulseras)' },
-    price: 49.99, team: 'Brésil', image: '/images/flag_brazil.png', isAvailable: true,
-    description: { fr: 'Vibrez ensemble aux couleurs de la Seleção. Économisez 10€.', en: 'Vibrate together in Seleção colors. Save 10€.', es: 'Vibrad juntos con la Seleção. Ahorra 10€.' },
+    price: 44.99, team: 'Brésil', image: '/images/flag_brazil.png', isAvailable: true,
+    description: { fr: 'Vibrez ensemble aux couleurs de la Seleção. Économisez 5€.', en: 'Vibrate together in Seleção colors. Save 5€.', es: 'Vibrad juntos con la Seleção. Ahorra 5€.' },
     features: ['2 Bracelets Brésil', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets Brésil pour vivre la Samba à deux.'
   },
   {
     id: 'pack-usa',
     name: { fr: 'Pack Duo USA (2 Bracelets)', en: 'USA Duo Pack (2 Wristbands)', es: 'Pack Dúo USA (2 Pulseras)' },
-    price: 49.99, team: 'USA', image: '/images/flag_usa.png', isAvailable: true,
-    description: { fr: 'Supportez Team USA ensemble. Économisez 10€.', en: 'Support Team USA together. Save 10€.', es: 'Apoyad a Team USA juntos. Ahorra 10€.' },
+    price: 44.99, team: 'USA', image: '/images/flag_usa.png', isAvailable: true,
+    description: { fr: 'Supportez Team USA ensemble. Économisez 5€.', en: 'Support Team USA together. Save 5€.', es: 'Apoyad a Team USA juntos. Ahorra 5€.' },
     features: ['2 Bracelets USA', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets USA Stars & Stripes pour vibrer ensemble.'
   },
   {
     id: 'pack-argentina',
     name: { fr: 'Pack Duo Argentine (2 Bracelets)', en: 'Argentina Duo Pack (2 Wristbands)', es: 'Pack Dúo Argentina (2 Pulseras)' },
-    price: 49.99, team: 'Argentine', image: '/images/flag_argentina.png', isAvailable: true,
-    description: { fr: 'Célébrez comme des champions ensemble. Économisez 10€.', en: 'Celebrate like champions together. Save 10€.', es: 'Celebrad como campeones juntos. Ahorra 10€.' },
+    price: 44.99, team: 'Argentine', image: '/images/flag_argentina.png', isAvailable: true,
+    description: { fr: 'Célébrez comme des champions ensemble. Économisez 5€.', en: 'Celebrate like champions together. Save 5€.', es: 'Celebrad como campeones juntos. Ahorra 5€.' },
     features: ['2 Bracelets Argentine', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets Albiceleste pour partager chaque émotion en bleu et blanc.'
   },
   {
     id: 'pack-mexico',
     name: { fr: 'Pack Duo Mexique (2 Bracelets)', en: 'Mexico Duo Pack (2 Wristbands)', es: 'Pack Dúo México (2 Pulseras)' },
-    price: 49.99, team: 'Mexique', image: '/images/flag_mexico.png', isAvailable: true,
-    description: { fr: 'Vibrez avec El Tri ensemble. Économisez 10€.', en: 'Vibrate with El Tri together. Save 10€.', es: 'Vibrad con El Tri juntos. Ahorra 10€.' },
+    price: 44.99, team: 'Mexique', image: '/images/flag_mexico.png', isAvailable: true,
+    description: { fr: 'Vibrez avec El Tri ensemble. Économisez 5€.', en: 'Vibrate with El Tri together. Save 5€.', es: 'Vibrad con El Tri juntos. Ahorra 5€.' },
     features: ['2 Bracelets Mexique', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets Mexique pour crier ¡Sí se puede! à deux.'
   },
   {
     id: 'pack-canada',
     name: { fr: 'Pack Duo Canada (2 Bracelets)', en: 'Canada Duo Pack (2 Wristbands)', es: 'Pack Dúo Canadá (2 Pulseras)' },
-    price: 49.99, team: 'Canada', image: '/images/flag_canada.png', isAvailable: true,
-    description: { fr: 'Supportez le Canada ensemble. Économisez 10€.', en: 'Support Canada together. Save 10€.', es: 'Apoyad a Canadá juntos. Ahorra 10€.' },
+    price: 44.99, team: 'Canada', image: '/images/flag_canada.png', isAvailable: true,
+    description: { fr: 'Supportez le Canada ensemble. Économisez 5€.', en: 'Support Canada together. Save 5€.', es: 'Apoyad a Canadá juntos. Ahorra 5€.' },
     features: ['2 Bracelets Canada', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets Canada rouge et blanc pour célébrer chaque but ensemble.'
   },
   {
     id: 'pack-portugal',
     name: { fr: 'Pack Duo Portugal (2 Bracelets)', en: 'Portugal Duo Pack (2 Wristbands)', es: 'Pack Dúo Portugal (2 Pulseras)' },
-    price: 49.99, team: 'Portugal', image: '/images/flag_portugal.png', isAvailable: true,
-    description: { fr: 'Vibrez avec la Seleção ensemble. Économisez 10€.', en: 'Vibrate with the Seleção together. Save 10€.', es: 'Vibrad con la Seleção juntos. Ahorra 10€.' },
+    price: 44.99, team: 'Portugal', image: '/images/flag_portugal.png', isAvailable: true,
+    description: { fr: 'Vibrez avec la Seleção ensemble. Économisez 5€.', en: 'Vibrate with the Seleção together. Save 5€.', es: 'Vibrad con la Seleção juntos. Ahorra 5€.' },
     features: ['2 Bracelets Portugal', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets Portugal pour partager chaque moment fort de la Seleção.'
   },
   {
     id: 'pack-spain',
     name: { fr: 'Pack Duo Espagne (2 Bracelets)', en: 'Spain Duo Pack (2 Wristbands)', es: 'Pack Dúo España (2 Pulseras)' },
-    price: 49.99, team: 'Espagne', image: '/images/flag_spain.png', isAvailable: true,
-    description: { fr: 'Vibrez avec La Roja ensemble. Économisez 10€.', en: 'Vibrate with La Roja together. Save 10€.', es: 'Vibrad con La Roja juntos. Ahorra 10€.' },
+    price: 44.99, team: 'Espagne', image: '/images/flag_spain.png', isAvailable: true,
+    description: { fr: 'Vibrez avec La Roja ensemble. Économisez 5€.', en: 'Vibrate with La Roja together. Save 5€.', es: 'Vibrad con La Roja juntos. Ahorra 5€.' },
     features: ['2 Bracelets Espagne', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets Espagne rouge et jaune pour vibrer ensemble à chaque action de La Roja.'
   }
