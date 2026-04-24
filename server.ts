@@ -172,12 +172,12 @@ async function startServer() {
     const shop = 'glowworld-2026.myshopify.com';
     console.log(`ℹ️ Shopify Callback: Received request for ${incomingShop}, but forcing ${shop}`);
     const clientId = 'afd5865d77cdecc6bd1733fafd82f961';
-    const clientSecret = process.env.SHOPIFY_API_SECRET;
+    const clientSecret = process.env.SHOPIFY_TOKEN_SECRET;
 
     if (!clientSecret) {
-      console.error("❌ SHOPIFY_API_SECRET is missing from environment variables.");
+      console.error("❌ SHOPIFY_TOKEN_SECRET is missing from environment variables.");
     } else {
-      console.log(`🔐 SHOPIFY_API_SECRET is present (length: ${clientSecret.length})`);
+      console.log(`🔐 SHOPIFY_TOKEN_SECRET is present (length: ${clientSecret.length})`);
     }
 
     if (!code) return res.status(400).send("Code manquant");
