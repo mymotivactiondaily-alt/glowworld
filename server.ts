@@ -182,6 +182,8 @@ async function startServer() {
 
     if (!code) return res.status(400).send("Code manquant");
 
+    console.log('Exchanging code for shop:', shop, 'client_id:', clientId);
+
     try {
       const response = await fetch(`https://${shop}/admin/oauth/access_token`, {
         method: 'POST',
@@ -192,7 +194,16 @@ async function startServer() {
           code 
         })
       });
-      const data = await response.json() as any;
+      
+      const rawText = await response.text();
+      console.log('Shopify response:', rawText.substring(0, 200));
+
+      let data: any;
+      try {
+        data = JSON.parse(rawText);
+      } catch (e) {
+        return res.status(500).send(`Shopify a renvoyé du HTML au lieu de JSON. Début de réponse : ${rawText.substring(0, 200)}`);
+      }
       
       if (data.access_token) {
         await db.collection('shopify_tokens').doc('glowworld-2026').set({
