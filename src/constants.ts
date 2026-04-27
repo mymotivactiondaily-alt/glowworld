@@ -90,12 +90,12 @@ export const PRODUCTS: Product[] = [
     image: '/images/flag_usa.png',
     isAvailable: true,
     description: {
-      fr: 'Édition Stars & Stripes. Parfait pour les fans de Team USA.',
+      fr: 'Stars & Stripes edition. Parfait pour les fans de Team USA.',
       en: 'Stars & Stripes edition. Perfect for Team USA fans.',
       es: 'Edición Stars & Stripes. Perfecto para los fans de Team USA.'
     },
     features: ['Sound-Sync Technology', 'Silicone Premium Soft-Touch', 'Micro Intégré Haute Sensibilité', '7 Modes Lumineux'],
-    longDescription: 'Supportez les USA avec style. Le micro intégré capte l\'ambiance des stades américains pour une synchronisation parfaite.'
+    longDescription: 'Supportez les USA with style. Le micro intégré capte l\'ambiance des stades américains pour une synchronisation parfaite.'
   },
   {
     id: 'mexico-pro',
@@ -237,7 +237,7 @@ export const BLOG_POSTS: BlogPost[] = [
     id: '1',
     title: 'Top 5 des goodies indispensables pour la Coupe du Monde 2026',
     excerpt: 'Découvrez pourquoi les bracelets LED sont la tendance n°1 cette année.',
-    date: '15 mars 2026',
+    date: '15 Mars 2026',
     image: '/images/led-wristbands-product.png',
     slug: 'top-goodies-2026',
     category: 'Guide',
@@ -255,7 +255,7 @@ export const BLOG_POSTS: BlogPost[] = [
     id: '2',
     title: 'Comment synchroniser votre bracelet LED avec les matchs des Bleus',
     excerpt: 'Guide complet pour ne rater aucune célébration lumineuse.',
-    date: '20 mars 2026',
+    date: '20 Mars 2026',
     image: '/images/led-wristbands-product.png',
     slug: 'sync-led-matchs-bleus',
     category: 'Tutoriel',
@@ -273,7 +273,7 @@ export const BLOG_POSTS: BlogPost[] = [
     id: '3',
     title: 'Le meilleur bracelet LED Sound Reactive pour la Coupe du Monde 2026 : guide complet',
     excerpt: 'Tout ce qu\'il faut savoir pour choisir son bracelet LED Sound Reactive avant la Coupe du Monde 2026. Comparatif, critères de choix et meilleures éditions par équipe.',
-    date: '9 avril 2026',
+    date: '9 Avril 2026',
     image: 'https://images.unsplash.com/photo-1551818255-e6e10975bc1d',
     slug: 'meilleur-bracelet-led-2026',
     category: 'Guide',
@@ -303,7 +303,7 @@ export const BLOG_POSTS: BlogPost[] = [
     id: '4',
     title: 'Quel bracelet LED choisir selon votre équipe ? Comparatif des 7 éditions',
     excerpt: 'France, Brésil, Argentine, USA, Mexique, Canada, Portugal : découvrez quelle édition correspond à votre passion et à votre style de supporter.',
-    date: '20 avril 2026',
+    date: '20 Avril 2026',
     image: '/images/led-wristbands-product.png',
     slug: 'comparatif-7-editions-bracelet-led',
     category: 'Guide',
@@ -332,11 +332,12 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>Vous supportez plusieurs équipes ? Optez pour un Pack Duo et combinez deux éditions pour vivre chaque match à fond. Les stocks sont limités avant le 11 juin — commandez dès maintenant.</p>
     `
   },
+
   {
     id: '5',
     title: 'Comment fonctionne la technologie Sound-Sync ? Le bracelet qui vous écoute',
     excerpt: 'Micro intégré, détection sonore en temps réel, 7 modes lumineux… On vous explique tout sur la technologie qui fait vibrer GlowWorld.',
-    date: '22 avril 2026',
+    date: '22 Avril 2026',
     image: '/images/led-wristbands-product.png',
     slug: 'technologie-sound-sync-bracelet-led',
     category: 'Technologie',
@@ -357,6 +358,7 @@ export const BLOG_POSTS: BlogPost[] = [
         <li><strong>Mode Flash :</strong> clignotement rapide pour l'ambiance</li>
         <li><strong>Mode Pulse :</strong> effet de respiration lumineux</li>
         <li><strong>Mode Strobe :</strong> effet stroboscopique intense</li>
+        <li><strong>Mode Fade :</strong> transition douce entre les couleurs</li>
         <li><strong>Mode Off :</strong> pour recharger l'ambiance entre deux mi-temps</li>
       </ul>
 
@@ -367,11 +369,12 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>C'est notre choix fondamental : pas d'application à télécharger, pas de couplage Bluetooth, pas de compte à créer. Le bracelet fonctionne dès la sortie de la boîte. Appuyez sur le bouton, choisissez votre mode, vibrez.</p>
     `
   },
+
   {
     id: '6',
     title: 'Les 5 moments d\'un match où votre bracelet LED fera tout le show',
     excerpt: 'Du coup d\'envoi à la célébration finale, voici les 5 instants où le bracelet Sound-Reactive GlowWorld transforme l\'expérience supporter.',
-    date: '24 avril 2026',
+    date: '24 Avril 2026',
     image: '/images/led-wristbands-product.png',
     slug: '5-moments-bracelet-led-match-foot',
     category: 'Lifestyle',
@@ -394,11 +397,12 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>Le coup de sifflet final. La victoire. Les cris. Le champagne. Votre bracelet capte tout — et s'emballe au rythme de votre joie. Le mode Strobe transforme votre salon en stade. C'est ça, GlowWorld.</p>
     `
   },
+
   {
     id: '7',
     title: 'Guide ultime : organiser la soirée foot parfaite pour la Coupe du Monde 2026',
-    excerpt: 'Déco, ambiance, bracelets LED, collations… Tout ce qu\'il faut pour transformer votre salon en vrai stade le 11 juin.',
-    date: '26 avril 2026',
+    excerpt: 'Deco, ambiance, bracelets LED, collations… Tout ce qu\'il faut pour transformer votre salon en vrai stade le 11 juin.',
+    date: '26 Avril 2026',
     image: '/images/led-wristbands-product.png',
     slug: 'guide-soiree-foot-coupe-du-monde-2026',
     category: 'Lifestyle',
@@ -427,11 +431,12 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>Les stocks sont limités. Pour recevoir votre commande avant le 11 juin, passez votre commande avant le 1er juin. La livraison prend 7 à 12 jours.</p>
     `
   },
+
   {
     id: '8',
     title: 'Pack Duo GlowWorld : vivez les matchs de la Coupe du Monde à deux',
     excerpt: 'Offrir ou partager un bracelet LED, c\'est multiplier l\'émotion. Découvrez pourquoi le Pack Duo est notre produit le plus populaire.',
-    date: '28 avril 2026',
+    date: '28 Avril 2026',
     image: '/images/led-wristbands-product.png',
     slug: 'pack-duo-bracelet-led-coupe-du-monde',
     category: 'Produit',
@@ -454,11 +459,12 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>Pack Duo France, Pack Duo Brésil, Pack Duo USA, Pack Duo Argentine, Pack Duo Mexique, Pack Duo Canada, Pack Duo Portugal — choisissez les couleurs qui vous font vibrer.</p>
     `
   },
+
   {
     id: '9',
     title: 'FAQ : tout ce que vous voulez savoir sur le bracelet LED Sound-Reactive GlowWorld',
     excerpt: 'Livraison, piles, taille, résistance à l\'eau… Toutes les réponses aux questions les plus posées sur nos bracelets LED.',
-    date: '30 avril 2026',
+    date: '30 Avril 2026',
     image: '/images/led-wristbands-product.png',
     slug: 'faq-bracelet-led-sound-reactive-glowworld',
     category: 'Guide',
@@ -492,11 +498,12 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>Chaque bracelet contient un code unique. En enregistrant votre code sur glowworld2026.com, vous accédez à une Fan Zone digitale exclusive avec les stats de votre équipe, les matchs en direct et le classement de groupe.</p>
     `
   },
+
   {
     id: '10',
     title: 'Coupe du Monde 2026 : les équipes favorites et pourquoi ça va être historique',
     excerpt: 'France, Brésil, Argentine, Angleterre… Analyse des favoris pour le Mondial 2026 et ce qui rend cette édition unique dans l\'histoire du football.',
-    date: '2 mai 2026',
+    date: '2 Mai 2026',
     image: '/images/led-wristbands-product.png',
     slug: 'equipes-favorites-coupe-du-monde-2026',
     category: 'Football',
@@ -522,11 +529,12 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>La question est ouverte. Mais le Portugal dispose d'une nouvelle génération talentueuse qui peut créer la surprise. L'édition Portugal de GlowWorld leur rend hommage.</p>
     `
   },
+
   {
     id: '11',
     title: 'Bracelet LED vs accessoires classiques : pourquoi GlowWorld change tout',
     excerpt: 'Écharpe, maillot, drapeau… Les accessoires du supporter traditionnel face au bracelet LED Sound-Reactive. Une comparaison sans appel.',
-    date: '4 mai 2026',
+    date: '4 Mai 2026',
     image: '/images/led-wristbands-product.png',
     slug: 'bracelet-led-vs-accessoires-classiques-supporter',
     category: 'Guide',
@@ -551,11 +559,12 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>Ce n'est pas un remplacement du maillot ou de l'écharpe — c'est le complément que le supporter moderne attendait.</p>
     `
   },
+
   {
     id: '12',
     title: 'Dernière chance : commandez votre bracelet LED avant le 11 juin',
     excerpt: 'Stocks limités, délais de livraison de 7 à 12 jours… Voici pourquoi il ne faut pas attendre pour commander votre bracelet GlowWorld 2026.',
-    date: '6 mai 2026',
+    date: '6 Mai 2026',
     image: '/images/led-wristbands-product.png',
     slug: 'commander-bracelet-led-avant-coupe-du-monde-11-juin',
     category: 'Actualité',
@@ -577,11 +586,12 @@ export const BLOG_POSTS: BlogPost[] = [
       <p><strong>Ne ratez pas la Coupe du Monde — commandez votre bracelet maintenant.</strong></p>
     `
   },
+
   {
     id: '13',
     title: 'La Fan Zone GlowWorld : l\'expérience digitale exclusive avec votre bracelet',
     excerpt: 'Code unique, matchs en direct, stats d\'équipe, classements de groupe… Découvrez la Fan Zone digitale offerte avec chaque bracelet GlowWorld.',
-    date: '8 mai 2026',
+    date: '8 Mai 2026',
     image: '/images/led-wristbands-product.png',
     slug: 'fan-zone-glowworld-experience-digitale-bracelet',
     category: 'Technologie',
@@ -609,5 +619,5 @@ export const BLOG_POSTS: BlogPost[] = [
       <h2>Un accès exclusif</h2>
       <p>La Fan Zone est réservée aux acheteurs de bracelets GlowWorld. Elle ne s'achète pas séparément — c'est notre façon de remercier nos supporters pour leur confiance.</p>
     `
-  }
+  },
 ];

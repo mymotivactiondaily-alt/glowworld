@@ -1,10 +1,57 @@
+# Dependencies
 node_modules/
-build/
+
+# Build output
 dist/
-coverage/
-.DS_Store
-*.log
-.env*
-!.env.example
-.firebase/
+dist-ssr/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# Firebase credentials (NEVER commit)
 firebase-key.json
+*-service-account*.json
+serviceAccount*.json
+
+# Firebase local cache
+.firebase/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Vite
+*.local
+.vite/
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage
+coverage/
+
+# Misc
+.cache/
+.temp/

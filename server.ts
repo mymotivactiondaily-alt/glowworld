@@ -426,7 +426,7 @@ async function startServer() {
               <li>⚡ Recevoir les offres exclusives</li>
             </ul>
             <div style="text-align:center;margin-top:30px;">
-              <a href="https://www.glowworld2026.com/boutique" style="background:#003399;color:white;padding:12px 30px;border-radius:8px;text-decoration:none;font-weight:bold;">
+              <a href="https://www.glowworld2026.com/catalog" style="background:#003399;color:white;padding:12px 30px;border-radius:8px;text-decoration:none;font-weight:bold;">
                 Découvrir la boutique
               </a>
             </div>
