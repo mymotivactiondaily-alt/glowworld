@@ -699,6 +699,13 @@ async function startServer() {
     res.sendFile(path.join(__dirname, 'public', 'robots.txt'));
   });
 
+  // === FAN CHAT IA (Phase 1A) ===
+  const { registerFanChatRoute } = await import('./src/server/routes/fanChat.js');
+  const { registerAdminTestMascotsRoute } = await import('./src/server/routes/adminTestMascots.js');
+  registerFanChatRoute(app);
+  registerAdminTestMascotsRoute(app);
+  console.log("✅ Fan Chat IA routes mounted");
+
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },

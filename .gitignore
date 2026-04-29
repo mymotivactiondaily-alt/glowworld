@@ -55,3 +55,8 @@ coverage/
 # Misc
 .cache/
 .temp/
+
+# Sécurité : bloquer tout fichier contenant des clés
+*API_KEY*
+*SECRET*
+*_secrets*
