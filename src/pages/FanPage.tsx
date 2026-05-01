@@ -3,6 +3,7 @@ import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft, Play, Users, Trophy, Target } from 'lucide-react';
 import { COUNTRY_CONFIGS } from '../config/fanConfig';
+import { MascotChat } from '../components/fan/MascotChat';
 
 const API_KEY = import.meta.env.VITE_FOOTBALL_API_KEY || '';
 const API_BASE = 'https://api.football-data.org/v4';
@@ -218,6 +219,7 @@ export const FanPage = () => {
       .then(data => {
         if (data.valid) {
           localStorage.setItem(`fan_token_${country}`, tokenToCheck);
+          if (data.email) setEmail(data.email);
           setAccessState('granted');
         } else {
           localStorage.removeItem(`fan_token_${country}`);
@@ -741,6 +743,12 @@ export const FanPage = () => {
       <div style={{ textAlign: 'center', padding: '20px', fontSize: '11px', color: config.colors.border, letterSpacing: '1px', textTransform: 'uppercase' }}>
         {txt('footer')}
       </div>
+
+      <MascotChat 
+        countryCode={country?.toLowerCase() || ''}
+        email={email}
+        fanToken={searchParams.get('token') || localStorage.getItem(`fan_token_${country}`) || ''}
+      />
     </div>
   );
 };

@@ -26,7 +26,14 @@ export async function getRecentHistory(conversationId: string, limit: number = 8
   const db = admin.firestore();
   const messagesRef = db.collection('conversations').doc(conversationId).collection('messages');
   
-  const snapshot = await messagesRef.orderBy('createdAt', 'desc').limit(limit).get();
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  
+  const snapshot = await messagesRef
+    .where('createdAt', '>=', thirtyDaysAgo)
+    .orderBy('createdAt', 'desc')
+    .limit(limit)
+    .get();
   
   const messages: ChatMessage[] = [];
   snapshot.forEach(doc => {
@@ -38,6 +45,24 @@ export async function getRecentHistory(conversationId: string, limit: number = 8
   });
   
   return messages.reverse();
+}
+
+export async function deleteAllMessages(conversationId: string): Promise<void> {
+  const db = admin.firestore();
+  const messagesRef = db.collection('conversations').doc(conversationId).collection('messages');
+  
+  const snapshot = await messagesRef.get();
+  if (snapshot.empty) return;
+  
+  const batch = db.batch();
+  snapshot.docs.forEach((doc) => {
+    batch.delete(doc.ref);
+  });
+  
+  const docRef = db.collection('conversations').doc(conversationId);
+  batch.update(docRef, { messageCount: 0 });
+  
+  await batch.commit();
 }
 
 export async function appendMessage(
