@@ -25,6 +25,9 @@ export function registerFanChatRoute(app: Express) {
       if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         return res.status(400).json({ error: "Email invalide" });
       }
+      
+      const normalizedEmail = email.toLowerCase().trim(); // Standardisation critique
+
       if (!countryCode || !Object.keys(PERSONAS).includes(countryCode)) {
         return res.status(400).json({ error: "Code pays invalide" });
       }
@@ -35,7 +38,7 @@ export function registerFanChatRoute(app: Express) {
       const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mymotivactiondaily@gmail.com';
       const cCode = countryCode as CountryCode;
 
-      if (email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+      if (normalizedEmail !== ADMIN_EMAIL.toLowerCase()) {
         if (!fanToken) {
           return res.status(403).json({ error: "Token Fan Zone manquant" });
         }
@@ -46,7 +49,7 @@ export function registerFanChatRoute(app: Express) {
           return res.status(403).json({ error: "Token Fan Zone invalide" });
         }
         const tokenData = tokenDoc.data()!;
-        if (tokenData.email !== email.toLowerCase().trim()) {
+        if (tokenData.email !== normalizedEmail) {
           return res.status(403).json({ error: "Token non associé à cet email" });
         }
         if (tokenData.expiresAt && Date.now() > tokenData.expiresAt) {
@@ -57,7 +60,7 @@ export function registerFanChatRoute(app: Express) {
         }
       }
 
-      const rateLimitInfo = await checkUserDailyLimit(email);
+      const rateLimitInfo = await checkUserDailyLimit(normalizedEmail);
       if (!rateLimitInfo.allowed) {
         return res.status(429).json({ 
           error: `Tu as atteint la limite de ${rateLimitInfo.limit} messages aujourd'hui. Reviens demain !`,
@@ -78,7 +81,7 @@ export function registerFanChatRoute(app: Express) {
         return res.end();
       }
 
-      const conversationId = await getOrCreateConversation(email, cCode);
+      const conversationId = await getOrCreateConversation(normalizedEmail, cCode);
       const history = await getRecentHistory(conversationId, 8);
       const footballContext = await getTeamContext(cCode);
 
@@ -96,6 +99,9 @@ export function registerFanChatRoute(app: Express) {
       let usage: any = null;
 
       for await (const chunk of generator) {
+        // Prévention Cost/Memory Leak en cas de coupure réseau côté client mobile
+        if (req.destroyed) break;
+
         if (chunk.startsWith('{"__usage"')) {
           usage = JSON.parse(chunk).__usage;
         } else {
@@ -104,14 +110,14 @@ export function registerFanChatRoute(app: Express) {
         }
       }
 
-      if (usage) {
+      if (usage && !req.destroyed) {
         const costEUR = estimateCostEUR(usage);
         await appendMessage(conversationId, 'assistant', fullText, costEUR);
-        await incrementUserDailyCount(email);
-        await recordUsage(email, costEUR);
+        await incrementUserDailyCount(normalizedEmail);
+        await recordUsage(normalizedEmail, costEUR);
         
         res.write(`data: ${JSON.stringify({ type: 'done', costEUR, remaining: rateLimitInfo.remaining - 1 })}\n\n`);
-      } else {
+      } else if (!req.destroyed) {
         res.write(`data: ${JSON.stringify({ type: 'done', costEUR: 0, remaining: rateLimitInfo.remaining - 1 })}\n\n`);
       }
       res.end();
@@ -123,8 +129,10 @@ export function registerFanChatRoute(app: Express) {
         res.setHeader('Cache-Control', 'no-cache');
         res.setHeader('Connection', 'keep-alive');
       }
-      res.write(`data: ${JSON.stringify({ type: 'error', message: "La mascotte a un problème technique, réessaie dans un instant." })}\n\n`);
-      res.end();
+      if (!req.destroyed) {
+        res.write(`data: ${JSON.stringify({ type: 'error', message: "La mascotte a un problème technique, réessaie dans un instant." })}\n\n`);
+        res.end();
+      }
     }
   });
 }
