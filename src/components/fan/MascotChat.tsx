@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MASCOTS, CountryCode } from '../../config/mascotConfig';
+import { MASCOT_CONFIG, CountryKey, COUNTRY_TO_BACKEND_CODE } from '../../config/mascotConfig';
 import { Send, X, Trash2, Loader2, MessageCircle } from 'lucide-react';
 
 interface MascotChatProps {
@@ -15,6 +15,8 @@ interface Message {
   timestamp: number;
 }
 
+const API_BASE_URL = import.meta.env.VITE_FAN_CHAT_API_URL || '';
+
 export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanToken }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -24,15 +26,15 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
   const [showPhrase, setShowPhrase] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const mascot = MASCOTS[countryCode as CountryCode];
-
+  const mascot = MASCOT_CONFIG[countryCode as CountryKey];
+  const backendCode = COUNTRY_TO_BACKEND_CODE[countryCode as CountryKey];
   // Rotate catchphrases
   useEffect(() => {
     if (!mascot || isOpen) return;
     const interval = setInterval(() => {
       setShowPhrase(false);
       setTimeout(() => {
-        setPhraseIndex((prev) => (prev + 1) % mascot.catchphrases.length);
+        setPhraseIndex((prev) => (prev + 1) % mascot.placeholders.length);
         setShowPhrase(true);
       }, 500);
     }, 15000);
@@ -55,7 +57,7 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
   const loadHistory = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch(`/api/fan-chat/history?email=${encodeURIComponent(email)}&countryCode=${countryCode}&fanToken=${encodeURIComponent(fanToken)}`);
+      const res = await fetch(`${API_BASE_URL}/api/fan-chat/history?email=${encodeURIComponent(email)}&countryCode=${backendCode}&fanToken=${encodeURIComponent(fanToken)}`);
       if (res.ok) {
         const data = await res.json();
         if (data.history && Array.isArray(data.history)) {
@@ -75,12 +77,12 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
   };
 
   const clearHistory = async () => {
-    if (!window.confirm("Êtes-vous sûr de vouloir supprimer l'historique ?")) return;
+    if (!window.confirm(mascot.deleteConfirmText)) return;
     try {
-      const res = await fetch('/api/fan-chat/history', {
+      const res = await fetch(`${API_BASE_URL}/api/fan-chat/history`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, countryCode, fanToken })
+        body: JSON.stringify({ email, countryCode: backendCode, fanToken })
       });
       if (res.ok) {
         setMessages([]);
@@ -108,13 +110,12 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
     setMessages(prev => [...prev, { id: asstMsgId, role: 'assistant', content: '', timestamp: Date.now() }]);
 
     try {
-      const apiUrl = import.meta.env.VITE_FAN_CHAT_API_URL || '/api/fan-chat';
-      const res = await fetch(apiUrl, {
+      const res = await fetch(`${API_BASE_URL}/api/fan-chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
-          countryCode,
+          countryCode: backendCode,
           fanToken,
           message: userMsg.content
         })
@@ -202,7 +203,7 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
           height: '540px',
           backgroundColor: '#0a0f1e',
           borderRadius: '20px',
-          border: `2px solid ${mascot.themeColor}`,
+          border: `2px solid ${mascot.primaryColor}`,
           boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
           display: 'flex',
           flexDirection: 'column',
@@ -212,7 +213,7 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
         }}>
           {/* Header */}
           <div style={{
-            background: mascot.themeColor,
+            background: mascot.headerGradient,
             padding: '16px',
             display: 'flex',
             alignItems: 'center',
@@ -221,14 +222,22 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
             fontWeight: 'bold',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <img src={mascot.imagePath} alt={mascot.name} style={{ width: '32px', height: '32px', borderRadius: '50%', border: '2px solid white' }} />
+              <img 
+                src={mascot.image} 
+                alt={mascot.name} 
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentElement!.innerHTML += `<div style="width:32px;height:32px;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;background:${mascot.primaryColor};font-size:16px;">${mascot.name[0]}</div>`;
+                }}
+                style={{ width: '32px', height: '32px', borderRadius: '50%', border: '2px solid white' }} 
+              />
               <span style={{ fontSize: '18px', letterSpacing: '1px' }}>{mascot.name}</span>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
-               <button onClick={clearHistory} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.8 }} title="Effacer l'historique">
+               <button onClick={clearHistory} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.8 }} title={mascot.deleteButtonText}>
                  <Trash2 size={18} />
                </button>
-               <button onClick={() => setIsOpen(false)} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer' }}>
+               <button onClick={() => setIsOpen(false)} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer' }} aria-label={mascot.closeButtonAriaLabel}>
                  <X size={24} />
                </button>
             </div>
@@ -246,14 +255,14 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
           }}>
             {messages.length === 0 && !isLoading && (
               <div style={{ textAlign: 'center', color: '#6B7DB3', marginTop: 'auto', marginBottom: 'auto' }}>
-                Dites bonjour à {mascot.name} !
+                {mascot.welcomeMessage}
               </div>
             )}
             {messages.map((m) => (
               <div key={m.id} style={{
                 alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start',
                 maxWidth: '85%',
-                backgroundColor: m.role === 'user' ? mascot.themeColor : '#1a2040',
+                backgroundColor: m.role === 'user' ? mascot.primaryColor : '#1a2040',
                 color: '#fff',
                 padding: '10px 14px',
                 borderRadius: '16px',
@@ -266,7 +275,7 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
               </div>
             ))}
             {isLoading && messages[messages.length - 1]?.role !== 'assistant' && (
-              <div style={{ alignSelf: 'flex-start', color: mascot.themeColor }}>
+              <div style={{ alignSelf: 'flex-start', color: mascot.primaryColor }}>
                 <Loader2 size={20} className="animate-spin" />
               </div>
             )}
@@ -277,7 +286,7 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
           <div style={{
             padding: '12px',
             backgroundColor: '#0a0f1e',
-            borderTop: `1px solid ${mascot.themeColor}40`,
+            borderTop: `1px solid ${mascot.primaryColor}40`,
             display: 'flex',
             gap: '8px'
           }}>
@@ -286,7 +295,7 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-              placeholder="Écris un message..."
+              placeholder={mascot.inputPlaceholder}
               style={{
                 flex: 1,
                 backgroundColor: '#1a2040',
@@ -302,7 +311,7 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
               onClick={sendMessage}
               disabled={isLoading || !inputValue.trim()}
               style={{
-                backgroundColor: mascot.themeColor,
+                backgroundColor: mascot.primaryColor,
                 border: 'none',
                 borderRadius: '50%',
                 width: '40px',
@@ -336,7 +345,7 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
             opacity: showPhrase ? 1 : 0,
             pointerEvents: 'none'
           }}>
-            {mascot.catchphrases[phraseIndex]}
+            {mascot.placeholders[phraseIndex]}
           </div>
         )}
         <div 
@@ -346,9 +355,9 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
             width: '70px',
             height: '70px',
             borderRadius: '50%',
-            backgroundColor: mascot.themeColor,
+            backgroundColor: mascot.primaryColor,
             cursor: 'pointer',
-            boxShadow: `0 0 20px ${mascot.themeColor}80`,
+            boxShadow: `0 0 20px ${mascot.primaryColor}80`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -356,7 +365,15 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
             border: '3px solid #fff'
           }}
         >
-          <img src={mascot.imagePath} alt={mascot.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img 
+            src={mascot.image} 
+            alt={mascot.name} 
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+              e.currentTarget.parentElement!.innerHTML += `<div style="font-size:24px;font-weight:bold;color:#fff;">${mascot.name[0]}</div>`;
+            }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+          />
         </div>
       </div>
     </>
