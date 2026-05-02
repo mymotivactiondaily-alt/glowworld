@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { MASCOT_CONFIG, CountryKey, COUNTRY_TO_BACKEND_CODE } from '../../config/mascotConfig';
-import { Send, X, Trash2, Loader2, MessageCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { MascotCompanion } from './MascotCompanion';
+import { MascotChatPanel } from './MascotChatPanel';
+import { useMascotChat } from '../../hooks/useMascotChat';
+import { CountryKey } from '../../config/mascotConfig';
 
 interface MascotChatProps {
   countryCode: string;
@@ -8,374 +10,62 @@ interface MascotChatProps {
   fanToken: string;
 }
 
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: number;
-}
-
-const API_BASE_URL = import.meta.env.VITE_FAN_CHAT_API_URL || '';
-
+/**
+ * MascotChat - Entry point for the Phase 1C Interactive Mascot Companion.
+ * Orchestrates the MascotCompanion (floating mascot) and the MascotChatPanel.
+ */
 export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanToken }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [showPhrase, setShowPhrase] = useState(true);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const mascot = MASCOT_CONFIG[countryCode as CountryKey];
-  const backendCode = COUNTRY_TO_BACKEND_CODE[countryCode as CountryKey];
-  // Rotate catchphrases
-  useEffect(() => {
-    if (!mascot || isOpen) return;
-    const interval = setInterval(() => {
-      setShowPhrase(false);
-      setTimeout(() => {
-        setPhraseIndex((prev) => (prev + 1) % mascot.placeholders.length);
-        setShowPhrase(true);
-      }, 500);
-    }, 15000);
-    return () => clearInterval(interval);
-  }, [mascot, isOpen]);
-
-  // Load history on open
-  useEffect(() => {
-    if (isOpen && messages.length === 0 && email && fanToken) {
-      loadHistory();
-    }
-  }, [isOpen, email, fanToken]);
-
-  useEffect(() => {
-    if (isOpen) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages, isOpen]);
-
-  const loadHistory = async () => {
-    try {
-      setIsLoading(true);
-      const res = await fetch(`${API_BASE_URL}/api/fan-chat/history?email=${encodeURIComponent(email)}&countryCode=${backendCode}&fanToken=${encodeURIComponent(fanToken)}`);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.history && Array.isArray(data.history)) {
-          setMessages(data.history.map((m: any, i: number) => ({
-            id: `hist-${i}`,
-            role: m.role,
-            content: m.content,
-            timestamp: m.timestamp || Date.now()
-          })));
-        }
-      }
-    } catch (error) {
-      console.error("Failed to load history", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const clearHistory = async () => {
-    if (!window.confirm(mascot.deleteConfirmText)) return;
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/fan-chat/history`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, countryCode: backendCode, fanToken })
-      });
-      if (res.ok) {
-        setMessages([]);
-      }
-    } catch (error) {
-      console.error("Failed to clear history", error);
-    }
-  };
-
-  const sendMessage = async () => {
-    if (!inputValue.trim() || isLoading) return;
-    
-    const userMsg: Message = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: inputValue.trim(),
-      timestamp: Date.now()
-    };
-
-    setMessages(prev => [...prev, userMsg]);
-    setInputValue('');
-    setIsLoading(true);
-
-    const asstMsgId = (Date.now() + 1).toString();
-    setMessages(prev => [...prev, { id: asstMsgId, role: 'assistant', content: '', timestamp: Date.now() }]);
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/fan-chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          countryCode: backendCode,
-          fanToken,
-          message: userMsg.content
-        })
-      });
-
-      if (res.status === 429) {
-        const data = await res.json();
-        setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: data.error } : m));
-        setIsLoading(false);
-        return;
-      }
-
-      if (!res.ok) {
-        setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: "Désolé, j'ai eu un problème technique." } : m));
-        setIsLoading(false);
-        return;
-      }
-
-      const reader = res.body?.getReader();
-      const decoder = new TextDecoder();
-      if (!reader) return;
-
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        const textChunk = decoder.decode(value, { stream: true });
-        const lines = textChunk.split('\n');
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            try {
-              const data = JSON.parse(line.substring(6));
-              if (data.type === 'chunk') {
-                setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: m.content + data.content } : m));
-              } else if (data.type === 'error') {
-                 setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: data.message } : m));
-              } else if (data.type === 'done') {
-                // Done stream
-              }
-            } catch (e) {
-               // parse error on chunk boundary, handle gracefully if needed
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.error("Stream error", error);
-      setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: "La connexion a été perdue." } : m));
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  
+  const {
+    isOpen,
+    setIsOpen,
+    messages,
+    isLoading,
+    mascotState,
+    sendMessage,
+    clearHistory,
+    mascot
+  } = useMascotChat(countryCode, email, fanToken);
 
   if (!mascot || !email || !fanToken) return null;
 
+  const handleSendMessage = (text: string) => {
+    if (!text.trim()) return;
+    sendMessage(text);
+    setInputValue('');
+  };
+
+  const handleQuickReply = (text: string) => {
+    setIsOpen(true);
+    sendMessage(text);
+  };
+
   return (
     <>
-      <style>
-        {`
-          @keyframes breathe {
-            0% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-4px) scale(1.02); }
-            100% { transform: translateY(0px) scale(1); }
-          }
-          @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.8) translateY(20px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-          }
-          .mascot-btn {
-            animation: breathe 3.5s ease-in-out infinite;
-          }
-          .mascot-phrase {
-            transition: opacity 0.5s ease;
-          }
-        `}
-      </style>
+      {/* The Floating Mascot Companion */}
+      <MascotCompanion 
+        mascot={mascot}
+        state={mascotState}
+        isVisible={!isOpen}
+        onClick={() => setIsOpen(true)}
+        onQuickReply={handleQuickReply}
+      />
 
-      {/* Popup Chat */}
+      {/* The Interactive Chat Panel */}
       {isOpen && (
-        <div style={{
-          position: 'fixed',
-          bottom: '100px',
-          right: '20px',
-          width: '360px',
-          height: '540px',
-          backgroundColor: '#0a0f1e',
-          borderRadius: '20px',
-          border: `2px solid ${mascot.primaryColor}`,
-          boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
-          display: 'flex',
-          flexDirection: 'column',
-          zIndex: 1000,
-          animation: 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-          overflow: 'hidden'
-        }}>
-          {/* Header */}
-          <div style={{
-            background: mascot.headerGradient,
-            padding: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            color: '#fff',
-            fontWeight: 'bold',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <img 
-                src={mascot.image} 
-                alt={mascot.name} 
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.parentElement!.innerHTML += `<div style="width:32px;height:32px;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;background:${mascot.primaryColor};font-size:16px;">${mascot.name[0]}</div>`;
-                }}
-                style={{ width: '32px', height: '32px', borderRadius: '50%', border: '2px solid white' }} 
-              />
-              <span style={{ fontSize: '18px', letterSpacing: '1px' }}>{mascot.name}</span>
-            </div>
-            <div style={{ display: 'flex', gap: '8px' }}>
-               <button onClick={clearHistory} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.8 }} title={mascot.deleteButtonText}>
-                 <Trash2 size={18} />
-               </button>
-               <button onClick={() => setIsOpen(false)} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer' }} aria-label={mascot.closeButtonAriaLabel}>
-                 <X size={24} />
-               </button>
-            </div>
-          </div>
-
-          {/* Messages */}
-          <div style={{
-            flex: 1,
-            overflowY: 'auto',
-            padding: '16px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-            backgroundColor: '#05080f'
-          }}>
-            {messages.length === 0 && !isLoading && (
-              <div style={{ textAlign: 'center', color: '#6B7DB3', marginTop: 'auto', marginBottom: 'auto' }}>
-                {mascot.welcomeMessage}
-              </div>
-            )}
-            {messages.map((m) => (
-              <div key={m.id} style={{
-                alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start',
-                maxWidth: '85%',
-                backgroundColor: m.role === 'user' ? mascot.primaryColor : '#1a2040',
-                color: '#fff',
-                padding: '10px 14px',
-                borderRadius: '16px',
-                borderBottomRightRadius: m.role === 'user' ? '4px' : '16px',
-                borderBottomLeftRadius: m.role === 'assistant' ? '4px' : '16px',
-                fontSize: '14px',
-                lineHeight: '1.4'
-              }}>
-                {m.content}
-              </div>
-            ))}
-            {isLoading && messages[messages.length - 1]?.role !== 'assistant' && (
-              <div style={{ alignSelf: 'flex-start', color: mascot.primaryColor }}>
-                <Loader2 size={20} className="animate-spin" />
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input */}
-          <div style={{
-            padding: '12px',
-            backgroundColor: '#0a0f1e',
-            borderTop: `1px solid ${mascot.primaryColor}40`,
-            display: 'flex',
-            gap: '8px'
-          }}>
-            <input 
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-              placeholder={mascot.inputPlaceholder}
-              style={{
-                flex: 1,
-                backgroundColor: '#1a2040',
-                border: 'none',
-                borderRadius: '20px',
-                padding: '10px 16px',
-                color: '#fff',
-                outline: 'none'
-              }}
-              disabled={isLoading}
-            />
-            <button 
-              onClick={sendMessage}
-              disabled={isLoading || !inputValue.trim()}
-              style={{
-                backgroundColor: mascot.primaryColor,
-                border: 'none',
-                borderRadius: '50%',
-                width: '40px',
-                height: '40px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#fff',
-                cursor: (isLoading || !inputValue.trim()) ? 'not-allowed' : 'pointer',
-                opacity: (isLoading || !inputValue.trim()) ? 0.6 : 1
-              }}
-            >
-              <Send size={18} style={{ marginLeft: '2px' }} />
-            </button>
-          </div>
-        </div>
+        <MascotChatPanel 
+          mascot={mascot}
+          messages={messages}
+          isLoading={isLoading}
+          onClose={() => setIsOpen(false)}
+          onSendMessage={handleSendMessage}
+          onClearHistory={clearHistory}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          mascotState={mascotState}
+        />
       )}
-
-      {/* Floating Mascot Button */}
-      <div style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 999, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>
-        {!isOpen && (
-          <div className="mascot-phrase" style={{
-            backgroundColor: '#fff',
-            color: '#000',
-            padding: '8px 14px',
-            borderRadius: '16px',
-            borderBottomRightRadius: '4px',
-            fontWeight: 'bold',
-            fontSize: '13px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-            opacity: showPhrase ? 1 : 0,
-            pointerEvents: 'none'
-          }}>
-            {mascot.placeholders[phraseIndex]}
-          </div>
-        )}
-        <div 
-          className="mascot-btn"
-          onClick={() => setIsOpen(!isOpen)}
-          style={{
-            width: '70px',
-            height: '70px',
-            borderRadius: '50%',
-            backgroundColor: mascot.primaryColor,
-            cursor: 'pointer',
-            boxShadow: `0 0 20px ${mascot.primaryColor}80`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'hidden',
-            border: '3px solid #fff'
-          }}
-        >
-          <img 
-            src={mascot.image} 
-            alt={mascot.name} 
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-              e.currentTarget.parentElement!.innerHTML += `<div style="font-size:24px;font-weight:bold;color:#fff;">${mascot.name[0]}</div>`;
-            }}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-          />
-        </div>
-      </div>
     </>
   );
 };
