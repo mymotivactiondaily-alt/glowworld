@@ -1,0 +1,134 @@
+/* 
+ * MascotAnimations.css
+ * Core animation system for Phase 1C - Interactive Mascot Companion
+ */
+
+:root {
+  --mascot-transition-speed: 0.3s;
+  --mascot-bounce-easing: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Base Mascot Container Styles */
+.mascot-companion-container {
+  transition: transform var(--mascot-transition-speed) var(--mascot-bounce-easing);
+  will-change: transform;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+}
+
+.mascot-companion-container:hover {
+  transform: scale(1.05) translateY(-5px);
+  cursor: pointer;
+}
+
+/* IDLE: Gentle floating and breathing */
+@keyframes mascot-idle {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+.mascot-state-idle {
+  animation: mascot-idle 4s ease-in-out infinite;
+}
+
+/* SPEAKING: Energetic pulsing */
+@keyframes mascot-speaking {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.05) rotate(-2deg); }
+  75% { transform: scale(1.05) rotate(2deg); }
+}
+
+.mascot-state-speaking {
+  animation: mascot-speaking 0.4s ease-in-out infinite;
+}
+
+/* CELEBRATING: Joyful jumping and spinning */
+@keyframes mascot-celebrating {
+  0%   { transform: translateY(0) scale(1) rotate(0deg); }
+  15%  { transform: translateY(-35px) scale(1.18) rotate(-15deg); }
+  30%  { transform: translateY(-10px) scale(1.05) rotate(12deg); }
+  50%  { transform: translateY(-25px) scale(1.12) rotate(-10deg); }
+  70%  { transform: translateY(-5px) scale(1.05) rotate(8deg); }
+  85%  { transform: translateY(-15px) scale(1.08) rotate(-5deg); }
+  100% { transform: translateY(0) scale(1) rotate(0deg); }
+}
+
+.mascot-state-celebrating {
+  animation: mascot-celebrating 1.5s cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/* AI LOADER: Bouncing dots */
+@keyframes dot-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-6px); opacity: 1; }
+}
+
+.ai-loader-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+  display: inline-block;
+  animation: dot-bounce 1.4s infinite ease-in-out both;
+}
+
+.ai-loader-dot:nth-child(1) { animation-delay: -0.32s; }
+.ai-loader-dot:nth-child(2) { animation-delay: -0.16s; }
+
+/* PANEL SLIDE UP (Correction 6) */
+@keyframes panel-slide-up {
+  from { opacity: 0; transform: translateY(100%) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-panel-slide-up {
+  animation: panel-slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* HALO GLOW */
+@keyframes halo-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(var(--mascot-primary-rgb), 0.4); }
+  70% { box-shadow: 0 0 0 25px rgba(var(--mascot-primary-rgb), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--mascot-primary-rgb), 0); }
+}
+
+.mascot-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  height: 85%;
+  border-radius: 50%;
+  z-index: -1;
+  animation: halo-pulse 3s infinite;
+}
+
+/* GLASSMORPHISM UTILITY */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  .mascot-state-idle,
+  .mascot-state-speaking,
+  .mascot-state-celebrating,
+  .mascot-halo,
+  .ai-loader-dot {
+    animation: none !important;
+    transition: none !important;
+  }
+}
