@@ -36,7 +36,7 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
 
   // Scroll Tilt
   const { scrollYProgress } = useScroll();
-  const scrollTilt = useTransform(scrollYProgress, [0, 1], [-15, 15]);
+  const scrollTilt = useTransform(scrollYProgress, [0, 1], [-3, 3]);
   const tilt = useSpring(scrollTilt, { stiffness: 100, damping: 30 });
 
   useEffect(() => {
@@ -74,7 +74,6 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
   const variants = {
     idle: {
       y: [0, -10, 0],
-      rotate: shouldReduceMotion ? 0 : tilt.get(),
       transition: {
         y: {
           duration: 3,
@@ -191,6 +190,7 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={springConfig}
+          style={{ rotate: shouldReduceMotion ? 0 : tilt }}
           className={isChatOpen ? 'w-16 h-16 md:w-20 md:h-20' : 'w-28 h-28 md:w-36 md:h-36'}
         >
           <div className="mascot-halo" />
