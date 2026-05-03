@@ -31,12 +31,12 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
   const mouseX = useMotionValue(typeof window !== 'undefined' ? window.innerWidth / 2 : 0);
   const mouseY = useMotionValue(typeof window !== 'undefined' ? window.innerHeight / 2 : 0);
   
-  const lookX = useSpring(useTransform(mouseX, [0, typeof window !== 'undefined' ? window.innerWidth : 1000], [-8, 8]), { stiffness: 50, damping: 10 });
-  const lookY = useSpring(useTransform(mouseY, [0, typeof window !== 'undefined' ? window.innerHeight : 1000], [-8, 8]), { stiffness: 50, damping: 10 });
+  const lookX = useSpring(useTransform(mouseX, [0, typeof window !== 'undefined' ? window.innerWidth : 1000], [-15, 15]), { stiffness: 80, damping: 12 });
+  const lookY = useSpring(useTransform(mouseY, [0, typeof window !== 'undefined' ? window.innerHeight : 1000], [-15, 15]), { stiffness: 80, damping: 12 });
 
   // Scroll Tilt
   const { scrollYProgress } = useScroll();
-  const scrollTilt = useTransform(scrollYProgress, [0, 1], [-3, 3]);
+  const scrollTilt = useTransform(scrollYProgress, [0, 1], [-8, 8]);
   const tilt = useSpring(scrollTilt, { stiffness: 100, damping: 30 });
 
   useEffect(() => {
@@ -73,10 +73,16 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
 
   const variants = {
     idle: {
-      y: [0, -10, 0],
+      y: [0, -15, 0, -8, 0],
+      rotate: [0, 2, -2, 1, 0],
       transition: {
         y: {
-          duration: 3,
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut"
+        },
+        rotate: {
+          duration: 4,
           repeat: Infinity,
           ease: "easeInOut"
         }
