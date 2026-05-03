@@ -19,20 +19,9 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
   onQuickReply,
   isVisible 
 }) => {
-  const [isBlinking, setIsBlinking] = useState(false);
+
   const [showBubble, setShowBubble] = useState(false);
 
-  useEffect(() => {
-    let blinkTimer: NodeJS.Timeout;
-    const triggerBlink = () => {
-      setIsBlinking(true);
-      setTimeout(() => setIsBlinking(false), 200); // Blink duration
-      const nextInterval = Math.random() * (8000 - 4000) + 4000;
-      blinkTimer = setTimeout(triggerBlink, nextInterval);
-    };
-    blinkTimer = setTimeout(triggerBlink, 5000);
-    return () => clearTimeout(blinkTimer);
-  }, []);
 
   useEffect(() => {
     if (!isVisible || state !== 'idle') {
@@ -116,17 +105,6 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
       >
         <div className="mascot-halo" />
         
-        {/* Blinking eyes simulation layer (Correction 2) */}
-        <div className="absolute inset-0 z-20 pointer-events-none">
-           <div 
-             className={`absolute left-[22%] right-[22%] rounded-md transition-opacity duration-150 ${isBlinking ? 'opacity-95' : 'opacity-0'}`} 
-             style={{ 
-               top: '32%', 
-               height: '14%', 
-               backgroundColor: 'rgba(15, 23, 42, 0.85)' 
-             }} 
-           />
-        </div>
 
         <img 
           src={mascot.image} 

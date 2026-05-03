@@ -120,18 +120,6 @@ export const MascotChatPanel: React.FC<MascotChatPanelProps> = ({
           <img src={mascot.image} alt="" className="w-full h-full object-contain" />
         </div>
 
-        {/* Sticker Mascot (Correction 5) */}
-        <div className={`absolute bottom-20 left-4 w-20 h-20 pointer-events-none z-10 transition-all duration-500 ${mascotState !== 'idle' ? 'scale-110' : 'scale-100'}`}>
-          <div 
-            className="absolute inset-0 rounded-full blur-xl opacity-20"
-            style={{ backgroundColor: mascot.primaryColor }}
-          />
-          <img 
-            src={mascot.image} 
-            alt="" 
-            className={`w-full h-full object-contain drop-shadow-xl ${mascotState === 'speaking' ? 'animate-pulse' : ''}`} 
-          />
-        </div>
 
         {messages.length === 0 && !isLoading && (
           <div className="relative flex flex-col items-center justify-center min-h-full text-center px-4 animate-in fade-in zoom-in duration-700">
@@ -185,28 +173,6 @@ export const MascotChatPanel: React.FC<MascotChatPanelProps> = ({
         <div ref={messagesEndRef} className="h-4" />
       </div>
 
-      {/* Persistent Bracelet Card (Fix 2) */}
-      <div className="mx-6 mb-3 p-3 rounded-xl border flex items-center gap-4 transition-all hover:bg-white/5 relative z-10"
-           style={{ 
-             backgroundColor: `${mascot.primaryColor}1a`,
-             borderColor: `${mascot.primaryColor}40`,
-             backgroundImage: `linear-gradient(to right, ${mascot.primaryColor}0d, transparent)`
-           }}>
-        <div className="relative w-12 h-12 flex-shrink-0">
-          <div 
-            className="absolute inset-0 rounded-full blur-md opacity-30"
-            style={{ backgroundColor: mascot.primaryColor }}
-          />
-          <img src={mascot.braceletCard.image} alt="" className="relative w-full h-full object-contain drop-shadow-lg" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <h4 className="text-white font-bold text-[11px] leading-tight truncate">{mascot.braceletCard.title}</h4>
-          <p className="text-white/50 text-[10px] leading-tight mb-1 truncate">{mascot.braceletCard.description}</p>
-          <button className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-white/80 hover:text-white transition-colors cursor-pointer">
-            {mascot.braceletCard.cta} <span className="text-[12px]">→</span>
-          </button>
-        </div>
-      </div>
 
       {/* Input Area */}
       <div className="p-6 bg-black/20 backdrop-blur-xl border-t border-white/5">
