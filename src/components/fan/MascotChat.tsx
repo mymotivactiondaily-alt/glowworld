@@ -23,6 +23,7 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
     messages,
     isLoading,
     mascotState,
+    setMascotState,
     sendMessage,
     clearHistory,
     mascot
