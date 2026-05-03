@@ -8,7 +8,7 @@ export interface Message {
   timestamp: number;
 }
 
-export type MascotState = 'idle' | 'speaking' | 'celebrating';
+export type MascotState = 'idle' | 'speaking' | 'celebrating' | 'listening';
 
 const API_BASE_URL = import.meta.env.VITE_FAN_CHAT_API_URL || '';
 

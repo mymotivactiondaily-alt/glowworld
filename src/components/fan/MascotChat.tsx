@@ -47,7 +47,8 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
       <MascotCompanion 
         mascot={mascot}
         state={mascotState}
-        isVisible={!isOpen}
+        isVisible={true}
+        isChatOpen={isOpen}
         onClick={() => setIsOpen(true)}
         onQuickReply={handleQuickReply}
       />
@@ -64,6 +65,7 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
           inputValue={inputValue}
           setInputValue={setInputValue}
           mascotState={mascotState}
+          setMascotState={setMascotState}
         />
       )}
     </>

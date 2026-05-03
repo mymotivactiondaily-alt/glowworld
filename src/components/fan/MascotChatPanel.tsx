@@ -50,6 +50,7 @@ interface MascotChatPanelProps {
   inputValue: string;
   setInputValue: (val: string) => void;
   mascotState: string;
+  setMascotState: (state: any) => void;
 }
 
 export const MascotChatPanel: React.FC<MascotChatPanelProps> = ({
@@ -61,7 +62,8 @@ export const MascotChatPanel: React.FC<MascotChatPanelProps> = ({
   onClearHistory,
   inputValue,
   setInputValue,
-  mascotState
+  mascotState,
+  setMascotState
 }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [placeholder, setPlaceholder] = useState('');
@@ -182,6 +184,8 @@ export const MascotChatPanel: React.FC<MascotChatPanelProps> = ({
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && onSendMessage(inputValue)}
+            onFocus={() => setMascotState('listening')}
+            onBlur={() => setMascotState('idle')}
             placeholder={placeholder || mascot.inputPlaceholder}
             className="flex-1 bg-transparent px-4 py-2 outline-none text-sm text-white placeholder:text-white/30"
             disabled={isLoading}
