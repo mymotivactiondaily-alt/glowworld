@@ -126,13 +126,14 @@ export function registerFanChatRoute(app: Express) {
       let usage: any = null;
       let chunkCount = 0;
 
+      let clientDisconnected = false;
+      
       for await (const chunk of generator) {
         chunkCount++;
-        console.log(`🟢 [FAN-CHAT] Chunk ${chunkCount}:`, chunk.substring(0, 50));
         
-        if (req.destroyed) {
-          console.log('🔴 [FAN-CHAT] Request destroyed by client');
-          break;
+        if (req.destroyed && !clientDisconnected) {
+          clientDisconnected = true;
+          console.log(`🟡 [FAN-CHAT] Client disconnected at chunk ${chunkCount} - continuing stream silently`);
         }
 
         if (chunk.startsWith('{"__usage"')) {
@@ -140,19 +141,32 @@ export function registerFanChatRoute(app: Express) {
           console.log('🔵 [FAN-CHAT] Usage chunk received:', usage);
         } else {
           fullText += chunk;
-          res.write(`data: ${JSON.stringify({ type: 'chunk', content: chunk })}\n\n`);
+          
+          // Si client toujours connecté, on écrit. Sinon on continue à accumuler 
+          // dans fullText pour au moins sauvegarder en DB et logger
+          if (!clientDisconnected) {
+            try {
+              res.write(`data: ${JSON.stringify({ type: 'chunk', content: chunk })}\n\n`);
+            } catch (writeError) {
+              clientDisconnected = true;
+              console.log('🟡 [FAN-CHAT] Write failed, client truly disconnected');
+            }
+          }
         }
       }
 
-      console.log(`🔵 [FAN-CHAT] Stream complete. Total chunks: ${chunkCount}, fullText length: ${fullText.length}`);
+      console.log(`🔵 [FAN-CHAT] Stream complete. Total chunks: ${chunkCount}, fullText length: ${fullText.length}, clientDisconnected: ${clientDisconnected}`);
 
-      if (usage && !req.destroyed) {
+      if (usage) {
         const costEUR = estimateCostEUR(usage);
         await appendMessage(conversationId, 'assistant', fullText, costEUR);
         await incrementUserDailyCount(normalizedEmail);
         await recordUsage(normalizedEmail, costEUR);
-        res.write(`data: ${JSON.stringify({ type: 'done', costEUR, remaining: rateLimitInfo.remaining - 1 })}\n\n`);
-      } else if (!req.destroyed) {
+        
+        if (!clientDisconnected) {
+          res.write(`data: ${JSON.stringify({ type: 'done', costEUR, remaining: rateLimitInfo.remaining - 1 })}\n\n`);
+        }
+      } else if (!clientDisconnected) {
         res.write(`data: ${JSON.stringify({ type: 'done', costEUR: 0, remaining: rateLimitInfo.remaining - 1 })}\n\n`);
       }
       res.end();

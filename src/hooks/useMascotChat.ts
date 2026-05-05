@@ -8,7 +8,7 @@ export interface Message {
   timestamp: number;
 }
 
-export type MascotState = 'idle' | 'speaking' | 'celebrating';
+export type MascotState = 'idle' | 'speaking' | 'celebrating' | 'listening';
 
 const API_BASE_URL = import.meta.env.VITE_FAN_CHAT_API_URL || '';
 
@@ -117,24 +117,40 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
       if (!reader) return;
 
       let fullContent = "";
+      let buffer = "";
+
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-        const textChunk = decoder.decode(value, { stream: true });
-        const lines = textChunk.split('\n');
 
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            try {
-              const data = JSON.parse(line.substring(6));
-              if (data.type === 'chunk') {
-                fullContent += data.content;
-                setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: fullContent } : m));
-              } else if (data.type === 'error') {
-                 setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: data.message } : m));
+        buffer += decoder.decode(value, { stream: true });
+
+        // SSE standard: events are separated by double newline
+        const parts = buffer.split('\n\n');
+        
+        // The last part might be incomplete, keep it in the buffer
+        buffer = parts.pop() || "";
+
+        for (const part of parts) {
+          const lines = part.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const jsonStr = line.substring(6).trim();
+              if (!jsonStr) continue;
+              
+              try {
+                const data = JSON.parse(jsonStr);
+                if (data.type === 'chunk') {
+                  fullContent += data.content;
+                  setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: fullContent } : m));
+                } else if (data.type === 'error') {
+                  setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: data.message } : m));
+                } else if (data.type === 'done') {
+                  // Finalizing if needed
+                }
+              } catch (e) {
+                console.warn("SSE JSON Parse error (fragmented?):", e, jsonStr);
               }
-            } catch (e) {
-               // ignore parse errors
             }
           }
         }

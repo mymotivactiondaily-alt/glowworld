@@ -1,4 +1,4 @@
-import { useState, useEffect, useState as useStateSquad } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft, Play, Users, Trophy, Target } from 'lucide-react';
@@ -313,6 +313,10 @@ export const FanPage = () => {
     }
     setLoading(false);
   };
+
+  const stableFanToken = useMemo(() => {
+    return searchParams.get('token') || localStorage.getItem(`fan_token_${country}`) || '';
+  }, [country, searchParams]);
 
   if (!config) {
     return (
@@ -747,7 +751,7 @@ export const FanPage = () => {
       <MascotChat 
         countryCode={country?.toLowerCase() || ''}
         email={email}
-        fanToken={searchParams.get('token') || localStorage.getItem(`fan_token_${country}`) || ''}
+        fanToken={stableFanToken}
       />
     </div>
   );
