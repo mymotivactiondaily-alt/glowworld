@@ -87,7 +87,7 @@ export function registerFanChatRoute(app: Express) {
       if (spendStatus.isDegraded) {
         console.log('🟡 [FAN-CHAT] DEGRADED MODE');
         res.setHeader('Content-Type', 'text/event-stream');
-        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Cache-Control', 'no-cache, no-transform');
         res.setHeader('Connection', 'keep-alive');
         res.setHeader('X-Accel-Buffering', 'no');
         res.flushHeaders();
@@ -111,7 +111,7 @@ export function registerFanChatRoute(app: Express) {
 
       console.log('🔵 [FAN-CHAT] Setting SSE headers');
       res.setHeader('Content-Type', 'text/event-stream');
-      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Cache-Control', 'no-cache, no-transform');
       res.setHeader('Connection', 'keep-alive');
       res.setHeader('X-Accel-Buffering', 'no');
       res.flushHeaders();
