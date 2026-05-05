@@ -20,14 +20,16 @@ import { CountryCode } from '../types/chat.types.js';
 
 export function registerFanChatRoute(app: Express) {
   app.post('/api/fan-chat', async (req: Request, res: Response) => {
+    console.log('🔵 [FAN-CHAT] Request received');
     try {
       const { email, countryCode, message, fanToken } = req.body;
+      console.log('🔵 [FAN-CHAT] Body parsed:', { email, countryCode, hasMessage: !!message, hasToken: !!fanToken });
 
       if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         return res.status(400).json({ error: "Email invalide" });
       }
       
-      const normalizedEmail = email.toLowerCase().trim(); // Standardisation critique
+      const normalizedEmail = email.toLowerCase().trim();
 
       if (!countryCode || !Object.keys(PERSONAS).includes(countryCode)) {
         return res.status(400).json({ error: "Code pays invalide" });
@@ -36,14 +38,16 @@ export function registerFanChatRoute(app: Express) {
         return res.status(400).json({ error: "Message invalide ou trop long (max 500 chars)" });
       }
 
+      console.log('🔵 [FAN-CHAT] Validation passed');
+
       const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mymotivactiondaily@gmail.com';
       const cCode = countryCode as CountryCode;
 
       if (normalizedEmail !== ADMIN_EMAIL.toLowerCase()) {
+        console.log('🔵 [FAN-CHAT] Non-admin user, checking token');
         if (!fanToken) {
           return res.status(403).json({ error: "Token Fan Zone manquant" });
         }
-        
         const db = admin.firestore();
         const tokenDoc = await db.collection('fan_tokens').doc(fanToken).get();
         if (!tokenDoc.exists) {
@@ -59,9 +63,15 @@ export function registerFanChatRoute(app: Express) {
         if (tokenData.country && tokenData.country.toLowerCase() !== cCode.toLowerCase()) {
            return res.status(403).json({ error: "Accès non autorisé pour ce pays" });
         }
+        console.log('🔵 [FAN-CHAT] Token validated');
+      } else {
+        console.log('🔵 [FAN-CHAT] Admin user detected');
       }
 
+      console.log('🔵 [FAN-CHAT] Checking rate limit');
       const rateLimitInfo = await checkUserDailyLimit(normalizedEmail);
+      console.log('🔵 [FAN-CHAT] Rate limit:', rateLimitInfo);
+      
       if (!rateLimitInfo.allowed) {
         return res.status(429).json({ 
           error: `Tu as atteint la limite de ${rateLimitInfo.limit} messages aujourd'hui. Reviens demain !`,
@@ -69,62 +79,90 @@ export function registerFanChatRoute(app: Express) {
         });
       }
 
+      console.log('🔵 [FAN-CHAT] Checking spend status');
       const spendStatus = await getMonthlySpendStatus();
+      console.log('🔵 [FAN-CHAT] Spend status:', spendStatus);
+      
       if (spendStatus.isDegraded) {
+        console.log('🟡 [FAN-CHAT] DEGRADED MODE');
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
         res.setHeader('Connection', 'keep-alive');
         res.flushHeaders();
-
         const chunkObj = { type: 'chunk', content: DEGRADED_RESPONSES[cCode] };
         res.write(`data: ${JSON.stringify(chunkObj)}\n\n`);
         res.write(`data: ${JSON.stringify({ type: 'done', costEUR: 0, remaining: rateLimitInfo.remaining })}\n\n`);
         return res.end();
       }
 
+      console.log('🔵 [FAN-CHAT] Getting conversation');
       const conversationId = await getOrCreateConversation(normalizedEmail, cCode);
+      console.log('🔵 [FAN-CHAT] Conversation ID:', conversationId);
+      
+      console.log('🔵 [FAN-CHAT] Getting recent history');
       const history = await getRecentHistory(conversationId, 8);
+      console.log('🔵 [FAN-CHAT] History length:', history.length);
+      
+      console.log('🔵 [FAN-CHAT] Getting football context');
       const footballContext = await getTeamContext(cCode);
+      console.log('🔵 [FAN-CHAT] Football context obtained');
 
+      console.log('🔵 [FAN-CHAT] Setting SSE headers');
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
       res.flushHeaders();
+      console.log('🔵 [FAN-CHAT] Headers flushed');
 
       await appendMessage(conversationId, 'user', message);
+      console.log('🔵 [FAN-CHAT] User message appended');
 
       const systemPrompt = PERSONAS[cCode].systemPrompt;
+      console.log('🔵 [FAN-CHAT] Calling streamMascotResponse');
       const generator = streamMascotResponse({ systemPrompt, history, userMessage: message, footballContext });
+      console.log('🔵 [FAN-CHAT] Generator created, starting iteration');
 
       let fullText = '';
       let usage: any = null;
+      let chunkCount = 0;
 
       for await (const chunk of generator) {
-        // Prévention Cost/Memory Leak en cas de coupure réseau côté client mobile
-        if (req.destroyed) break;
+        chunkCount++;
+        console.log(`🟢 [FAN-CHAT] Chunk ${chunkCount}:`, chunk.substring(0, 50));
+        
+        if (req.destroyed) {
+          console.log('🔴 [FAN-CHAT] Request destroyed by client');
+          break;
+        }
 
         if (chunk.startsWith('{"__usage"')) {
           usage = JSON.parse(chunk).__usage;
+          console.log('🔵 [FAN-CHAT] Usage chunk received:', usage);
         } else {
           fullText += chunk;
           res.write(`data: ${JSON.stringify({ type: 'chunk', content: chunk })}\n\n`);
         }
       }
 
+      console.log(`🔵 [FAN-CHAT] Stream complete. Total chunks: ${chunkCount}, fullText length: ${fullText.length}`);
+
       if (usage && !req.destroyed) {
         const costEUR = estimateCostEUR(usage);
         await appendMessage(conversationId, 'assistant', fullText, costEUR);
         await incrementUserDailyCount(normalizedEmail);
         await recordUsage(normalizedEmail, costEUR);
-        
         res.write(`data: ${JSON.stringify({ type: 'done', costEUR, remaining: rateLimitInfo.remaining - 1 })}\n\n`);
       } else if (!req.destroyed) {
         res.write(`data: ${JSON.stringify({ type: 'done', costEUR: 0, remaining: rateLimitInfo.remaining - 1 })}\n\n`);
       }
       res.end();
+      console.log('✅ [FAN-CHAT] Response ended successfully');
 
     } catch (err: any) {
-      console.error("❌ Fan Chat Error:", err);
+      console.error("🔴 [FAN-CHAT] CRITICAL ERROR:", err);
+      console.error("🔴 [FAN-CHAT] Error stack:", err.stack);
+      console.error("🔴 [FAN-CHAT] Error message:", err.message);
+      
       if (!res.headersSent) {
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
