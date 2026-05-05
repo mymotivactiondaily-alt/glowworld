@@ -23,6 +23,9 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
 
   // AbortController to cancel in-flight fetch on unmount
   const abortControllerRef = useRef<AbortController | null>(null);
+  
+  // Stable ref for isLoading to avoid stale closures in useCallback
+  const isLoadingRef = useRef(false);
 
   // Load history on first open
   const historyLoaded = useRef(false);
@@ -46,6 +49,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
   const loadHistory = async () => {
     try {
       setIsLoading(true);
+      isLoadingRef.current = true;
       const res = await fetch(`${API_BASE_URL}/api/fan-chat/history?email=${encodeURIComponent(email)}&countryCode=${backendCode}&fanToken=${encodeURIComponent(fanToken)}`);
       if (res.ok) {
         const data = await res.json();
@@ -62,6 +66,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
       console.error("Failed to load history", error);
     } finally {
       setIsLoading(false);
+      isLoadingRef.current = false;
     }
   };
 
@@ -82,7 +87,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
   };
 
   const sendMessage = useCallback(async (content: string) => {
-    if (!content.trim() || isLoading) return;
+    if (!content.trim() || isLoadingRef.current) return;
     
     const userMsg: Message = {
       id: Date.now().toString(),
@@ -93,6 +98,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
 
     setMessages(prev => [...prev, userMsg]);
     setIsLoading(true);
+    isLoadingRef.current = true;
     setMascotState('speaking');
 
     const asstMsgId = (Date.now() + 1).toString();
@@ -122,6 +128,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
         const data = await res.json();
         setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: data.error } : m));
         setIsLoading(false);
+        isLoadingRef.current = false;
         setMascotState('idle');
         return;
       }
@@ -129,6 +136,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
       if (!res.ok) {
         setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: "Désolé, j'ai eu un problème technique." } : m));
         setIsLoading(false);
+        isLoadingRef.current = false;
         setMascotState('idle');
         return;
       }
@@ -178,7 +186,8 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
       }
 
       // Check for celebration keywords in the response
-      const keywords = mascot?.celebrationKeywords || [];
+      const currentMascot = MASCOT_CONFIG[countryCode as CountryKey];
+      const keywords = currentMascot?.celebrationKeywords || [];
       const hasCelebration = keywords.some(k => 
         new RegExp(`\\b${k}\\b`, 'i').test(fullContent)
       );
@@ -202,8 +211,9 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
     } finally {
       abortControllerRef.current = null;
       setIsLoading(false);
+      isLoadingRef.current = false;
     }
-  }, [email, backendCode, fanToken, isLoading]);
+  }, [email, backendCode, fanToken, countryCode]);
 
   return {
     isOpen,
@@ -217,3 +227,4 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
     mascot
   };
 };
+

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { MascotCompanion } from './MascotCompanion';
 import { MascotChatPanel } from './MascotChatPanel';
 import { useMascotChat } from '../../hooks/useMascotChat';
@@ -30,16 +30,16 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
 
   if (!mascot || !email || !fanToken) return null;
 
-  const handleSendMessage = (text: string) => {
+  const handleSendMessage = useCallback((text: string) => {
     if (!text.trim()) return;
     sendMessage(text);
     setInputValue('');
-  };
+  }, [sendMessage]);
 
-  const handleQuickReply = (text: string) => {
+  const handleQuickReply = useCallback((text: string) => {
     setIsOpen(true);
     sendMessage(text);
-  };
+  }, [sendMessage, setIsOpen]);
 
   return (
     <>
