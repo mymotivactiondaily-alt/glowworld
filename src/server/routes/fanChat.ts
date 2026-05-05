@@ -21,7 +21,7 @@ import { CountryCode } from '../types/chat.types.js';
 export function registerFanChatRoute(app: Express) {
   app.post('/api/fan-chat', async (req: Request, res: Response) => {
     console.log('🔵 [FAN-CHAT] Request received');
-    let keepAliveInterval: ReturnType<typeof setInterval> | null = null;
+    let keepAliveInterval: any;
     try {
       const { email, countryCode, message, fanToken } = req.body;
       console.log('🔵 [FAN-CHAT] Body parsed:', { email, countryCode, hasMessage: !!message, hasToken: !!fanToken });
@@ -117,10 +117,10 @@ export function registerFanChatRoute(app: Express) {
       res.flushHeaders();
       console.log('🔵 [FAN-CHAT] Headers flushed');
 
-      // Heartbeat immédiat pour garder la connexion vivante pendant les ops Firestore/Anthropic
+      // Heartbeat immédiat
       res.write(': heartbeat\n\n');
 
-      // Keep-alive périodique toutes les 5s jusqu'au début du streaming
+      // Keep-alive périodique
       keepAliveInterval = setInterval(() => {
         if (!req.destroyed) {
           res.write(': keepalive\n\n');
@@ -138,13 +138,13 @@ export function registerFanChatRoute(app: Express) {
       let fullText = '';
       let usage: any = null;
       let chunkCount = 0;
-
       let clientDisconnected = false;
       
       for await (const chunk of generator) {
         // Stop keepalive dès qu'on a du vrai contenu
-        if (chunkCount === 0) {
+        if (chunkCount === 0 && keepAliveInterval) {
           clearInterval(keepAliveInterval);
+          keepAliveInterval = undefined;
         }
         chunkCount++;
         
@@ -158,9 +158,6 @@ export function registerFanChatRoute(app: Express) {
           console.log('🔵 [FAN-CHAT] Usage chunk received:', usage);
         } else {
           fullText += chunk;
-          
-          // Si client toujours connecté, on écrit. Sinon on continue à accumuler 
-          // dans fullText pour au moins sauvegarder en DB et logger
           if (!clientDisconnected) {
             try {
               res.write(`data: ${JSON.stringify({ type: 'chunk', content: chunk })}\n\n`);
@@ -172,7 +169,7 @@ export function registerFanChatRoute(app: Express) {
         }
       }
 
-      console.log(`🔵 [FAN-CHAT] Stream complete. Total chunks: ${chunkCount}, fullText length: ${fullText.length}, clientDisconnected: ${clientDisconnected}`);
+      console.log(`🔵 [FAN-CHAT] Stream complete. Total chunks: ${chunkCount}, clientDisconnected: ${clientDisconnected}`);
 
       if (usage) {
         const costEUR = estimateCostEUR(usage);
@@ -190,11 +187,7 @@ export function registerFanChatRoute(app: Express) {
       console.log('✅ [FAN-CHAT] Response ended successfully');
 
     } catch (err: any) {
-      clearInterval(keepAliveInterval);
       console.error("🔴 [FAN-CHAT] CRITICAL ERROR:", err);
-      console.error("🔴 [FAN-CHAT] Error stack:", err.stack);
-      console.error("🔴 [FAN-CHAT] Error message:", err.message);
-      
       if (!res.headersSent) {
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
@@ -204,7 +197,12 @@ export function registerFanChatRoute(app: Express) {
         res.write(`data: ${JSON.stringify({ type: 'error', message: "La mascotte a un problème technique, réessaie dans un instant." })}\n\n`);
         res.end();
       }
+    } finally {
+      if (keepAliveInterval) {
+        clearInterval(keepAliveInterval);
+      }
     }
+
   });
 
   // GET History Endpoint
