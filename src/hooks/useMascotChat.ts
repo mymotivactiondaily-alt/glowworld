@@ -117,45 +117,24 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
       if (!reader) return;
 
       let fullContent = "";
-      let buffer = ""; // Buffer pour gérer les chunks SSE coupés
-      
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-        
-        buffer += decoder.decode(value, { stream: true });
-        
-        // Découper en événements SSE complets (séparés par double newline)
-        const events = buffer.split('\n\n');
-        // Garder le dernier morceau incomplet pour la prochaine itération
-        buffer = events.pop() || "";
-        
-        for (const event of events) {
-          // Chaque événement peut contenir plusieurs lignes (data:, event:, etc.)
-          const lines = event.split('\n');
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              const dataStr = line.substring(6).trim();
-              if (!dataStr) continue;
-              
-              try {
-                const data = JSON.parse(dataStr);
-                
-                if (data.type === 'chunk') {
-                  fullContent += data.content;
-                  setMessages(prev => prev.map(m => 
-                    m.id === asstMsgId ? { ...m, content: fullContent } : m
-                  ));
-                } else if (data.type === 'error') {
-                  setMessages(prev => prev.map(m => 
-                    m.id === asstMsgId ? { ...m, content: data.message } : m
-                  ));
-                } else if (data.type === 'done') {
-                  console.log('[SSE] Stream completed', data);
-                }
-              } catch (e) {
-                console.warn('[SSE] Parse error on:', dataStr, e);
+        const textChunk = decoder.decode(value, { stream: true });
+        const lines = textChunk.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.substring(6));
+              if (data.type === 'chunk') {
+                fullContent += data.content;
+                setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: fullContent } : m));
+              } else if (data.type === 'error') {
+                 setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: data.message } : m));
               }
+            } catch (e) {
+               // ignore parse errors
             }
           }
         }
