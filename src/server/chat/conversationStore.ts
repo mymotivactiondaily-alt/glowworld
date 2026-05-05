@@ -70,11 +70,12 @@ export async function appendMessage(
   role: 'user' | 'assistant',
   content: string,
   costEUR?: number
-): Promise<void> {
+): Promise<string> {
   const db = admin.firestore();
   const docRef = db.collection('conversations').doc(conversationId);
   const messagesRef = docRef.collection('messages');
   
+  const newMessageRef = messagesRef.doc();
   const messageData: any = {
     role,
     content,
@@ -86,11 +87,12 @@ export async function appendMessage(
   }
   
   const batch = db.batch();
-  batch.set(messagesRef.doc(), messageData);
+  batch.set(newMessageRef, messageData);
   batch.update(docRef, {
     lastMessageAt: admin.firestore.FieldValue.serverTimestamp(),
     messageCount: admin.firestore.FieldValue.increment(1)
   });
   
   await batch.commit();
+  return newMessageRef.id;
 }

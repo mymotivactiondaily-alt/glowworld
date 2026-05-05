@@ -130,6 +130,10 @@ export function registerFanChatRoute(app: Express) {
       await appendMessage(conversationId, 'user', message);
       console.log('🔵 [FAN-CHAT] User message appended');
 
+      // ✅ Sauvegarder un message assistant vide dès le début pour onSnapshot
+      const assistantMessageId = await appendMessage(conversationId, 'assistant', '');
+      console.log('🔵 [FAN-CHAT] Assistant empty message created:', assistantMessageId);
+
       const systemPrompt = PERSONAS[cCode].systemPrompt;
       console.log('🔵 [FAN-CHAT] Calling streamMascotResponse');
       const generator = streamMascotResponse({ systemPrompt, history, userMessage: message, footballContext });
@@ -139,6 +143,12 @@ export function registerFanChatRoute(app: Express) {
       let usage: any = null;
       let chunkCount = 0;
       let clientDisconnected = false;
+      
+      const db = admin.firestore();
+      const assistantMessageRef = db.collection('conversations')
+        .doc(conversationId)
+        .collection('messages')
+        .doc(assistantMessageId);
       
       for await (const chunk of generator) {
         // Stop keepalive dès qu'on a du vrai contenu
@@ -158,6 +168,12 @@ export function registerFanChatRoute(app: Express) {
           console.log('🔵 [FAN-CHAT] Usage chunk received:', usage);
         } else {
           fullText += chunk;
+          
+          // ✅ Mise à jour temps réel dans Firestore (Fire & Forget to not block stream)
+          assistantMessageRef.update({ content: fullText }).catch(e => 
+            console.error('🔴 [FAN-CHAT] Firestore real-time update error:', e)
+          );
+
           if (!clientDisconnected) {
             try {
               res.write(`data: ${JSON.stringify({ type: 'chunk', content: chunk })}\n\n`);
@@ -173,7 +189,12 @@ export function registerFanChatRoute(app: Express) {
 
       if (usage) {
         const costEUR = estimateCostEUR(usage);
-        await appendMessage(conversationId, 'assistant', fullText, costEUR);
+        // ✅ Mise à jour finale (on remplace l'ancien appendMessage assistant par un update)
+        await assistantMessageRef.update({ 
+          content: fullText, 
+          costEUR: costEUR 
+        });
+        
         await incrementUserDailyCount(normalizedEmail);
         await recordUsage(normalizedEmail, costEUR);
         

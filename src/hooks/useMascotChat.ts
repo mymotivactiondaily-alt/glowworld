@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { MASCOT_CONFIG, CountryKey, COUNTRY_TO_BACKEND_CODE } from '../config/mascotConfig';
+import { collection, onSnapshot, query, orderBy, Timestamp } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 export interface Message {
   id: string;
@@ -26,15 +28,25 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
   
   // Stable ref for isLoading to avoid stale closures in useCallback
   const isLoadingRef = useRef(false);
+  const unsubscribeRef = useRef<(() => void) | null>(null);
 
-  // Load history on first open
+  // Load history on first open and listen for updates
   const historyLoaded = useRef(false);
   useEffect(() => {
-    if (isOpen && !historyLoaded.current && email && fanToken) {
+    if (isOpen && !historyLoaded.current && email && fanToken && backendCode) {
       loadHistory();
       historyLoaded.current = true;
     }
-  }, [isOpen, email, fanToken]);
+    
+    return () => {
+      if (unsubscribeRef.current) {
+        console.log('🔵 [FAN-CHAT] Unsubscribing from history listener');
+        unsubscribeRef.current();
+        unsubscribeRef.current = null;
+        historyLoaded.current = false;
+      }
+    };
+  }, [isOpen, email, fanToken, backendCode]);
 
   // Cleanup: abort any in-flight fetch on unmount
   useEffect(() => {
@@ -46,25 +58,39 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
     };
   }, []);
 
-  const loadHistory = async () => {
+  const loadHistory = () => {
+    if (!email || !backendCode || !fanToken) return;
+
     try {
       setIsLoading(true);
-      isLoadingRef.current = true;
-      const res = await fetch(`${API_BASE_URL}/api/fan-chat/history?email=${encodeURIComponent(email)}&countryCode=${backendCode}&fanToken=${encodeURIComponent(fanToken)}`);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.history && Array.isArray(data.history)) {
-          setMessages(data.history.map((m: any, i: number) => ({
-            id: `hist-${i}`,
-            role: m.role,
-            content: m.content,
-            timestamp: m.timestamp || Date.now()
-          })));
+      const conversationId = `conversation_${email.replace(/[@.]/g, '_')}_${backendCode}`;
+      const messagesRef = collection(db, 'conversations', conversationId, 'messages');
+      const q = query(messagesRef, orderBy('createdAt', 'asc'));
+
+      console.log('🔵 [FAN-CHAT] Starting real-time history listener');
+      unsubscribeRef.current = onSnapshot(q, (snapshot) => {
+        const history: Message[] = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            role: data.role as 'user' | 'assistant',
+            content: data.content,
+            timestamp: data.createdAt instanceof Timestamp ? data.createdAt.toMillis() : Date.now()
+          };
+        });
+        setMessages(history);
+        // Only clear initial loading. Subsequent loading (during sendMessage) 
+        // is managed by the sendMessage finally block.
+        if (historyLoaded.current && !isLoadingRef.current) {
+          setIsLoading(false);
         }
-      }
+      }, (error) => {
+        console.error("🔴 [FAN-CHAT] History listener error:", error);
+        setIsLoading(false);
+        isLoadingRef.current = false;
+      });
     } catch (error) {
-      console.error("Failed to load history", error);
-    } finally {
+      console.error("🔴 [FAN-CHAT] Failed to initialize history listener:", error);
       setIsLoading(false);
       isLoadingRef.current = false;
     }
@@ -99,10 +125,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
     setMessages(prev => [...prev, userMsg]);
     setIsLoading(true);
     isLoadingRef.current = true;
-    setMascotState('speaking');
-
-    const asstMsgId = (Date.now() + 1).toString();
-    setMessages(prev => [...prev, { id: asstMsgId, role: 'assistant', content: '', timestamp: Date.now() }]);
+    setMascotState('listening');
 
     try {
       // Abort any previous in-flight request before starting a new one
@@ -126,7 +149,8 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
 
       if (res.status === 429) {
         const data = await res.json();
-        setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: data.error } : m));
+        // If rate limited, we can't rely on Firestore as the message wasn't created
+        setMessages(prev => [...prev, { id: 'error', role: 'assistant', content: data.error, timestamp: Date.now() }]);
         setIsLoading(false);
         isLoadingRef.current = false;
         setMascotState('idle');
@@ -134,7 +158,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
       }
 
       if (!res.ok) {
-        setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: "Désolé, j'ai eu un problème technique." } : m));
+        setMessages(prev => [...prev, { id: 'error', role: 'assistant', content: "Désolé, j'ai eu un problème technique.", timestamp: Date.now() }]);
         setIsLoading(false);
         isLoadingRef.current = false;
         setMascotState('idle');
@@ -142,47 +166,25 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
       }
 
       const reader = res.body?.getReader();
-      const decoder = new TextDecoder();
       if (!reader) return;
 
+      // We still consume the stream to know when it's done and trigger mascot states,
+      // but the UI is updated via the Firestore onSnapshot listener.
+      const decoder = new TextDecoder();
       let fullContent = "";
-      let buffer = "";
 
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
 
-        buffer += decoder.decode(value, { stream: true });
-
-        // SSE standard: events are separated by double newline
-        const parts = buffer.split('\n\n');
-        
-        // The last part might be incomplete, keep it in the buffer
-        buffer = parts.pop() || "";
-
-        for (const part of parts) {
-          const lines = part.split('\n');
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              const jsonStr = line.substring(6).trim();
-              if (!jsonStr) continue;
-              
-              try {
-                const data = JSON.parse(jsonStr);
-                if (data.type === 'chunk') {
-                  fullContent += data.content;
-                  setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: fullContent } : m));
-                } else if (data.type === 'error') {
-                  setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: data.message } : m));
-                } else if (data.type === 'done') {
-                  // Finalizing if needed
-                }
-              } catch (e) {
-                console.warn("SSE JSON Parse error (fragmented?):", e, jsonStr);
-              }
-            }
-          }
+        const chunk = decoder.decode(value, { stream: true });
+        // We look for 'type: done' or content to update mascot state
+        if (chunk.includes('"type":"chunk"')) {
+           setMascotState('speaking');
         }
+        
+        // Accumulate to check for keywords at the end
+        fullContent += chunk;
       }
 
       // Check for celebration keywords in the response
@@ -206,7 +208,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
         return;
       }
       console.error("Stream error", error);
-      setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: "La connexion a été perdue." } : m));
+      // We don't manually append an error here because onSnapshot would likely show whatever was partially saved
       setMascotState('idle');
     } finally {
       abortControllerRef.current = null;
