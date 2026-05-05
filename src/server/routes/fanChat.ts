@@ -21,6 +21,7 @@ import { CountryCode } from '../types/chat.types.js';
 export function registerFanChatRoute(app: Express) {
   app.post('/api/fan-chat', async (req: Request, res: Response) => {
     console.log('🔵 [FAN-CHAT] Request received');
+    let keepAliveInterval: ReturnType<typeof setInterval> | null = null;
     try {
       const { email, countryCode, message, fanToken } = req.body;
       console.log('🔵 [FAN-CHAT] Body parsed:', { email, countryCode, hasMessage: !!message, hasToken: !!fanToken });
@@ -116,6 +117,16 @@ export function registerFanChatRoute(app: Express) {
       res.flushHeaders();
       console.log('🔵 [FAN-CHAT] Headers flushed');
 
+      // Heartbeat immédiat pour garder la connexion vivante pendant les ops Firestore/Anthropic
+      res.write(': heartbeat\n\n');
+
+      // Keep-alive périodique toutes les 5s jusqu'au début du streaming
+      keepAliveInterval = setInterval(() => {
+        if (!req.destroyed) {
+          res.write(': keepalive\n\n');
+        }
+      }, 5000);
+
       await appendMessage(conversationId, 'user', message);
       console.log('🔵 [FAN-CHAT] User message appended');
 
@@ -131,6 +142,10 @@ export function registerFanChatRoute(app: Express) {
       let clientDisconnected = false;
       
       for await (const chunk of generator) {
+        // Stop keepalive dès qu'on a du vrai contenu
+        if (chunkCount === 0) {
+          clearInterval(keepAliveInterval);
+        }
         chunkCount++;
         
         if (req.destroyed && !clientDisconnected) {
@@ -175,6 +190,7 @@ export function registerFanChatRoute(app: Express) {
       console.log('✅ [FAN-CHAT] Response ended successfully');
 
     } catch (err: any) {
+      clearInterval(keepAliveInterval);
       console.error("🔴 [FAN-CHAT] CRITICAL ERROR:", err);
       console.error("🔴 [FAN-CHAT] Error stack:", err.stack);
       console.error("🔴 [FAN-CHAT] Error message:", err.message);
