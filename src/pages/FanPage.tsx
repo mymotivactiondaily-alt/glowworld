@@ -314,9 +314,10 @@ export const FanPage = () => {
     setLoading(false);
   };
 
+  const tokenFromUrl = searchParams.get('token') || '';
   const stableFanToken = useMemo(() => {
-    return searchParams.get('token') || localStorage.getItem(`fan_token_${country}`) || '';
-  }, [country, searchParams]);
+    return tokenFromUrl || localStorage.getItem(`fan_token_${country}`) || '';
+  }, [country, tokenFromUrl]);
 
   if (!config) {
     return (

@@ -88,6 +88,7 @@ export function registerFanChatRoute(app: Express) {
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
         res.setHeader('Connection', 'keep-alive');
+        res.setHeader('X-Accel-Buffering', 'no');
         res.flushHeaders();
         const chunkObj = { type: 'chunk', content: DEGRADED_RESPONSES[cCode] };
         res.write(`data: ${JSON.stringify(chunkObj)}\n\n`);
@@ -111,6 +112,7 @@ export function registerFanChatRoute(app: Express) {
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
+      res.setHeader('X-Accel-Buffering', 'no');
       res.flushHeaders();
       console.log('🔵 [FAN-CHAT] Headers flushed');
 
