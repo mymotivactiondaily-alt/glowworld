@@ -21,6 +21,9 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
   const mascot = MASCOT_CONFIG[countryCode as CountryKey];
   const backendCode = COUNTRY_TO_BACKEND_CODE[countryCode as CountryKey];
 
+  // AbortController to cancel in-flight fetch on unmount
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   // Load history on first open
   const historyLoaded = useRef(false);
   useEffect(() => {
@@ -29,6 +32,16 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
       historyLoaded.current = true;
     }
   }, [isOpen, email, fanToken]);
+
+  // Cleanup: abort any in-flight fetch on unmount
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = null;
+      }
+    };
+  }, []);
 
   const loadHistory = async () => {
     try {
@@ -86,6 +99,13 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
     setMessages(prev => [...prev, { id: asstMsgId, role: 'assistant', content: '', timestamp: Date.now() }]);
 
     try {
+      // Abort any previous in-flight request before starting a new one
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
       const res = await fetch(`${API_BASE_URL}/api/fan-chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -94,7 +114,8 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
           countryCode: backendCode,
           fanToken,
           message: userMsg.content
-        })
+        }),
+        signal: controller.signal
       });
 
       if (res.status === 429) {
@@ -169,11 +190,17 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
         setMascotState('idle');
       }
 
-    } catch (error) {
+    } catch (error: any) {
+      // Don't show error if the fetch was intentionally aborted (unmount/remount)
+      if (error?.name === 'AbortError') {
+        console.log('[useMascotChat] Fetch aborted (component unmounted)');
+        return;
+      }
       console.error("Stream error", error);
       setMessages(prev => prev.map(m => m.id === asstMsgId ? { ...m, content: "La connexion a été perdue." } : m));
       setMascotState('idle');
     } finally {
+      abortControllerRef.current = null;
       setIsLoading(false);
     }
   }, [email, backendCode, fanToken, isLoading]);
