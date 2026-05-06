@@ -11,6 +11,7 @@ interface MascotCompanionProps {
   onClick: () => void;
   onQuickReply: (text: string) => void;
   isVisible: boolean;
+  isMinimized?: boolean;
 }
 
 export const MascotCompanion: React.FC<MascotCompanionProps> = ({ 
@@ -18,10 +19,14 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
   state, 
   onClick, 
   onQuickReply,
-  isVisible 
+  isVisible,
+  isMinimized 
 }) => {
-  const [isBlinking, setIsBlinking] = useState(false);
   const [showBubble, setShowBubble] = useState(false);
+  const [celebEmojis, setCelebEmojis] = useState<{id: number, emoji: string, x: number}[]>([]);
+
+  // Flip Y
+  const flipY = useMotionValue(0);
 
   // Eye tracking
   const eyeX = useMotionValue(0);
@@ -35,18 +40,6 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
 
   // Idle bob (y position)
   const bobY = useMotionValue(0);
-
-  useEffect(() => {
-    let blinkTimer: NodeJS.Timeout;
-    const triggerBlink = () => {
-      setIsBlinking(true);
-      setTimeout(() => setIsBlinking(false), 200); // Blink duration
-      const nextInterval = Math.random() * (8000 - 4000) + 4000;
-      blinkTimer = setTimeout(triggerBlink, nextInterval);
-    };
-    blinkTimer = setTimeout(triggerBlink, 5000);
-    return () => clearTimeout(blinkTimer);
-  }, []);
 
   useEffect(() => {
     if (!isVisible || state !== 'idle') {
@@ -100,7 +93,47 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
     return () => controls.stop();
   }, [state, bobY]);
 
-  if (!isVisible && state === 'idle') return null;
+  // Célébration (flip Y + emojis)
+  useEffect(() => {
+    if (state !== 'celebrating') return;
+    
+    // Flip Y aléatoire gauche-droite
+    animate(flipY, [0, 180, 0], {
+      duration: 0.5,
+      repeat: 5,
+      ease: 'easeInOut',
+    });
+
+    // Pop d'emojis
+    const emojis = ['⚽', '🎉', '🔥', '🏆', '⭐'];
+    const particles = Array.from({ length: 6 }, (_, i) => ({
+      id: Date.now() + i,
+      emoji: emojis[Math.floor(Math.random() * emojis.length)],
+      x: (Math.random() - 0.5) * 80,
+    }));
+    setCelebEmojis(particles);
+    const t = setTimeout(() => setCelebEmojis([]), 2000);
+    return () => clearTimeout(t);
+  }, [state, flipY]);
+
+  // Inclinaison en écoute
+  useEffect(() => {
+    if (state === 'listening') {
+      animate(tilt, 8, { 
+        type: 'spring', 
+        stiffness: 120, 
+        damping: 10 
+      });
+    } else if (state === 'idle') {
+      animate(tilt, 0, { 
+        type: 'spring', 
+        stiffness: 80, 
+        damping: 15 
+      });
+    }
+  }, [state, tilt]);
+
+  if (!isVisible) return null;
 
   const hexToRgb = (hex: string) => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -117,7 +150,7 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
       style={{ '--mascot-primary-rgb': primaryRgb } as React.CSSProperties}
     >
       {/* Interaction Bubble */}
-      {showBubble && state === 'idle' && (
+      {showBubble && state === 'idle' && !isMinimized && (
         <div className="mb-4 flex flex-col items-end animate-in fade-in slide-in-from-bottom-4 duration-700 pointer-events-auto">
            <div 
              className="glass-panel p-5 rounded-[2rem] rounded-br-none border-l-4 shadow-2xl max-w-[280px] relative"
@@ -160,32 +193,22 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
 
       {/* Mascot Container */}
       <div 
-        className={`mascot-companion-container relative w-28 h-28 md:w-36 md:h-36 pointer-events-auto cursor-pointer
-          ${state === 'idle' ? 'mascot-state-idle' : ''}
-          ${state === 'speaking' ? 'mascot-state-speaking' : ''}
-          ${state === 'celebrating' ? 'mascot-state-celebrating' : ''}
+        className={`mascot-companion-container relative pointer-events-auto cursor-pointer transition-all duration-300
+          ${isMinimized ? 'w-14 h-14 opacity-85' : 'w-28 h-28 md:w-36 md:h-36'}
+          ${!isMinimized && state === 'idle' ? 'mascot-state-idle' : ''}
+          ${!isMinimized && state === 'speaking' ? 'mascot-state-speaking' : ''}
+          ${!isMinimized && state === 'celebrating' ? 'mascot-state-celebrating' : ''}
         `}
         onClick={onClick}
       >
         <div className="mascot-halo" />
-        
-        {/* Blinking eyes simulation layer (Correction 2) */}
-        <div className="absolute inset-0 z-20 pointer-events-none">
-           <div 
-             className={`absolute left-[22%] right-[22%] rounded-md transition-opacity duration-150 ${isBlinking ? 'opacity-95' : 'opacity-0'}`} 
-             style={{ 
-               top: '32%', 
-               height: '14%', 
-               backgroundColor: 'rgba(15, 23, 42, 0.85)' 
-             }} 
-           />
-        </div>
 
         <motion.div
           style={{
             x: smoothEyeX,
             y: bobY,          // idle bob
             rotate: smoothTilt,
+            rotateY: flipY,
             width: '100%',
             height: '100%',
           }}
@@ -206,6 +229,19 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
             <div className="ai-loader-dot" />
           </div>
         )}
+
+        {celebEmojis.map(p => (
+          <motion.div
+            key={p.id}
+            initial={{ opacity: 1, y: 0, x: p.x }}
+            animate={{ opacity: 0, y: -60 }}
+            transition={{ duration: 1.8, ease: 'easeOut' }}
+            className="absolute top-0 left-1/2 text-2xl pointer-events-none z-30"
+            style={{ marginLeft: p.x }}
+          >
+            {p.emoji}
+          </motion.div>
+        ))}
       </div>
     </div>
   );

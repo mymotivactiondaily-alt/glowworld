@@ -47,7 +47,8 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
       <MascotCompanion 
         mascot={mascot}
         state={mascotState}
-        isVisible={!isOpen}
+        isVisible={true}
+        isMinimized={isOpen}
         onClick={() => setIsOpen(true)}
         onQuickReply={handleQuickReply}
       />
