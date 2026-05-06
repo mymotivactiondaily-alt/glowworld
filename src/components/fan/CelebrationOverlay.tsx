@@ -22,44 +22,51 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ active }
   useEffect(() => {
     if (!active) return;
 
-    // SHAKE — directement sur le body
-    document.body.animate([
+    // SHAKE — 3 vibrations avec pause de 0.5s entre chaque
+    const shakeKeyframes = [
       { transform: 'translate(0px, 0px)' },
-      { transform: 'translate(-6px, 4px)' },
-      { transform: 'translate(6px, -4px)' },
-      { transform: 'translate(-5px, 5px)' },
-      { transform: 'translate(5px, -3px)' },
+      { transform: 'translate(-7px, 4px)' },
+      { transform: 'translate(7px, -4px)' },
+      { transform: 'translate(-6px, 5px)' },
+      { transform: 'translate(6px, -3px)' },
       { transform: 'translate(-4px, 3px)' },
       { transform: 'translate(4px, -2px)' },
       { transform: 'translate(-2px, 1px)' },
       { transform: 'translate(0px, 0px)' },
-    ], {
-      duration: 800,
+    ];
+
+    const shakeOptions: KeyframeAnimationOptions = {
+      duration: 700,
       easing: 'ease-out',
-      fill: 'forwards',
-    });
+      fill: 'none', // ← PAS 'forwards' pour éviter de pousser la page
+    };
 
+    // Trois vibrations enchaînées avec 500ms de pause
+    document.documentElement.animate(shakeKeyframes, shakeOptions);
     setTimeout(() => {
-      document.body.style.transform = '';
-    }, 850);
+      document.documentElement.animate(shakeKeyframes, shakeOptions);
+    }, 1200);
+    setTimeout(() => {
+      document.documentElement.animate(shakeKeyframes, shakeOptions);
+    }, 2400);
 
+    // PARTICULES — 100 emojis
     const emojis = ['⚽', '🎉', '⭐', '🏆', '✨', '🌟', '🎊', '💫'];
-    const newParticles: Particle[] = Array.from({ length: 80 }, (_, i) => ({
+    const newParticles: Particle[] = Array.from({ length: 100 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       rotate: (Math.random() - 0.5) * 720,
       scale: 0.7 + Math.random() * 1.2,
       emoji: emojis[Math.floor(Math.random() * emojis.length)],
-      duration: 3 + Math.random() * 2,
-      delay: Math.random() * 2,
+      duration: 3 + Math.random() * 2.5,
+      delay: Math.random() * 3,
     }));
     setParticles(newParticles);
 
-    const t = setTimeout(() => setParticles([]), 6000);
+    const t = setTimeout(() => setParticles([]), 7000);
     return () => clearTimeout(t);
   }, [active]);
 
-  // PORTAL → injecte directement dans document.body, hors de toute hiérarchie
   if (typeof document === 'undefined') return null;
 
   return createPortal(
