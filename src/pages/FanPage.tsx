@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft, Play, Users, Trophy, Target } from 'lucide-react';
 import { COUNTRY_CONFIGS } from '../config/fanConfig';
 import { MascotChat } from '../components/fan/MascotChat';
+import { CelebrationOverlay } from '../components/fan/CelebrationOverlay';
 
 const API_KEY = import.meta.env.VITE_FOOTBALL_API_KEY || '';
 const API_BASE = 'https://api.football-data.org/v4';
@@ -185,6 +186,7 @@ export const FanPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [squadView, setSquadView] = useState<'pitch' | 'list'>('pitch');
   const [wonLastMatch, setWonLastMatch] = useState(false);
+  const [celebrationActive, setCelebrationActive] = useState(false);
 
   useEffect(() => {
     if (!config) return;
@@ -286,6 +288,15 @@ export const FanPage = () => {
 
     fetchLastMatch();
   }, [config?.teamId, API_KEY]);
+
+  useEffect(() => {
+    if (!wonLastMatch) return;
+    const t = setTimeout(() => {
+      setCelebrationActive(true);
+      setTimeout(() => setCelebrationActive(false), 100);
+    }, 1800);
+    return () => clearTimeout(t);
+  }, [wonLastMatch]);
 
   const handleRequestAccess = async () => {
     if (!email || !email.includes('@')) {
@@ -426,7 +437,8 @@ export const FanPage = () => {
   }
 
   return (
-    <div style={{ backgroundColor: config.colors.bg, minHeight: '100vh', color: '#fff' }}>
+    <div style={{ backgroundColor: config.colors.bg, minHeight: '100vh', color: '#fff' }}
+         className={celebrationActive ? 'celeb-shake' : ''}>
       <Helmet>
         <title>Fan Page {config.flag} {config.name[lang] || config.name.fr} | GlowWorld 2026</title>
       </Helmet>
@@ -797,6 +809,7 @@ export const FanPage = () => {
         {txt('footer')}
       </div>
 
+      <CelebrationOverlay active={celebrationActive} />
       <MascotChat 
         countryCode={country?.toLowerCase() || ''}
         email={email}
