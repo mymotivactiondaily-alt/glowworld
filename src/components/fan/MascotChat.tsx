@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { MascotCompanion } from './MascotCompanion';
 import { MascotChatPanel } from './MascotChatPanel';
 import { useMascotChat } from '../../hooks/useMascotChat';
@@ -8,13 +8,16 @@ interface MascotChatProps {
   countryCode: string;
   email: string;
   fanToken: string;
+  wonLastMatch?: boolean;
 }
 
 /**
  * MascotChat - Entry point for the Phase 1C Interactive Mascot Companion.
  * Orchestrates the MascotCompanion (floating mascot) and the MascotChatPanel.
  */
-export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanToken }) => {
+export const MascotChat: React.FC<MascotChatProps> = ({ 
+  countryCode, email, fanToken, wonLastMatch 
+}) => {
   const [inputValue, setInputValue] = useState('');
   
   const {
@@ -23,12 +26,11 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
     messages,
     isLoading,
     mascotState,
+    setMascotState,
     sendMessage,
     clearHistory,
     mascot
   } = useMascotChat(countryCode, email, fanToken);
-
-  if (!mascot || !email || !fanToken) return null;
 
   const handleSendMessage = useCallback((text: string) => {
     if (!text.trim()) return;
@@ -40,6 +42,18 @@ export const MascotChat: React.FC<MascotChatProps> = ({ countryCode, email, fanT
     setIsOpen(true);
     sendMessage(text);
   }, [sendMessage, setIsOpen]);
+
+  useEffect(() => {
+    if (!wonLastMatch) return;
+    // Délai pour laisser la page se charger
+    const t = setTimeout(() => {
+      setMascotState('celebrating');
+      setTimeout(() => setMascotState('idle'), 3500);
+    }, 2000);
+    return () => clearTimeout(t);
+  }, [wonLastMatch, setMascotState]);
+
+  if (!mascot || !email || !fanToken) return null;
 
   return (
     <>

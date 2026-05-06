@@ -79,6 +79,23 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
           };
         });
         setMessages(history);
+
+        const lastAssistantMsg = [...history]
+          .reverse()
+          .find(m => m.role === 'assistant');
+
+        if (lastAssistantMsg && isLoadingRef.current) {
+          const currentMascot = MASCOT_CONFIG[countryCode as CountryKey];
+          const keywords = currentMascot?.celebrationKeywords || [];
+          const hasCelebration = keywords.some(k =>
+            new RegExp(`\\b${k}\\b`, 'i').test(lastAssistantMsg.content)
+          );
+          if (hasCelebration) {
+            setMascotState('celebrating');
+            setTimeout(() => setMascotState('idle'), 3000);
+          }
+        }
+
         // Only clear initial loading. Subsequent loading (during sendMessage) 
         // is managed by the sendMessage finally block.
         if (historyLoaded.current && !isLoadingRef.current) {
@@ -187,19 +204,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
         fullContent += chunk;
       }
 
-      // Check for celebration keywords in the response
-      const currentMascot = MASCOT_CONFIG[countryCode as CountryKey];
-      const keywords = currentMascot?.celebrationKeywords || [];
-      const hasCelebration = keywords.some(k => 
-        new RegExp(`\\b${k}\\b`, 'i').test(fullContent)
-      );
-
-      if (hasCelebration) {
-        setMascotState('celebrating');
-        setTimeout(() => setMascotState('idle'), 3000);
-      } else {
-        setMascotState('idle');
-      }
+      setMascotState('idle');
 
     } catch (error: any) {
       // Don't show error if the fetch was intentionally aborted (unmount/remount)

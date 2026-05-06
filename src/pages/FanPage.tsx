@@ -184,6 +184,7 @@ export const FanPage = () => {
   const [emailError, setEmailError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [squadView, setSquadView] = useState<'pitch' | 'list'>('pitch');
+  const [wonLastMatch, setWonLastMatch] = useState(false);
 
   useEffect(() => {
     if (!config) return;
@@ -252,6 +253,39 @@ export const FanPage = () => {
     }
     return () => { const s = document.getElementById('fanpage-styles'); if(s) s.remove(); };
   }, []);
+
+  useEffect(() => {
+    if (!API_KEY || !config?.teamId) return;
+
+    const fetchLastMatch = async () => {
+      try {
+        const res = await fetch(
+          `${API_BASE}/teams/${config.teamId}/matches?status=FINISHED&limit=5`,
+          { headers: { 'X-Auth-Token': API_KEY } }
+        );
+        if (!res.ok) return;
+        const data = await res.json();
+        const matches = data.matches || [];
+        if (matches.length === 0) return;
+
+        // Prend le dernier match terminé
+        const last = matches[matches.length - 1];
+        const homeScore = last.score?.fullTime?.home ?? 0;
+        const awayScore = last.score?.fullTime?.away ?? 0;
+        const isHome = last.homeTeam?.id === config.teamId;
+        const teamScore = isHome ? homeScore : awayScore;
+        const opponentScore = isHome ? awayScore : homeScore;
+
+        if (teamScore > opponentScore) {
+          setWonLastMatch(true);
+        }
+      } catch {
+        // Fail silently — pas de célébration si API indisponible
+      }
+    };
+
+    fetchLastMatch();
+  }, [config?.teamId, API_KEY]);
 
   const handleRequestAccess = async () => {
     if (!email || !email.includes('@')) {
@@ -744,6 +778,20 @@ export const FanPage = () => {
         </div>
       </div>
 
+      <div style={{ 
+        textAlign: 'center', 
+        padding: '8px 20px 0',
+        fontSize: '9px',
+        letterSpacing: '2px',
+        textTransform: 'uppercase',
+        color: config.colors.muted,
+        opacity: 0.4,
+        fontFamily: 'Inter, sans-serif',
+        fontWeight: 600
+      }}>
+        ✦ &nbsp;Fan Companion AI &nbsp;·&nbsp; Claude Haiku 4.5
+      </div>
+
       {/* Footer */}
       <div style={{ textAlign: 'center', padding: '20px', fontSize: '11px', color: config.colors.border, letterSpacing: '1px', textTransform: 'uppercase' }}>
         {txt('footer')}
@@ -753,6 +801,7 @@ export const FanPage = () => {
         countryCode={country?.toLowerCase() || ''}
         email={email}
         fanToken={stableFanToken}
+        wonLastMatch={wonLastMatch}
       />
     </div>
   );
