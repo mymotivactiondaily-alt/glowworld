@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Zap, Globe, Trophy, CheckCircle, ArrowRight, Star } from 'lucide-react';
+import { useState as useStateMascot, useEffect as useEffectMascot } from 'react';
+import { Zap, Globe, Trophy, CheckCircle, ArrowRight, Star, Sparkles, Brain, MessageSquare, BarChart3 } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { Countdown } from '../components/Countdown';
 import { ProductCard } from '../components/ProductCard';
@@ -11,6 +12,163 @@ interface HomePageProps {
   onAddToCart: (p: Product) => void;
   t: Translation;
 }
+
+const MASCOT_DEMOS = [
+  { country: 'france', flag: '🇫🇷', name: "GAUL'O", role: 'Le coq tricolore', message: "Cocorico camarade ! Mbappé est en feu depuis 3 matchs. On joue le Brésil demain — tu sais qu'on les a battus 1-0 en 2006 ? Allez les Bleus !", color: '#002395' },
+  { country: 'brazil', flag: '🇧🇷', name: 'ZICO', role: 'O tucano', message: "Ôi meu amigo! A Seleção tá afiada. Vinicius e Rodrygo prontos pra brilhar. Hexa tá chegando, vamos juntos!", color: '#009C3B' },
+  { country: 'argentina', flag: '🇦🇷', name: 'DIEGO', role: 'El gaucho', message: "¡Che amigo! La Albiceleste viene con todo. Messi nos guía como siempre. ¡Vamos por la gloria, hermano!", color: '#74ACDF' },
+  { country: 'usa', flag: '🇺🇸', name: 'STARZ', role: 'The eagle', message: "Hey buddy! USMNT is rolling — Pulisic is on fire and we're playing at home. This is OUR World Cup. Let's go USA!", color: '#B22234' },
+  { country: 'mexico', flag: '🇲🇽', name: 'TRI', role: 'El águila', message: "¡Órale compadre! El Tri viene afilado. Lozano y Jiménez listos pa' la batalla. ¡Arriba México, vamos por todo!", color: '#006847' },
+  { country: 'canada', flag: '🇨🇦', name: 'HOCK', role: 'The beaver', message: "Hey buddy, eh! Canada Soccer is ready. Davies and Jonathan David lighting it up. We're hosting — let's make history!", color: '#FF0000' },
+  { country: 'portugal', flag: '🇵🇹', name: 'FADO', role: 'O galo', message: "Olá companheiro! A Selecção está pronta. Cristiano sempre afiado, Bernardo Silva mágico. Força Portugal, vamos juntos!", color: '#006600' },
+  { country: 'spain', flag: '🇪🇸', name: 'TIKI', role: 'El toro', message: "¡Hola amigo! La Roja viene con tiki-taka puro. Pedri, Rodri, Morata — el equipo está listo. ¡Vamos España, a por todo!", color: '#AA151B' },
+];
+
+const ChatBubbleDemo = ({ t }: { t: any }) => {
+  const [idx, setIdx] = useStateMascot(0);
+
+  useEffectMascot(() => {
+    const interval = setInterval(() => {
+      setIdx(prev => (prev + 1) % MASCOT_DEMOS.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, []);
+
+  const m = MASCOT_DEMOS[idx];
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <div className="text-center mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest text-white/50">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+          {t._lang === 'fr' ? 'Aperçu en direct' : t._lang === 'en' ? 'Live preview' : 'Vista previa en vivo'}
+        </div>
+      </div>
+      <motion.div
+        key={m.country}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="relative p-6 rounded-3xl backdrop-blur-md border-2 shadow-2xl"
+        style={{
+          background: `linear-gradient(135deg, ${m.color}20 0%, rgba(15,23,42,0.8) 100%)`,
+          borderColor: `${m.color}60`,
+          boxShadow: `0 20px 50px ${m.color}30`,
+        }}
+      >
+        <div className="flex items-center gap-3 mb-3 pb-3 border-b border-white/10">
+          <div className="text-3xl">{m.flag}</div>
+          <div className="flex-1">
+            <div className="font-black text-white text-lg leading-tight">{m.name}</div>
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">{m.role}</span>
+            </div>
+          </div>
+          <div className="px-2 py-1 bg-amber-400/10 border border-amber-400/30 rounded text-[9px] font-black uppercase tracking-widest text-amber-300 flex items-center gap-1">
+            <Sparkles className="w-3 h-3" /> AI
+          </div>
+        </div>
+        <p className="text-white/90 text-base leading-relaxed font-medium italic">
+          "{m.message}"
+        </p>
+      </motion.div>
+      <div className="flex justify-center gap-1.5 mt-4">
+        {MASCOT_DEMOS.map((_, i) => (
+          <div
+            key={i}
+            className={`h-1 rounded-full transition-all duration-500 ${i === idx ? 'w-6 bg-amber-400' : 'w-1 bg-white/20'}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const KillerIASection = ({ t }: { t: any }) => (
+  <section className="relative py-20 px-6 overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-y border-amber-400/20">
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(252,211,77,0.08)_0%,transparent_70%)]" />
+    <div className="relative max-w-5xl mx-auto">
+
+      <div className="text-center mb-12">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-400/10 border border-amber-400/40 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-amber-300 mb-6">
+          <Sparkles className="w-3.5 h-3.5" />
+          {t._lang === 'fr' ? 'Une première mondiale' : t._lang === 'en' ? 'A world first' : 'Una primicia mundial'}
+        </div>
+
+        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight leading-[1.05] mb-6">
+          {t._lang === 'fr' ? (
+            <>Avant, pendant, après —<br/><span className="text-amber-300 glow-text">ta mascotte IA est là.</span></>
+          ) : t._lang === 'en' ? (
+            <>Before, during, after —<br/><span className="text-amber-300 glow-text">your AI mascot is there.</span></>
+          ) : (
+            <>Antes, durante, después —<br/><span className="text-amber-300 glow-text">tu mascota IA está ahí.</span></>
+          )}
+        </h2>
+
+        <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
+          {t._lang === 'fr' ? (
+            <>Pronostics avant le coup d'envoi, célébrations en direct, débrief après le coup de sifflet final. Une mascotte IA <strong className="text-white">développée pour ton pays</strong>, qui vibre avec toi tout le tournoi.</>
+          ) : t._lang === 'en' ? (
+            <>Predictions before kickoff, live celebrations, debrief after the final whistle. An AI mascot <strong className="text-white">built for your country</strong>, vibing with you all tournament long.</>
+          ) : (
+            <>Pronósticos antes del pitazo inicial, celebraciones en vivo, análisis tras el silbato final. Una mascota IA <strong className="text-white">creada para tu país</strong>, vibrando contigo todo el torneo.</>
+          )}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-14">
+        <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-amber-400/40 transition-all">
+          <div className="w-12 h-12 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center mb-4">
+            <Brain className="w-6 h-6 text-amber-300" />
+          </div>
+          <div className="text-sm font-black uppercase tracking-widest text-amber-300 mb-2">
+            {t._lang === 'fr' ? 'Avant le match' : t._lang === 'en' ? 'Before the match' : 'Antes del partido'}
+          </div>
+          <p className="text-white/70 text-sm leading-relaxed">
+            {t._lang === 'fr' ? "Compositions probables, pronostics, anecdotes joueurs, historique des confrontations. Ta mascotte chauffe l'ambiance comme un vrai pote." : t._lang === 'en' ? "Probable lineups, predictions, player stories, head-to-head history. Your mascot warms up the vibe like a real mate." : "Alineaciones probables, pronósticos, anécdotas de jugadores, historial de enfrentamientos. Tu mascota calienta el ambiente como un amigo."}
+          </p>
+        </div>
+        <div className="p-6 rounded-2xl bg-white/5 border border-amber-400/30 shadow-[0_0_30px_rgba(252,211,77,0.1)]">
+          <div className="w-12 h-12 rounded-xl bg-amber-400/20 border border-amber-400/50 flex items-center justify-center mb-4">
+            <MessageSquare className="w-6 h-6 text-amber-300" />
+          </div>
+          <div className="text-sm font-black uppercase tracking-widest text-amber-300 mb-2">
+            {t._lang === 'fr' ? 'Pendant le match' : t._lang === 'en' ? 'During the match' : 'Durante el partido'}
+          </div>
+          <p className="text-white/70 text-sm leading-relaxed">
+            {t._lang === 'fr' ? "Ton bracelet réagit aux cris du salon. Les célébrations s'enchaînent en lumière, ta Fan Zone vibre avec toi." : t._lang === 'en' ? "Your wristband reacts to the room's shouts. Celebrations cascade in light, your Fan Zone vibes with you." : "Tu pulsera reacciona a los gritos del salón. Las celebraciones encadenan luces, tu Fan Zone vibra contigo."}
+          </p>
+        </div>
+        <div className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-amber-400/40 transition-all">
+          <div className="w-12 h-12 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center mb-4">
+            <BarChart3 className="w-6 h-6 text-amber-300" />
+          </div>
+          <div className="text-sm font-black uppercase tracking-widest text-amber-300 mb-2">
+            {t._lang === 'fr' ? 'Après le match' : t._lang === 'en' ? 'After the match' : 'Después del partido'}
+          </div>
+          <p className="text-white/70 text-sm leading-relaxed">
+            {t._lang === 'fr' ? "Débrief tactique, stats clés, moments forts, blagues sur l'arbitre. Le match continue dans le chat avec ta mascotte." : t._lang === 'en' ? "Tactical debrief, key stats, highlights, ref jokes. The match keeps going in the chat with your mascot." : "Análisis táctico, estadísticas clave, mejores momentos, bromas sobre el árbitro. El partido sigue en el chat con tu mascota."}
+          </p>
+        </div>
+      </div>
+
+      <ChatBubbleDemo t={t} />
+
+      <div className="text-center mt-12">
+        <Link to="/catalog" className="inline-flex items-center gap-3 px-8 py-4 bg-amber-400 text-slate-950 font-black uppercase tracking-widest rounded-full hover:bg-amber-300 transition-all hover:scale-105 shadow-[0_0_30px_rgba(252,211,77,0.4)]">
+          <Sparkles className="w-5 h-5" />
+          {t._lang === 'fr' ? 'Découvre ton compagnon IA' : t._lang === 'en' ? 'Discover your AI companion' : 'Descubre tu compañero IA'}
+          <ArrowRight className="w-5 h-5" />
+        </Link>
+
+        <div className="mt-6 text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold">
+          {t._lang === 'fr' ? '8 mascottes · 8 cultures · 0 IA générique' : t._lang === 'en' ? '8 mascots · 8 cultures · 0 generic AI' : '8 mascotas · 8 culturas · 0 IA genérica'}
+        </div>
+      </div>
+    </div>
+  </section>
+);
 
 export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
   const canonicalUrl = window.location.origin + '/';
@@ -53,9 +211,16 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
 
         <div className="relative z-20 max-w-4xl text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <span className="inline-block px-4 py-1 bg-france-red rounded-full text-xs font-black uppercase tracking-[0.3em] mb-6">
-              {t._lang === 'fr' ? 'Coupe du Monde 2026' : t._lang === 'en' ? 'World Cup 2026' : 'Copa del Mundo 2026'}
-            </span>
+            <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
+              <span className="inline-block px-4 py-1 bg-france-red rounded-full text-xs font-black uppercase tracking-[0.3em]">
+                {t._lang === 'fr' ? 'Coupe du Monde 2026' : t._lang === 'en' ? 'World Cup 2026' : 'Copa del Mundo 2026'}
+              </span>
+              <span className="inline-flex items-center gap-2 px-4 py-1 bg-black/60 backdrop-blur-md border border-amber-400/40 rounded-full text-xs font-black uppercase tracking-[0.3em] text-amber-300">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span className="bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded text-[9px] tracking-normal">AI</span>
+                {t._lang === 'fr' ? 'Companion · 1 par pays' : t._lang === 'en' ? 'Companion · 1 per country' : 'Companion · 1 por país'}
+              </span>
+            </div>
 
             <h1 className="text-xl md:text-2xl font-bold mb-4 text-[#002395] uppercase tracking-widest">{t.h1_seo}</h1>
 
@@ -71,10 +236,13 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
               className="bg-white/10 backdrop-blur-md border border-white/20 p-6 md:p-8 rounded-3xl mb-12 max-w-3xl mx-auto shadow-2xl"
             >
               <p className="text-xl md:text-2xl text-white font-bold leading-tight">
-                {t.hero_desc_prefix}
-                <span className="text-[#002395] glow-text drop-shadow-[0_0_10px_rgba(0,35,149,0.8)]">
-                  {t.hero_desc_highlight}
-                </span>
+                {t._lang === 'fr' ? (
+                  <>Le seul bracelet sound-reactive avec <span className="text-amber-300 glow-text drop-shadow-[0_0_10px_rgba(252,211,77,0.6)]">une IA dédiée à TON équipe</span>. Avant, pendant, après le match — ta mascotte est là.</>
+                ) : t._lang === 'en' ? (
+                  <>The only sound-reactive wristband with <span className="text-amber-300 glow-text drop-shadow-[0_0_10px_rgba(252,211,77,0.6)]">an AI dedicated to YOUR team</span>. Before, during, after the match — your mascot is there.</>
+                ) : (
+                  <>La única pulsera sound-reactive con <span className="text-amber-300 glow-text drop-shadow-[0_0_10px_rgba(252,211,77,0.6)]">una IA dedicada a TU equipo</span>. Antes, durante, después del partido — tu mascota está ahí.</>
+                )}
               </p>
               <div className="mt-4 flex items-center justify-center gap-2 text-france-red font-black uppercase tracking-widest text-[10px]">
                 <Zap className="w-4 h-4 fill-current" />
@@ -100,6 +268,9 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
         </div>
       </section>
 
+      {/* Killer IA Section */}
+      <KillerIASection t={t} />
+
       {/* Trust Badges */}
       <section className="py-12 bg-white/5 border-y border-white/10">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -117,61 +288,50 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
         </div>
       </section>
 
-      {/* Mascot AI Section */}
-      <section style={{ padding: '80px 24px', background: 'linear-gradient(135deg, rgba(0,35,149,0.15) 0%, rgba(237,41,57,0.08) 100%)', borderTop: '1px solid rgba(255,255,255,0.1)', borderBottom: '1px solid rgba(255,255,255,0.1)', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff', fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', padding: '6px 16px', borderRadius: '999px', marginBottom: '20px' }}>
-            <span style={{ color: '#FFD700', fontSize: '14px' }}>✦</span>
-            {t._lang === 'fr' ? 'Exclusif · 1 IA par pays' : t._lang === 'en' ? 'Exclusive · 1 AI per country' : 'Exclusivo · 1 IA por país'}
+      {/* Mascots Catalog Section */}
+      <section className="py-20 px-6 bg-gradient-to-br from-blue-950/20 via-slate-950 to-red-950/20 border-y border-white/10">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-400/10 border border-amber-400/40 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-amber-300 mb-6">
+            <Sparkles className="w-3.5 h-3.5" />
+            {t._lang === 'fr' ? 'Choisis ton camp' : t._lang === 'en' ? 'Pick your side' : 'Elige tu bando'}
           </div>
 
-          <h2 style={{ fontSize: '42px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '16px', lineHeight: 1.1 }}>
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight leading-tight mb-4">
             {t._lang === 'fr' ? (
-              <>Découvre <span style={{ color: '#002395' }}>ta mascotte IA</span><br/>développée pour ton pays</>
+              <>8 mascottes IA, <span className="text-amber-300 glow-text">une seule passion</span></>
             ) : t._lang === 'en' ? (
-              <>Meet <span style={{ color: '#002395' }}>your AI mascot</span><br/>built for your nation</>
+              <>8 AI mascots, <span className="text-amber-300 glow-text">one passion</span></>
             ) : (
-              <>Conoce <span style={{ color: '#002395' }}>tu mascota IA</span><br/>creada para tu país</>
+              <>8 mascotas IA, <span className="text-amber-300 glow-text">una pasión</span></>
             )}
           </h2>
 
-          <p style={{ color: 'rgba(255,255,255,0.6)', maxWidth: '680px', margin: '0 auto 40px', fontSize: '16px', lineHeight: 1.6 }}>
-            {t._lang === 'fr' ? "Chaque pays a sa propre mascotte IA — entraînée sur sa culture football, ses joueurs, son histoire. GAUL'O parle des Bleus, ZICO connaît la Seleção, DIEGO incarne l'âme argentine. Aucune n'est interchangeable." : t._lang === 'en' ? "Each country has its own AI mascot — trained on its football culture, players, history. GAUL'O speaks for Les Bleus, ZICO knows the Seleção, DIEGO embodies the Argentine spirit. None are interchangeable." : "Cada país tiene su propia mascota IA — entrenada en su cultura futbolística, jugadores, historia. GAUL'O habla por Les Bleus, ZICO conoce a la Seleção, DIEGO encarna el alma argentina. Ninguna es intercambiable."}
+          <p className="text-white/60 max-w-2xl mx-auto mb-12 text-base md:text-lg">
+            {t._lang === 'fr' ? "Chaque mascotte parle ta langue, connaît tes joueurs, vibre avec ta culture. Aucune n'est interchangeable." : t._lang === 'en' ? "Each mascot speaks your language, knows your players, vibes with your culture. None is interchangeable." : "Cada mascota habla tu idioma, conoce a tus jugadores, vibra con tu cultura. Ninguna es intercambiable."}
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', maxWidth: '900px', margin: '0 auto 40px' }}>
-            {[
-              { country: 'france', flag: '🇫🇷', name: 'GAUL\'O', role: 'Le coq tricolore', color: '#002395' },
-              { country: 'brazil', flag: '🇧🇷', name: 'ZICO', role: 'O tucano', color: '#009C3B' },
-              { country: 'usa', flag: '🇺🇸', name: 'STARZ', role: 'The eagle', color: '#B22234' },
-              { country: 'argentina', flag: '🇦🇷', name: 'DIEGO', role: 'El gaucho', color: '#74ACDF' },
-              { country: 'mexico', flag: '🇲🇽', name: 'TRI', role: 'El águila', color: '#006847' },
-              { country: 'canada', flag: '🇨🇦', name: 'HOCK', role: 'The beaver', color: '#FF0000' },
-              { country: 'portugal', flag: '🇵🇹', name: 'FADO', role: 'O galo', color: '#006600' },
-              { country: 'spain', flag: '🇪🇸', name: 'TIKI', role: 'El toro', color: '#AA151B' },
-            ].map(({ country, flag, name, role, color }) => (
-              <Link key={country} to={`/fan/${country}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.04)', border: `1px solid ${color}40`, borderRadius: '14px', padding: '20px 8px', textDecoration: 'none', color: '#fff', transition: 'all 0.25s', position: 'relative' }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = color;
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = `0 8px 24px ${color}40`;
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = `${color}40`;
-                  e.currentTarget.style.transform = '';
-                  e.currentTarget.style.boxShadow = '';
-                }}>
-                <span style={{ fontSize: '36px', marginBottom: '4px' }}>{flag}</span>
-                <span style={{ fontSize: '13px', fontWeight: 900, letterSpacing: '1px' }}>{name}</span>
-                <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>{role}</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            {MASCOT_DEMOS.map((m) => (
+              <Link
+                key={m.country}
+                to={`/fan/${m.country}`}
+                className="group relative flex flex-col items-center gap-2 p-5 rounded-2xl bg-white/5 border-2 transition-all hover:scale-105 hover:bg-white/10"
+                style={{ borderColor: `${m.color}40` }}
+              >
+                <div className="text-4xl mb-1">{m.flag}</div>
+                <div className="font-black text-white text-base tracking-wide">{m.name}</div>
+                <div className="text-[10px] uppercase tracking-widest text-white/50 font-bold">{m.role}</div>
+                <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-amber-400/20 border border-amber-400/40 rounded text-[8px] font-black text-amber-300 flex items-center gap-1">
+                  <Sparkles className="w-2.5 h-2.5" /> AI
+                </div>
               </Link>
             ))}
           </div>
 
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '8px 16px', background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '999px', fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', fontWeight: 700 }}>
-            <span style={{ color: '#FFD700' }}>✦</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-black/40 border border-white/10 rounded-full text-[10px] uppercase tracking-[0.3em] text-white/50 font-bold">
+            <Sparkles className="w-3 h-3 text-amber-300" />
             {t._lang === 'fr' ? 'Propulsé par' : t._lang === 'en' ? 'Powered by' : 'Impulsado por'}
-            <span style={{ color: '#fff' }}>Claude Haiku 4.5 · Anthropic</span>
+            <span className="text-white">Claude Haiku 4.5 · Anthropic</span>
           </div>
         </div>
       </section>
