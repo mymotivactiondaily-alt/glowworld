@@ -185,7 +185,7 @@ export const FanPage = () => {
   const [emailError, setEmailError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [squadView, setSquadView] = useState<'pitch' | 'list'>('pitch');
-  const [wonLastMatch, setWonLastMatch] = useState(false);
+  const [wonLastMatch, setWonLastMatch] = useState(true);
   const [celebrationActive, setCelebrationActive] = useState(false);
 
   useEffect(() => {
