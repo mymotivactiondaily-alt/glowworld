@@ -31,6 +31,31 @@ export const CatalogPage = ({ onAddToCart, t }: CatalogPageProps) => {
       </Helmet>
       <div className="mb-12">
         <h1 className="text-5xl font-black uppercase tracking-tighter mb-6">{t.shop}</h1>
+
+        {/* Bonus Fan AI Companion */}
+        <div className="mb-8 p-5 rounded-2xl border border-white/10 bg-gradient-to-r from-blue-950/40 via-slate-900/40 to-red-950/40 backdrop-blur-sm">
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">✦</span>
+              <span className="text-xs font-black uppercase tracking-widest text-white/80">
+                Bonus inclus
+              </span>
+            </div>
+            <div className="flex-1 min-w-[200px]">
+              <div className="text-base font-bold text-white">
+                Accès exclusif à la Fan Zone IA
+              </div>
+              <div className="text-sm text-white/60 mt-1">
+                Chaque bracelet débloque une mascotte conversationnelle 
+                dédiée à ton équipe — propulsée par Claude Haiku 4.5.
+              </div>
+            </div>
+            <div className="text-[10px] uppercase tracking-widest text-white/40 font-bold">
+              Powered by Claude · Anthropic
+            </div>
+          </div>
+        </div>
+
         <div className="flex flex-wrap gap-4">
           {TEAMS.map((f) => (
             <button
