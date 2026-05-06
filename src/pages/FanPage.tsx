@@ -790,19 +790,37 @@ export const FanPage = () => {
         </div>
       </div>
 
-      <div style={{ 
-        textAlign: 'center', 
-        padding: '8px 20px 0',
-        fontSize: '9px',
-        letterSpacing: '2px',
-        textTransform: 'uppercase',
-        color: config.colors.muted,
-        opacity: 0.4,
-        fontFamily: 'Inter, sans-serif',
-        fontWeight: 600
+  <div style={{ 
+    textAlign: 'center', 
+    padding: '20px 20px 8px',
+  }}>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '10px',
+      padding: '10px 18px',
+      background: `${config.colors.bgDark}`,
+      border: `1px solid ${config.colors.primary}50`,
+      borderRadius: '999px',
+      fontSize: '11px',
+      letterSpacing: '2px',
+      textTransform: 'uppercase',
+      color: '#fff',
+      fontFamily: 'Inter, sans-serif',
+      fontWeight: 700,
+      boxShadow: `0 0 20px ${config.colors.primary}20`,
+    }}>
+      <span style={{ fontSize: '14px' }}>✦</span>
+      <span>Fan AI Companion</span>
+      <span style={{ 
+        opacity: 0.5, 
+        fontSize: '10px',
+        fontWeight: 500,
       }}>
-        ✦ &nbsp;Fan Companion AI &nbsp;·&nbsp; Claude Haiku 4.5
-      </div>
+        powered by Claude Haiku 4.5
+      </span>
+    </div>
+  </div>
 
       {/* Footer */}
       <div style={{ textAlign: 'center', padding: '20px', fontSize: '11px', color: config.colors.border, letterSpacing: '1px', textTransform: 'uppercase' }}>
