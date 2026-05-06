@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, useSpring, useMotionValue, animate } from 'motion/react';
 import { MascotConfig, CountryKey } from '../../config/mascotConfig';
 import { MascotState } from '../../hooks/useMascotChat';
 import './MascotAnimations.css';
@@ -21,6 +22,19 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
 }) => {
   const [isBlinking, setIsBlinking] = useState(false);
   const [showBubble, setShowBubble] = useState(false);
+
+  // Eye tracking
+  const eyeX = useMotionValue(0);
+  const eyeY = useMotionValue(0);
+  const smoothEyeX = useSpring(eyeX, { stiffness: 80, damping: 20 });
+  const smoothEyeY = useSpring(eyeY, { stiffness: 80, damping: 20 });
+
+  // Scroll tilt
+  const tilt = useMotionValue(0);
+  const smoothTilt = useSpring(tilt, { stiffness: 60, damping: 18 });
+
+  // Idle bob (y position)
+  const bobY = useMotionValue(0);
 
   useEffect(() => {
     let blinkTimer: NodeJS.Timeout;
@@ -46,6 +60,45 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
 
     return () => clearTimeout(timer);
   }, [isVisible, state]);
+
+  // 3a. Eye tracking — suit la souris
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const el = document.querySelector('.mascot-companion-container');
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = (e.clientX - cx) / window.innerWidth;
+      const dy = (e.clientY - cy) / window.innerHeight;
+      eyeX.set(dx * 15);
+      eyeY.set(dy * 15);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [eyeX, eyeY]);
+
+  // 3b. Scroll tilt
+  useEffect(() => {
+    const handleScroll = () => {
+      const max = document.body.scrollHeight - window.innerHeight;
+      const ratio = max > 0 ? window.scrollY / max : 0;
+      tilt.set((ratio - 0.5) * 16); // ±8°
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [tilt]);
+
+  // 3c. Idle bob — animation infinie 5 keyframes
+  useEffect(() => {
+    if (state !== 'idle') return;
+    const controls = animate(bobY, [0, -6, 0, -4, 0], {
+      duration: 3.5,
+      repeat: Infinity,
+      ease: 'easeInOut',
+    });
+    return () => controls.stop();
+  }, [state, bobY]);
 
   if (!isVisible && state === 'idle') return null;
 
@@ -128,12 +181,23 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
            />
         </div>
 
-        <img 
-          src={mascot.image} 
-          alt={mascot.name}
-          className="w-full h-full object-contain drop-shadow-2xl"
-          draggable={false}
-        />
+        <motion.div
+          style={{
+            x: smoothEyeX,
+            y: bobY,          // idle bob
+            rotate: smoothTilt,
+            width: '100%',
+            height: '100%',
+          }}
+          whileTap={{ scale: 0.85, transition: { type: 'spring', stiffness: 400, damping: 15 } }}
+        >
+          <img
+            src={mascot.image}
+            alt={mascot.name}
+            className="w-full h-full object-contain drop-shadow-2xl"
+            draggable={false}
+          />
+        </motion.div>
 
         {state === 'speaking' && (
           <div className="absolute -top-2 -right-2 flex space-x-1.5 p-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 shadow-xl">
