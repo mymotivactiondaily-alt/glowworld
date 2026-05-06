@@ -117,36 +117,61 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
         </div>
       </section>
 
-      {/* Fan Page Section */}
-      <section style={{ padding: '60px 24px', background: 'rgba(0,35,149,0.08)', borderTop: '1px solid rgba(0,35,149,0.2)', borderBottom: '1px solid rgba(0,35,149,0.2)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ display: 'inline-block', background: '#ED2939', color: '#fff', fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', padding: '4px 12px', borderRadius: '3px', marginBottom: '16px' }}>
-            {t._lang === 'fr' ? 'Exclusif avec votre bracelet' : t._lang === 'en' ? 'Exclusive with your wristband' : 'Exclusivo con tu pulsera'}
+      {/* Mascot AI Section */}
+      <section style={{ padding: '80px 24px', background: 'linear-gradient(135deg, rgba(0,35,149,0.15) 0%, rgba(237,41,57,0.08) 100%)', borderTop: '1px solid rgba(255,255,255,0.1)', borderBottom: '1px solid rgba(255,255,255,0.1)', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff', fontSize: '10px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', padding: '6px 16px', borderRadius: '999px', marginBottom: '20px' }}>
+            <span style={{ color: '#FFD700', fontSize: '14px' }}>✦</span>
+            {t._lang === 'fr' ? 'Exclusif · 1 IA par pays' : t._lang === 'en' ? 'Exclusive · 1 AI per country' : 'Exclusivo · 1 IA por país'}
           </div>
-          <h2 style={{ fontSize: '36px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px' }}>
-            {t._lang === 'fr' ? 'Votre espace fan digital' : t._lang === 'en' ? 'Your digital fan zone' : 'Tu zona fan digital'}
+
+          <h2 style={{ fontSize: '42px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '16px', lineHeight: 1.1 }}>
+            {t._lang === 'fr' ? (
+              <>Découvre <span style={{ color: '#002395' }}>ta mascotte IA</span><br/>développée pour ton pays</>
+            ) : t._lang === 'en' ? (
+              <>Meet <span style={{ color: '#002395' }}>your AI mascot</span><br/>built for your nation</>
+            ) : (
+              <>Conoce <span style={{ color: '#002395' }}>tu mascota IA</span><br/>creada para tu país</>
+            )}
           </h2>
-          <p style={{ color: 'rgba(255,255,255,0.5)', maxWidth: '600px', margin: '0 auto 32px', fontSize: '16px', lineHeight: 1.6 }}>
-            {t._lang === 'fr' ? 'Chaque bracelet donne accès à une page fan exclusive — matchs en direct, composition de l\'équipe, classement et hymne national.' : t._lang === 'en' ? 'Each wristband unlocks an exclusive fan page — live matches, team lineup, group standings and national anthem.' : 'Cada pulsera da acceso a una página fan exclusiva — partidos en directo, alineación del equipo, clasificación e himno nacional.'}
+
+          <p style={{ color: 'rgba(255,255,255,0.6)', maxWidth: '680px', margin: '0 auto 40px', fontSize: '16px', lineHeight: 1.6 }}>
+            {t._lang === 'fr' ? "Chaque pays a sa propre mascotte IA — entraînée sur sa culture football, ses joueurs, son histoire. GAUL'O parle des Bleus, ZICO connaît la Seleção, DIEGO incarne l'âme argentine. Aucune n'est interchangeable." : t._lang === 'en' ? "Each country has its own AI mascot — trained on its football culture, players, history. GAUL'O speaks for Les Bleus, ZICO knows the Seleção, DIEGO embodies the Argentine spirit. None are interchangeable." : "Cada país tiene su propia mascota IA — entrenada en su cultura futbolística, jugadores, historia. GAUL'O habla por Les Bleus, ZICO conoce a la Seleção, DIEGO encarna el alma argentina. Ninguna es intercambiable."}
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', maxWidth: '800px', margin: '0 auto 32px' }}>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', maxWidth: '900px', margin: '0 auto 40px' }}>
             {[
-              { country: 'france', flag: '🇫🇷', name: 'France' },
-              { country: 'brazil', flag: '🇧🇷', name: 'Brésil' },
-              { country: 'usa', flag: '🇺🇸', name: 'USA' },
-              { country: 'argentina', flag: '🇦🇷', name: 'Argentine' },
-              { country: 'mexico', flag: '🇲🇽', name: 'Mexique' },
-              { country: 'canada', flag: '🇨🇦', name: 'Canada' },
-              { country: 'portugal', flag: '🇵🇹', name: 'Portugal' },
-              { country: 'spain', flag: '🇪🇸', name: 'Espagne' },
-            ].map(({ country, flag, name }) => (
-              <Link key={country} to={`/fan/${country}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '16px 8px', textDecoration: 'none', color: '#fff', transition: 'all 0.2s' }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = '#002395')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)')}>
-                <span style={{ fontSize: '28px' }}>{flag}</span>
-                <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>{name}</span>
+              { country: 'france', flag: '🇫🇷', name: 'GAUL\'O', role: 'Le coq tricolore', color: '#002395' },
+              { country: 'brazil', flag: '🇧🇷', name: 'ZICO', role: 'O tucano', color: '#009C3B' },
+              { country: 'usa', flag: '🇺🇸', name: 'STARZ', role: 'The eagle', color: '#B22234' },
+              { country: 'argentina', flag: '🇦🇷', name: 'DIEGO', role: 'El gaucho', color: '#74ACDF' },
+              { country: 'mexico', flag: '🇲🇽', name: 'TRI', role: 'El águila', color: '#006847' },
+              { country: 'canada', flag: '🇨🇦', name: 'HOCK', role: 'The beaver', color: '#FF0000' },
+              { country: 'portugal', flag: '🇵🇹', name: 'FADO', role: 'O galo', color: '#006600' },
+              { country: 'spain', flag: '🇪🇸', name: 'TIKI', role: 'El toro', color: '#AA151B' },
+            ].map(({ country, flag, name, role, color }) => (
+              <Link key={country} to={`/fan/${country}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.04)', border: `1px solid ${color}40`, borderRadius: '14px', padding: '20px 8px', textDecoration: 'none', color: '#fff', transition: 'all 0.25s', position: 'relative' }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = color;
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = `0 8px 24px ${color}40`;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = `${color}40`;
+                  e.currentTarget.style.transform = '';
+                  e.currentTarget.style.boxShadow = '';
+                }}>
+                <span style={{ fontSize: '36px', marginBottom: '4px' }}>{flag}</span>
+                <span style={{ fontSize: '13px', fontWeight: 900, letterSpacing: '1px' }}>{name}</span>
+                <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>{role}</span>
               </Link>
             ))}
+          </div>
+
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '8px 16px', background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '999px', fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', fontWeight: 700 }}>
+            <span style={{ color: '#FFD700' }}>✦</span>
+            {t._lang === 'fr' ? 'Propulsé par' : t._lang === 'en' ? 'Powered by' : 'Impulsado por'}
+            <span style={{ color: '#fff' }}>Claude Haiku 4.5 · Anthropic</span>
           </div>
         </div>
       </section>

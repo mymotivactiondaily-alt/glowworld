@@ -4,41 +4,6 @@ import { Message } from '../../hooks/useMascotChat';
 import { Send, X, Trash2 } from 'lucide-react';
 
 
-const ConfettiBurst = () => {
-  const [particles, setParticles] = useState<{ id: number, x: string, y: string, color: string }[]>([]);
-  
-  useEffect(() => {
-    const colors = ['#FFD700', '#FF4500', '#00BFFF', '#32CD32', '#FF69B4'];
-    const newParticles = Array.from({ length: 30 }).map((_, i) => ({
-      id: i,
-      x: `${(Math.random() - 0.5) * 400}px`,
-      y: `${-Math.random() * 300}px`,
-      color: colors[Math.floor(Math.random() * colors.length)]
-    }));
-    setParticles(newParticles);
-    const timer = setTimeout(() => setParticles([]), 2500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden z-[70]">
-      {particles.map(p => (
-        <div 
-          key={p.id}
-          className="confetti-particle"
-          style={{ 
-            '--tw-translate-x': p.x, 
-            '--tw-translate-y': p.y,
-            backgroundColor: p.color,
-            width: Math.random() * 8 + 4 + 'px',
-            height: Math.random() * 8 + 4 + 'px',
-            transform: `rotate(${Math.random() * 360}deg)`
-          } as any}
-        />
-      ))}
-    </div>
-  );
-};
 
 interface MascotChatPanelProps {
   mascot: MascotConfig;
@@ -79,8 +44,7 @@ export const MascotChatPanel: React.FC<MascotChatPanelProps> = ({
 
   return (
     <div className="fixed inset-0 md:inset-auto md:bottom-24 md:right-6 md:w-[420px] md:h-[650px] z-[60] flex flex-col glass-panel md:rounded-[3rem] overflow-hidden animate-panel-slide-up shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10">
-      {/* Celebration Overlay */}
-      {mascotState === 'celebrating' && <ConfettiBurst />}
+
 
       {/* Header: Dark Glass Style (Correction 7) */}
       <div 

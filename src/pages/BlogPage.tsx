@@ -24,6 +24,27 @@ export const BlogPage = ({ t }: BlogPageProps) => {
       <h1 className="text-5xl font-black uppercase tracking-tighter mb-12">
         {t._lang === 'fr' ? 'Le Blog GlowWorld' : t._lang === 'en' ? 'GlowWorld Blog' : 'Blog GlowWorld'}
       </h1>
+
+      {/* Pinned IA article */}
+      <div className="mb-12 p-6 md:p-8 rounded-2xl border-2 border-amber-400/30 bg-gradient-to-br from-blue-950/40 via-slate-900/40 to-red-950/40 backdrop-blur-sm relative overflow-hidden">
+        <div className="absolute top-3 right-3 bg-amber-400 text-slate-950 text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md">
+          ✦ {t._lang === 'fr' ? 'Épinglé' : t._lang === 'en' ? 'Pinned' : 'Fijado'}
+        </div>
+        <div className="text-amber-400 text-3xl mb-3">✦</div>
+        <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 font-bold">
+          Innovation · GlowWorld 2026
+        </div>
+        <h2 className="text-2xl md:text-3xl font-black mb-3 leading-tight">
+          {t._lang === 'fr' ? "8 mascottes IA, 8 cultures, 1 passion" : t._lang === 'en' ? "8 AI mascots, 8 cultures, 1 passion" : "8 mascotas IA, 8 culturas, 1 pasión"}
+        </h2>
+        <p className="text-white/60 mb-4 leading-relaxed">
+          {t._lang === 'fr' ? "Découvre comment GlowWorld a développé une IA unique pour chaque nation — GAUL'O pour la France, ZICO pour le Brésil, DIEGO pour l'Argentine... Chaque mascotte connaît son équipe, son histoire, son folklore." : t._lang === 'en' ? "Discover how GlowWorld built a unique AI for each nation — GAUL'O for France, ZICO for Brazil, DIEGO for Argentina... Each mascot knows its team, its history, its folklore." : "Descubre cómo GlowWorld desarrolló una IA única para cada nación — GAUL'O para Francia, ZICO para Brasil, DIEGO para Argentina... Cada mascota conoce su equipo, su historia, su folclore."}
+        </p>
+        <div className="text-[10px] uppercase tracking-widest text-amber-400/80 font-bold">
+          ✦ Powered by Claude Haiku 4.5 — Anthropic
+        </div>
+      </div>
+
       <div className="space-y-12">
         {BLOG_POSTS.map((post) => (
           <Link key={post.id} to={`/blog/${post.slug}`}>

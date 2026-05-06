@@ -33,25 +33,22 @@ export const CatalogPage = ({ onAddToCart, t }: CatalogPageProps) => {
         <h1 className="text-5xl font-black uppercase tracking-tighter mb-6">{t.shop}</h1>
 
         {/* Bonus Fan AI Companion */}
-        <div className="mb-8 p-5 rounded-2xl border border-white/10 bg-gradient-to-r from-blue-950/40 via-slate-900/40 to-red-950/40 backdrop-blur-sm">
-          <div className="flex items-center gap-4 flex-wrap">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">✦</span>
-              <span className="text-xs font-black uppercase tracking-widest text-white/80">
-                Bonus inclus
-              </span>
-            </div>
-            <div className="flex-1 min-w-[200px]">
-              <div className="text-base font-bold text-white">
-                Accès exclusif à la Fan Zone IA
+        <div className="mb-8 p-6 rounded-2xl border-2 border-amber-400/30 bg-gradient-to-r from-blue-950/60 via-slate-900/60 to-red-950/60 backdrop-blur-sm relative overflow-hidden">
+          <div className="absolute top-0 right-0 bg-amber-400 text-slate-950 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-bl-xl">
+            Inclus · {filtered.length > 0 ? filtered[0].team : ''}
+          </div>
+          <div className="flex items-start gap-5 flex-wrap mt-2">
+            <div className="text-4xl">✦</div>
+            <div className="flex-1 min-w-[260px]">
+              <div className="text-xl font-black text-white mb-2 uppercase tracking-tight">
+                {t._lang === 'fr' ? 'Une IA dédiée à ton équipe' : t._lang === 'en' ? 'An AI dedicated to your team' : 'Una IA dedicada a tu equipo'}
               </div>
-              <div className="text-sm text-white/60 mt-1">
-                Chaque bracelet débloque une mascotte conversationnelle 
-                dédiée à ton équipe — propulsée par Claude Haiku 4.5.
+              <div className="text-sm text-white/70 leading-relaxed mb-3">
+                {t._lang === 'fr' ? "Chaque bracelet débloque une mascotte IA exclusive, entraînée spécifiquement sur la culture football de ton pays. Pas une IA générique — une IA qui parle ta passion." : t._lang === 'en' ? "Each wristband unlocks an exclusive AI mascot, trained specifically on your country's football culture. Not a generic AI — one that speaks your passion." : "Cada pulsera desbloquea una mascota IA exclusiva, entrenada específicamente en la cultura futbolística de tu país. No una IA genérica — una que habla tu pasión."}
               </div>
-            </div>
-            <div className="text-[10px] uppercase tracking-widest text-white/40 font-bold">
-              Powered by Claude · Anthropic
+              <div className="text-[10px] uppercase tracking-widest text-amber-400/80 font-bold">
+                ✦ Powered by Claude Haiku 4.5 — Anthropic
+              </div>
             </div>
           </div>
         </div>
