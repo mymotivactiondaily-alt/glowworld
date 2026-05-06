@@ -74,6 +74,10 @@ export const ProductCard = ({ product, onAddToCart, t }: ProductCardProps) => {
               <Trophy className="w-2.5 h-2.5" /> {t.premium_edition}
             </span>
           )}
+          <span className="bg-black/80 backdrop-blur-sm text-white text-[8px] font-black px-2 py-1 rounded-full border border-white/20 flex items-center gap-1 shadow-lg">
+            <span className="text-amber-400">✦</span>
+            IA {product.team} incluse
+          </span>
         </div>
         <div className={cn(
           "absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-slate-950 to-transparent transition-opacity",

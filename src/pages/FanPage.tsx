@@ -291,11 +291,12 @@ export const FanPage = () => {
 
   useEffect(() => {
     if (!wonLastMatch) return;
-    const t = setTimeout(() => {
-      setCelebrationActive(true);
-      setTimeout(() => setCelebrationActive(false), 100);
-    }, 1800);
-    return () => clearTimeout(t);
+    const t1 = setTimeout(() => setCelebrationActive(true), 1800);
+    const t2 = setTimeout(() => setCelebrationActive(false), 8000);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, [wonLastMatch]);
 
   const handleRequestAccess = async () => {
