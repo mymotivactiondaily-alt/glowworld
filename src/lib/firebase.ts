@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInAnonymously } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getAnalytics } from 'firebase/analytics';
 
@@ -21,5 +21,17 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
+
+// Auto sign-in anonymously at startup
+// Ensures Firestore has a valid auth token before any component
+// tries to read/write (avoids "Missing or insufficient permissions"
+// on initial WebSocket connection)
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    signInAnonymously(auth).catch((err) => {
+      console.error('[Firebase] Auto anonymous sign-in failed:', err);
+    });
+  }
+});
 
 export default app;
