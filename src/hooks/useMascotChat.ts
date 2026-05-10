@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { MASCOT_CONFIG, CountryKey, COUNTRY_TO_BACKEND_CODE } from '../config/mascotConfig';
 import { collection, onSnapshot, query, orderBy, Timestamp } from 'firebase/firestore';
+import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { db } from '../lib/firebase';
 
 export interface Message {
@@ -29,6 +30,19 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
   // Stable ref for isLoading to avoid stale closures in useCallback
   const isLoadingRef = useRef(false);
   const unsubscribeRef = useRef<(() => void) | null>(null);
+
+  // Anonymous Auth — required for Firestore Security Rules
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        signInAnonymously(auth).catch((err) => {
+          console.error('[useMascotChat] Anonymous sign-in failed:', err);
+        });
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   // Load history on first open and listen for updates
   const historyLoaded = useRef(false);
