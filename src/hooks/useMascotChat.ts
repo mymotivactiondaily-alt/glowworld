@@ -20,6 +20,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [mascotState, setMascotState] = useState<MascotState>('idle');
+  const [isAuthReady, setIsAuthReady] = useState(false);
   
   const mascot = MASCOT_CONFIG[countryCode as CountryKey];
   const backendCode = COUNTRY_TO_BACKEND_CODE[countryCode as CountryKey];
@@ -34,10 +35,14 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
   // Anonymous Auth — required for Firestore Security Rules
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        signInAnonymously(auth).catch((err) => {
-          console.error('[useMascotChat] Anonymous sign-in failed:', err);
-        });
+      if (user) {
+        setIsAuthReady(true);
+      } else {
+        signInAnonymously(auth)
+          .then(() => setIsAuthReady(true))
+          .catch((err) => {
+            console.error('[useMascotChat] Anonymous sign-in failed:', err);
+          });
       }
     });
     return () => unsubscribe();
@@ -46,7 +51,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
   // Load history on first open and listen for updates
   const historyLoaded = useRef(false);
   useEffect(() => {
-    if (isOpen && !historyLoaded.current && email && fanToken && backendCode) {
+    if (isOpen && !historyLoaded.current && email && fanToken && backendCode && isAuthReady) {
       loadHistory();
       historyLoaded.current = true;
     }
@@ -59,7 +64,7 @@ export const useMascotChat = (countryCode: string, email: string, fanToken: stri
         historyLoaded.current = false;
       }
     };
-  }, [isOpen, email, fanToken, backendCode]);
+  }, [isOpen, email, fanToken, backendCode, isAuthReady]);
 
   // Cleanup: abort any in-flight fetch on unmount
   useEffect(() => {
