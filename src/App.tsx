@@ -68,7 +68,7 @@ function AppContent() {
     <div className="min-h-screen flex flex-col">
       <ScrollToTop />
       <Navbar cartCount={cartCount} onOpenCart={() => setIsCartOpen(true)} lang={lang} setLang={setLang} t={t} />
-      <SocialProof />
+      {!location.pathname.startsWith('/fan') && <SocialProof />}
 
       <main className="flex-1">
         <Routes>

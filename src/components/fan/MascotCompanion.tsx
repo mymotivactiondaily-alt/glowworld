@@ -3,7 +3,7 @@ import { motion, useSpring, useMotionValue, animate } from 'motion/react';
 import { MascotConfig, CountryKey } from '../../config/mascotConfig';
 import { MascotState } from '../../hooks/useMascotChat';
 import './MascotAnimations.css';
-import { MessageSquare, ArrowRight } from 'lucide-react';
+import { MessageSquare, ArrowRight, X } from 'lucide-react';
 
 interface MascotCompanionProps {
   mascot: MascotConfig;
@@ -23,6 +23,7 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
   isMinimized 
 }) => {
   const [showBubble, setShowBubble] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
   const [celebEmojis, setCelebEmojis] = useState<{id: number, emoji: string, x: number}[]>([]);
 
   // Flip Y
@@ -42,7 +43,7 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
   const bobY = useMotionValue(0);
 
   useEffect(() => {
-    if (!isVisible || state !== 'idle') {
+    if (!isVisible || state !== 'idle' || dismissed) {
       setShowBubble(false);
       return;
     }
@@ -52,7 +53,7 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
     }, 1500);
 
     return () => clearTimeout(timer);
-  }, [isVisible, state]);
+  }, [isVisible, state, dismissed]);
 
   // 3a. Eye tracking — suit la souris
   useEffect(() => {
@@ -156,6 +157,15 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
              className="glass-panel p-5 rounded-[2rem] rounded-br-none border-l-4 shadow-2xl max-w-[280px] relative"
              style={{ borderLeftColor: mascot.primaryColor }}
            >
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDismissed(true);
+                }}
+                className="absolute top-3 right-3 p-1 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-colors"
+              >
+                <X size={14} />
+              </button>
               <p className="text-white text-sm font-bold leading-relaxed mb-4">
                 {mascot.welcomeMessage}
               </p>
@@ -199,7 +209,13 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
           ${!isMinimized && state === 'speaking' ? 'mascot-state-speaking' : ''}
           ${!isMinimized && state === 'celebrating' ? 'mascot-state-celebrating' : ''}
         `}
-        onClick={onClick}
+        onClick={() => {
+          if (dismissed) {
+            setDismissed(false);
+          } else {
+            onClick();
+          }
+        }}
       >
         <div className="mascot-halo" />
 
