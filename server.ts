@@ -689,6 +689,35 @@ async function startServer() {
     }
   });
 
+  // Proxy football-data.org (évite le blocage CORS en production)
+  app.get('/api/football/matches', async (req, res) => {
+    const { teamId, status, limit } = req.query;
+    const apiKey = process.env.FOOTBALL_DATA_API_KEY;
+    if (!apiKey) return res.status(500).json({ error: 'API key manquante' });
+    try {
+      const url = `https://api.football-data.org/v4/teams/${teamId}/matches?status=${status}&limit=${limit || 1}`;
+      const response = await fetch(url, { headers: { 'X-Auth-Token': apiKey } });
+      const data = await response.json();
+      res.json(data);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/football/standings', async (req, res) => {
+    const { competition } = req.query;
+    const apiKey = process.env.FOOTBALL_DATA_API_KEY;
+    if (!apiKey) return res.status(500).json({ error: 'API key manquante' });
+    try {
+      const url = `https://api.football-data.org/v4/competitions/${competition}/standings`;
+      const response = await fetch(url, { headers: { 'X-Auth-Token': apiKey } });
+      const data = await response.json();
+      res.json(data);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   app.get('/sitemap.xml', (req, res) => {
     res.setHeader('Content-Type', 'application/xml');
     res.sendFile(path.join(__dirname, 'public', 'sitemap.xml'));
