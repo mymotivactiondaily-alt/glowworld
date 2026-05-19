@@ -16,6 +16,7 @@ import { SocialProof } from './components/SocialProof';
 import { HowItWorks } from './components/HowItWorks';
 import { ScrollToTop } from './components/ScrollToTop';
 import { CookieConsent } from './components/CookieConsent';
+import { UrgencyBanner } from './components/UrgencyBanner';
 
 // Pages
 import { HomePage } from './pages/HomePage';
@@ -67,6 +68,7 @@ function AppContent() {
   return (
     <div className="min-h-screen flex flex-col">
       <ScrollToTop />
+      <UrgencyBanner />
       <Navbar cartCount={cartCount} onOpenCart={() => setIsCartOpen(true)} lang={lang} setLang={setLang} t={t} />
       {!location.pathname.startsWith('/fan') && <SocialProof />}
 
