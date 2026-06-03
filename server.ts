@@ -264,6 +264,57 @@ async function startServer() {
     }
   });
 
+  async function sendPurchaseToGA4(orderData: any, session: any): Promise<void> {
+    const measurementId = process.env.GA4_MEASUREMENT_ID;
+    const apiSecret = process.env.GA4_API_SECRET;
+
+    if (!measurementId || !apiSecret) {
+      console.warn("⚠️ GA4: Missing GA4_MEASUREMENT_ID or GA4_API_SECRET, skipping tracking.");
+      return;
+    }
+
+    try {
+      const clientId = (orderData.userId && orderData.userId !== 'guest') 
+        ? orderData.userId 
+        : orderData.orderId;
+
+      const payload = {
+        client_id: clientId,
+        events: [
+          {
+            name: 'purchase',
+            params: {
+              currency: orderData.currency ? orderData.currency.toUpperCase() : 'EUR',
+              value: orderData.amount,
+              transaction_id: orderData.orderId,
+              items: (orderData.items || []).map((item: any) => ({
+                item_id: item.id,
+                item_name: item.name?.fr || item.name || 'GlowWorld product',
+                price: item.price,
+                quantity: item.quantity || 1
+              }))
+            }
+          }
+        ]
+      };
+
+      await fetch(
+        `https://www.google-analytics.com/mp/collect?measurement_id=${measurementId}&api_secret=${apiSecret}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        }
+      );
+
+      console.log(`📊 GA4 Purchase tracked for ${orderData.orderId} - ${orderData.amount} ${orderData.currency}`);
+    } catch (error) {
+      console.error(`❌ GA4 Tracking Error for ${orderData.orderId}:`, error);
+    }
+  }
+
   // Webhook needs raw response
   app.post("/api/webhook", express.raw({ type: 'application/json' }), async (req, res) => {
     console.log("🔔 Stripe Webhook: Requête reçue.");
@@ -348,6 +399,11 @@ async function startServer() {
           console.error(`❌ Email Error (Session ${session.id}):`, emailErr);
         }
       }
+
+      // 5. Send Purchase to GA4
+      sendPurchaseToGA4(orderData, session).catch(err => {
+        console.error(`❌ GA4 Trigger Error (Session ${session.id}):`, err);
+      });
     }
 
     res.json({ received: true });
