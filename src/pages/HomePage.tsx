@@ -14,14 +14,14 @@ interface HomePageProps {
 }
 
 const MASCOT_DEMOS = [
-  { country: 'france', flag: '🇫🇷', name: "GAUL'O", role: 'Le coq tricolore', message: "Cocorico camarade ! Mbappé est en feu depuis 3 matchs. On joue le Brésil demain — tu sais qu'on les a battus 1-0 en 2006 ? Allez les Bleus !", color: '#002395', image: '/images/mascot_gaulo.png' },
-  { country: 'brazil', flag: '🇧🇷', name: 'ZICO', role: 'O tucano', message: "Ôi meu amigo! A Seleção tá afiada. Vinicius e Rodrygo prontos pra brilhar. Hexa tá chegando, vamos juntos!", color: '#009C3B', image: '/images/mascot_zico.png' },
-  { country: 'argentina', flag: '🇦🇷', name: 'DIEGO', role: 'El gaucho', message: "¡Che amigo! La Albiceleste viene con todo. Messi nos guía como siempre. ¡Vamos por la gloria, hermano!", color: '#74ACDF', image: '/images/mascot_diego.png' },
-  { country: 'usa', flag: '🇺🇸', name: 'STARZ', role: 'The eagle', message: "Hey buddy! USMNT is rolling — Pulisic is on fire and we're playing at home. This is OUR World Cup. Let's go USA!", color: '#B22234', image: '/images/mascot_starz.png' },
-  { country: 'mexico', flag: '🇲🇽', name: 'TRI', role: 'El águila', message: "¡Órale compadre! El Tri viene afilado. Lozano y Jiménez listos pa' la batalla. ¡Arriba México, vamos por todo!", color: '#006847', image: '/images/mascot_tri.png' },
-  { country: 'canada', flag: '🇨🇦', name: 'HOCK', role: 'The beaver', message: "Hey buddy, eh! Canada Soccer is ready. Davies and Jonathan David lighting it up. We're hosting — let's make history!", color: '#FF0000', image: '/images/mascot_hock.png' },
-  { country: 'portugal', flag: '🇵🇹', name: 'FADO', role: 'O galo', message: "Olá companheiro! A Selecção está pronta. Cristiano sempre afiado, Bernardo Silva mágico. Força Portugal, vamos juntos!", color: '#006600', image: '/images/mascot_fado.png' },
-  { country: 'spain', flag: '🇪🇸', name: 'TIKI', role: 'El toro', message: "¡Hola amigo! La Roja viene con tiki-taka puro. Pedri, Rodri, Morata — el equipo está listo. ¡Vamos España, a por todo!", color: '#AA151B', image: '/images/mascot_tiki.png' },
+  { country: 'france', flag: '🇫🇷', name: "GAUL'O", role: 'Le coq tricolore', message: "Cocorico camarade ! Mbappé est en feu depuis 3 matchs. On joue le Brésil demain — tu sais qu'on les a battus 1-0 en 2006 ? Allez les Bleus !", color: '#002395', image: '/images/mascots/gaulo.png' },
+  { country: 'brazil', flag: '🇧🇷', name: 'ZICO', role: 'O tucano', message: "Ôi meu amigo! A Seleção tá afiada. Vinicius e Rodrygo prontos pra brilhar. Hexa tá chegando, vamos juntos!", color: '#009C3B', image: '/images/mascots/zico.png' },
+  { country: 'argentina', flag: '🇦🇷', name: 'DIEGO', role: 'El gaucho', message: "¡Che amigo! La Albiceleste viene con todo. Messi nos guía como siempre. ¡Vamos por la gloria, hermano!", color: '#74ACDF', image: '/images/mascots/diego.png' },
+  { country: 'usa', flag: '🇺🇸', name: 'STARZ', role: 'The eagle', message: "Hey buddy! USMNT is rolling — Pulisic is on fire and we're playing at home. This is OUR World Cup. Let's go USA!", color: '#B22234', image: '/images/mascots/starz.png' },
+  { country: 'mexico', flag: '🇲🇽', name: 'TRI', role: 'El águila', message: "¡Órale compadre! El Tri viene afilado. Lozano y Jiménez listos pa' la batalla. ¡Arriba México, vamos por todo!", color: '#006847', image: '/images/mascots/tri.png' },
+  { country: 'canada', flag: '🇨🇦', name: 'HOCK', role: 'The beaver', message: "Hey buddy, eh! Canada Soccer is ready. Davies and Jonathan David lighting it up. We're hosting — let's make history!", color: '#FF0000', image: '/images/mascots/hock.png' },
+  { country: 'portugal', flag: '🇵🇹', name: 'FADO', role: 'O galo', message: "Olá companheiro! A Selecção está pronta. Cristiano sempre afiado, Bernardo Silva mágico. Força Portugal, vamos juntos!", color: '#006600', image: '/images/mascots/fado.png' },
+  { country: 'spain', flag: '🇪🇸', name: 'TIKI', role: 'El toro', message: "¡Hola amigo! La Roja viene con tiki-taka puro. Pedri, Rodri, Morata — el equipo está listo. ¡Vamos España, a por todo!", color: '#AA151B', image: '/images/mascots/tiki.png' },
 ];
 
 const ChatBubbleDemo = ({ t }: { t: any }) => {
