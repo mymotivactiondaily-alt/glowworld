@@ -11,7 +11,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 24.99,
     team: 'France',
-    image: '/images/wristband_france.jpeg',
+    image: '/images/wristband_france.png',
     isAvailable: true,
     description: {
       fr: 'Mode Réactif au Son & Synchro Ambiance. Éclairage Bleu/Blanc/Rouge ultra-puissant.',
@@ -30,7 +30,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 24.99,
     team: 'Brésil',
-    image: '/images/wristband_brazil.jpeg',
+    image: '/images/wristband_brazil.png',
     isAvailable: true,
     description: {
       fr: 'Vibrez au rythme de la Samba. Mode réactif au son et couleurs Jaune/Vert.',
@@ -49,7 +49,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 24.99,
     team: 'Argentine',
-    image: '/images/wristband_argentina.jpeg',
+    image: '/images/wristband_argentina.png',
     isAvailable: true,
     description: {
       fr: 'Célébrez comme un champion. Éclairage Bleu Céleste réactif au direct.',
@@ -68,7 +68,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 24.99,
     team: 'Portugal',
-    image: '/images/wristband_portugal.jpeg',
+    image: '/images/wristband_portugal.png',
     isAvailable: true,
     description: {
       fr: 'L\'énergie de la Seleção à votre poignet. Mode réactif au son.',
@@ -87,7 +87,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 24.99,
     team: 'USA',
-    image: '/images/wristband_usa.jpeg',
+    image: '/images/wristband_usa.png',
     isAvailable: true,
     description: {
       fr: 'Stars & Stripes edition. Parfait pour les fans de Team USA.',
@@ -106,7 +106,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 24.99,
     team: 'Mexique',
-    image: '/images/wristband_mexico.jpeg',
+    image: '/images/wristband_mexico.png',
     isAvailable: true,
     description: {
       fr: 'Vibrez avec El Tri. Éclairage Vert/Blanc/Rouge.',
@@ -125,7 +125,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 24.99,
     team: 'Canada',
-    image: '/images/wristband_canada.jpeg',
+    image: '/images/wristband_canada.png',
     isAvailable: true,
     description: {
       fr: 'Supportez les Canucks. Éclairage Rouge & Blanc.',
@@ -168,7 +168,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'pack-france',
     name: { fr: 'Pack Duo France (2 Bracelets)', en: 'France Duo Pack (2 Wristbands)', es: 'Pack Dúo Francia (2 Pulseras)' },
-    price: 44.99, team: 'France', image: '/images/wristband_france.jpeg', isAvailable: true,
+    price: 44.99, team: 'France', image: '/images/wristband_france.png', isAvailable: true,
     description: { fr: 'Vibrez ensemble aux couleurs des Bleus. Économisez 5€.', en: 'Vibrate together in Les Bleus colors. Save 5€.', es: 'Vibrad juntos con Les Bleus. Ahorra 5€.' },
     features: ['2 Bracelets France', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: 'Le football est plus beau quand on le partage. 2 bracelets France Sound Reactive qui s\'illuminent simultanément.'
@@ -176,7 +176,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'pack-brazil',
     name: { fr: 'Pack Duo Brésil (2 Bracelets)', en: 'Brazil Duo Pack (2 Wristbands)', es: 'Pack Dúo Brasil (2 Pulseras)' },
-    price: 44.99, team: 'Brésil', image: '/images/wristband_brazil.jpeg', isAvailable: true,
+    price: 44.99, team: 'Brésil', image: '/images/wristband_brazil.png', isAvailable: true,
     description: { fr: 'Vibrez ensemble aux couleurs de la Seleção. Économisez 5€.', en: 'Vibrate together in Seleção colors. Save 5€.', es: 'Vibrad juntos con la Seleção. Ahorra 5€.' },
     features: ['2 Bracelets Brésil', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets Brésil pour vivre la Samba à deux.'
@@ -184,7 +184,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'pack-usa',
     name: { fr: 'Pack Duo USA (2 Bracelets)', en: 'USA Duo Pack (2 Wristbands)', es: 'Pack Dúo USA (2 Pulseras)' },
-    price: 44.99, team: 'USA', image: '/images/wristband_usa.jpeg', isAvailable: true,
+    price: 44.99, team: 'USA', image: '/images/wristband_usa.png', isAvailable: true,
     description: { fr: 'Supportez Team USA ensemble. Économisez 5€.', en: 'Support Team USA together. Save 5€.', es: 'Apoyad a Team USA juntos. Ahorra 5€.' },
     features: ['2 Bracelets USA', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets USA Stars & Stripes pour vibrer ensemble.'
@@ -192,7 +192,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'pack-argentina',
     name: { fr: 'Pack Duo Argentine (2 Bracelets)', en: 'Argentina Duo Pack (2 Wristbands)', es: 'Pack Dúo Argentina (2 Pulseras)' },
-    price: 44.99, team: 'Argentine', image: '/images/wristband_argentina.jpeg', isAvailable: true,
+    price: 44.99, team: 'Argentine', image: '/images/wristband_argentina.png', isAvailable: true,
     description: { fr: 'Célébrez comme des champions ensemble. Économisez 5€.', en: 'Celebrate like champions together. Save 5€.', es: 'Celebrad como campeones juntos. Ahorra 5€.' },
     features: ['2 Bracelets Argentine', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets Albiceleste pour partager chaque émotion en bleu et blanc.'
@@ -200,7 +200,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'pack-mexico',
     name: { fr: 'Pack Duo Mexique (2 Bracelets)', en: 'Mexico Duo Pack (2 Wristbands)', es: 'Pack Dúo México (2 Pulseras)' },
-    price: 44.99, team: 'Mexique', image: '/images/wristband_mexico.jpeg', isAvailable: true,
+    price: 44.99, team: 'Mexique', image: '/images/wristband_mexico.png', isAvailable: true,
     description: { fr: 'Vibrez avec El Tri ensemble. Économisez 5€.', en: 'Vibrate with El Tri together. Save 5€.', es: 'Vibrad con El Tri juntos. Ahorra 5€.' },
     features: ['2 Bracelets Mexique', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets Mexique pour crier ¡Sí se puede! à deux.'
@@ -208,7 +208,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'pack-canada',
     name: { fr: 'Pack Duo Canada (2 Bracelets)', en: 'Canada Duo Pack (2 Wristbands)', es: 'Pack Dúo Canadá (2 Pulseras)' },
-    price: 44.99, team: 'Canada', image: '/images/wristband_canada.jpeg', isAvailable: true,
+    price: 44.99, team: 'Canada', image: '/images/wristband_canada.png', isAvailable: true,
     description: { fr: 'Supportez le Canada ensemble. Économisez 5€.', en: 'Support Canada together. Save 5€.', es: 'Apoyad a Canadá juntos. Ahorra 5€.' },
     features: ['2 Bracelets Canada', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets Canada rouge et blanc pour célébrer chaque but ensemble.'
@@ -216,7 +216,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'pack-portugal',
     name: { fr: 'Pack Duo Portugal (2 Bracelets)', en: 'Portugal Duo Pack (2 Wristbands)', es: 'Pack Dúo Portugal (2 Pulseras)' },
-    price: 44.99, team: 'Portugal', image: '/images/wristband_portugal.jpeg', isAvailable: true,
+    price: 44.99, team: 'Portugal', image: '/images/wristband_portugal.png', isAvailable: true,
     description: { fr: 'Vibrez avec la Seleção ensemble. Économisez 5€.', en: 'Vibrate with the Seleção together. Save 5€.', es: 'Vibrad con la Seleção juntos. Ahorra 5€.' },
     features: ['2 Bracelets Portugal', 'Sound-Sync Simultané', 'Micro Intégré', 'Autonomie 12h'],
     longDescription: '2 bracelets Portugal pour partager chaque moment fort de la Seleção.'

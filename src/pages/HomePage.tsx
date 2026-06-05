@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useState as useStateMascot, useEffect as useEffectMascot } from 'react';
 import { Zap, Globe, Trophy, CheckCircle, ArrowRight, Star, Sparkles, Brain, MessageSquare, BarChart3 } from 'lucide-react';
@@ -14,14 +14,14 @@ interface HomePageProps {
 }
 
 const MASCOT_DEMOS = [
-  { country: 'france', flag: '🇫🇷', name: "GAUL'O", role: 'Le coq tricolore', message: "Cocorico camarade ! Mbappé est en feu depuis 3 matchs. On joue le Brésil demain — tu sais qu'on les a battus 1-0 en 2006 ? Allez les Bleus !", color: '#002395' },
-  { country: 'brazil', flag: '🇧🇷', name: 'ZICO', role: 'O tucano', message: "Ôi meu amigo! A Seleção tá afiada. Vinicius e Rodrygo prontos pra brilhar. Hexa tá chegando, vamos juntos!", color: '#009C3B' },
-  { country: 'argentina', flag: '🇦🇷', name: 'DIEGO', role: 'El gaucho', message: "¡Che amigo! La Albiceleste viene con todo. Messi nos guía como siempre. ¡Vamos por la gloria, hermano!", color: '#74ACDF' },
-  { country: 'usa', flag: '🇺🇸', name: 'STARZ', role: 'The eagle', message: "Hey buddy! USMNT is rolling — Pulisic is on fire and we're playing at home. This is OUR World Cup. Let's go USA!", color: '#B22234' },
-  { country: 'mexico', flag: '🇲🇽', name: 'TRI', role: 'El águila', message: "¡Órale compadre! El Tri viene afilado. Lozano y Jiménez listos pa' la batalla. ¡Arriba México, vamos por todo!", color: '#006847' },
-  { country: 'canada', flag: '🇨🇦', name: 'HOCK', role: 'The beaver', message: "Hey buddy, eh! Canada Soccer is ready. Davies and Jonathan David lighting it up. We're hosting — let's make history!", color: '#FF0000' },
-  { country: 'portugal', flag: '🇵🇹', name: 'FADO', role: 'O galo', message: "Olá companheiro! A Selecção está pronta. Cristiano sempre afiado, Bernardo Silva mágico. Força Portugal, vamos juntos!", color: '#006600' },
-  { country: 'spain', flag: '🇪🇸', name: 'TIKI', role: 'El toro', message: "¡Hola amigo! La Roja viene con tiki-taka puro. Pedri, Rodri, Morata — el equipo está listo. ¡Vamos España, a por todo!", color: '#AA151B' },
+  { country: 'france', flag: '🇫🇷', name: "GAUL'O", role: 'Le coq tricolore', message: "Cocorico camarade ! Mbappé est en feu depuis 3 matchs. On joue le Brésil demain — tu sais qu'on les a battus 1-0 en 2006 ? Allez les Bleus !", color: '#002395', image: '/images/mascot_gaulo.png' },
+  { country: 'brazil', flag: '🇧🇷', name: 'ZICO', role: 'O tucano', message: "Ôi meu amigo! A Seleção tá afiada. Vinicius e Rodrygo prontos pra brilhar. Hexa tá chegando, vamos juntos!", color: '#009C3B', image: '/images/mascot_zico.png' },
+  { country: 'argentina', flag: '🇦🇷', name: 'DIEGO', role: 'El gaucho', message: "¡Che amigo! La Albiceleste viene con todo. Messi nos guía como siempre. ¡Vamos por la gloria, hermano!", color: '#74ACDF', image: '/images/mascot_diego.png' },
+  { country: 'usa', flag: '🇺🇸', name: 'STARZ', role: 'The eagle', message: "Hey buddy! USMNT is rolling — Pulisic is on fire and we're playing at home. This is OUR World Cup. Let's go USA!", color: '#B22234', image: '/images/mascot_starz.png' },
+  { country: 'mexico', flag: '🇲🇽', name: 'TRI', role: 'El águila', message: "¡Órale compadre! El Tri viene afilado. Lozano y Jiménez listos pa' la batalla. ¡Arriba México, vamos por todo!", color: '#006847', image: '/images/mascot_tri.png' },
+  { country: 'canada', flag: '🇨🇦', name: 'HOCK', role: 'The beaver', message: "Hey buddy, eh! Canada Soccer is ready. Davies and Jonathan David lighting it up. We're hosting — let's make history!", color: '#FF0000', image: '/images/mascot_hock.png' },
+  { country: 'portugal', flag: '🇵🇹', name: 'FADO', role: 'O galo', message: "Olá companheiro! A Selecção está pronta. Cristiano sempre afiado, Bernardo Silva mágico. Força Portugal, vamos juntos!", color: '#006600', image: '/images/mascot_fado.png' },
+  { country: 'spain', flag: '🇪🇸', name: 'TIKI', role: 'El toro', message: "¡Hola amigo! La Roja viene con tiki-taka puro. Pedri, Rodri, Morata — el equipo está listo. ¡Vamos España, a por todo!", color: '#AA151B', image: '/images/mascot_tiki.png' },
 ];
 
 const ChatBubbleDemo = ({ t }: { t: any }) => {
@@ -172,6 +172,8 @@ const KillerIASection = ({ t }: { t: any }) => (
 
 export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
   const canonicalUrl = window.location.origin + '/';
+  const navigate = useNavigate();
+  const [openMascot, setOpenMascot] = useStateMascot<string | null>(null);
 
   return (
     <div className="pt-20">
@@ -312,19 +314,42 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
             {MASCOT_DEMOS.map((m) => (
-              <Link
+              <div
                 key={m.country}
-                to={`/fan/${m.country}`}
-                className="group relative flex flex-col items-center gap-2 p-5 rounded-2xl bg-white/5 border-2 transition-all hover:scale-105 hover:bg-white/10"
+                onClick={() => {
+                  if (openMascot === m.country) {
+                    navigate(`/fan/${m.country}`);
+                  } else {
+                    setOpenMascot(m.country);
+                  }
+                }}
+                className="group relative flex flex-col items-center gap-2 p-5 rounded-2xl bg-white/5 border-2 transition-all hover:scale-105 hover:bg-white/10 cursor-pointer"
                 style={{ borderColor: `${m.color}40` }}
               >
-                <div className="text-4xl mb-1">{m.flag}</div>
+                <div 
+                  className={`absolute bottom-[calc(100%+15px)] left-1/2 -translate-x-1/2 w-[260px] max-w-[80vw] sm:w-[280px] sm:max-w-[90vw] bg-white text-slate-900 p-4 rounded-2xl shadow-2xl z-50 transition-opacity duration-300 ${openMascot === m.country ? 'opacity-100 pointer-events-auto' : 'opacity-0 md:group-hover:opacity-100 pointer-events-none md:group-hover:pointer-events-auto'}`}
+                  style={{ border: `2px solid ${m.color}` }}
+                >
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45" style={{ borderBottom: `2px solid ${m.color}`, borderRight: `2px solid ${m.color}` }}></div>
+                  <p className="text-sm font-medium italic mb-3">"{m.message}"</p>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); navigate(`/fan/${m.country}`); }}
+                    className="w-full py-2 bg-slate-900 text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-slate-800 transition-colors"
+                  >
+                    {t._lang === 'fr' ? 'Découvrir →' : t._lang === 'en' ? 'Discover →' : 'Descubrir →'}
+                  </button>
+                </div>
+
+                <div className="relative mb-1">
+                  <img src={m.image} alt={m.name} className="w-20 h-20 object-cover rounded-full" style={{ borderWidth: '2px', borderStyle: 'solid', borderColor: m.color }} />
+                  <div className="absolute bottom-0 right-0 bg-white/80 rounded-full w-6 h-6 flex items-center justify-center text-sm shadow-sm">{m.flag}</div>
+                </div>
                 <div className="font-black text-white text-base tracking-wide">{m.name}</div>
                 <div className="text-[10px] uppercase tracking-widest text-white/50 font-bold">{m.role}</div>
                 <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-amber-400/20 border border-amber-400/40 rounded text-[8px] font-black text-amber-300 flex items-center gap-1">
                   <Sparkles className="w-2.5 h-2.5" /> AI
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
 
