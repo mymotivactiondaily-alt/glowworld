@@ -389,7 +389,7 @@ async function startServer() {
                 <h1 style="color: #002395; text-align: center;">Merci pour votre commande !</h1>
                 <p>Bonjour,</p>
                 <p>Nous avons bien reçu votre paiement de <strong>${orderData.amount}€</strong> pour votre commande <strong>${session.id.slice(-8)}</strong>.</p>
-                <p>Votre bracelet LED intelligent sera expédié dans les prochaines 24 heures vers <strong>${orderData.shipping?.address?.city || 'votre adresse'}, ${orderData.shipping?.address?.country || ''}</strong>.</p>
+                <p>Votre Bracelet LED Sound Reactive + Compagnon IA sera expédié dans les prochaines 24 heures vers <strong>${orderData.shipping?.address?.city || 'votre adresse'}, ${orderData.shipping?.address?.country || ''}</strong>.</p>
                 <hr />
                 <p style="font-size: 12px; color: #666; text-align: center;">GlowWorld 2026 - L'émotion en temps réel.</p>
               </div>

@@ -97,12 +97,12 @@ export const ShippingPage = ({ t }: ShippingPageProps) => {
               </li>
               <li className="flex gap-3">
                 <span className="text-[#002395] font-bold">•</span>
-                Les délais peuvent varier selon la période (forte demande pendant la Coupe du Monde)
+                Les délais peuvent varier selon la période (forte demande pendant la l'Été du Foot)
               </li>
             </ul>
           </section>
 
-          {/* World Cup Guarantee */}
+          {/* Football Summer Guarantee */}
           <section className="bg-[#ED2939]/10 p-8 rounded-3xl border border-[#ED2939]/30 relative overflow-hidden group">
             <div className="absolute -right-8 -bottom-8 opacity-10 group-hover:scale-110 transition-transform duration-500">
               <Calendar className="w-32 h-32 text-[#ED2939]" />
@@ -110,7 +110,7 @@ export const ShippingPage = ({ t }: ShippingPageProps) => {
             <div className="flex items-center gap-3 mb-6">
               <Calendar className="w-6 h-6 text-[#ED2939]" />
               <h2 className="text-2xl font-black uppercase italic text-[#ED2939]" style={{ fontFamily: "'Bebas Neue', cursive" }}>
-                Coupe du Monde 2026 ⚽
+                l'Été du Foot 2026 ⚽
               </h2>
             </div>
             <p className="text-lg font-bold leading-tight">

@@ -17,7 +17,7 @@ const MASCOT_DEMOS = [
   { country: 'france', flag: '🇫🇷', name: "GAUL'O", role: 'Le coq tricolore', message: "Cocorico camarade ! Mbappé est en feu depuis 3 matchs. On joue le Brésil demain — tu sais qu'on les a battus 1-0 en 2006 ? Allez les Bleus !", color: '#002395', image: '/images/mascots/gaulo.png' },
   { country: 'brazil', flag: '🇧🇷', name: 'ZICO', role: 'O tucano', message: "Ôi meu amigo! A Seleção tá afiada. Vinicius e Rodrygo prontos pra brilhar. Hexa tá chegando, vamos juntos!", color: '#009C3B', image: '/images/mascots/zico.png' },
   { country: 'argentina', flag: '🇦🇷', name: 'DIEGO', role: 'El gaucho', message: "¡Che amigo! La Albiceleste viene con todo. Messi nos guía como siempre. ¡Vamos por la gloria, hermano!", color: '#74ACDF', image: '/images/mascots/diego.png' },
-  { country: 'usa', flag: '🇺🇸', name: 'STARZ', role: 'The eagle', message: "Hey buddy! USMNT is rolling — Pulisic is on fire and we're playing at home. This is OUR World Cup. Let's go USA!", color: '#B22234', image: '/images/mascots/starz.png' },
+  { country: 'usa', flag: '🇺🇸', name: 'STARZ', role: 'The eagle', message: "Hey buddy! USMNT is rolling — Pulisic is on fire and we're playing at home. This is OUR Football Summer. Let's go USA!", color: '#B22234', image: '/images/mascots/starz.png' },
   { country: 'mexico', flag: '🇲🇽', name: 'TRI', role: 'El águila', message: "¡Órale compadre! El Tri viene afilado. Lozano y Jiménez listos pa' la batalla. ¡Arriba México, vamos por todo!", color: '#006847', image: '/images/mascots/tri.png' },
   { country: 'canada', flag: '🇨🇦', name: 'HOCK', role: 'The beaver', message: "Hey buddy, eh! Canada Soccer is ready. Davies and Jonathan David lighting it up. We're hosting — let's make history!", color: '#FF0000', image: '/images/mascots/hock.png' },
   { country: 'portugal', flag: '🇵🇹', name: 'FADO', role: 'O galo', message: "Olá companheiro! A Selecção está pronta. Cristiano sempre afiado, Bernardo Silva mágico. Força Portugal, vamos juntos!", color: '#006600', image: '/images/mascots/fado.png' },
@@ -180,7 +180,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
       <Helmet>
         <title>{t.seo_home_title}</title>
         <meta name="description" content={t.seo_home_desc} />
-        <meta name="keywords" content="bracelet led, coupe du monde 2026, world cup 2026, smart wristband, sound reactive" />
+        <meta name="keywords" content="bracelet led, été du foot 2026, football summer 2026, smart wristband, sound reactive" />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={t.seo_home_title} />
@@ -206,7 +206,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
           <img
             src="/images/stadium-hero.png"
             className="w-full h-full object-cover scale-105"
-            alt="Stade de football rempli de supporters lors de la Coupe du Monde 2026"
+            alt="Stade de football rempli de supporters lors de la l'Été du Foot 2026"
             referrerPolicy="no-referrer"
           />
         </div>
@@ -215,7 +215,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
               <span className="inline-block px-4 py-1 bg-france-red rounded-full text-xs font-black uppercase tracking-[0.3em]">
-                {t._lang === 'fr' ? 'Coupe du Monde 2026' : t._lang === 'en' ? 'World Cup 2026' : 'Copa del Mundo 2026'}
+                {t._lang === 'fr' ? 'l'Été du Foot 2026' : t._lang === 'en' ? 'the 2026 Football Summer' : 'el Verano del Fútbol 2026'}
               </span>
               <span className="inline-flex items-center gap-2 px-4 py-1 bg-black/60 backdrop-blur-md border border-amber-400/40 rounded-full text-xs font-black uppercase tracking-[0.3em] text-amber-300">
                 <Sparkles className="w-3.5 h-3.5" />

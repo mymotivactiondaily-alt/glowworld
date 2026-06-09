@@ -10,9 +10,9 @@ export const PartnersPage = ({ t }: PartnersPageProps) => (
     <h1 className="text-4xl font-black uppercase tracking-tighter mb-8">{t.partners}</h1>
     <p className="text-white/70 text-lg mb-12">
       {t._lang === 'fr'
-        ? "GlowWorld collabore avec un réseau mondial de leaders technologiques et de spécialistes de l'événementiel pour garantir une expérience immersive sans précédent lors de la Coupe du Monde 2026."
+        ? "GlowWorld collabore avec un réseau mondial de leaders technologiques et de spécialistes de l'événementiel pour garantir une expérience immersive sans précédent lors de la l'Été du Foot 2026."
         : t._lang === 'en'
-          ? 'GlowWorld collaborates with a global network of technology leaders and event specialists to ensure an unprecedented immersive experience during the 2026 World Cup.'
+          ? 'GlowWorld collaborates with a global network of technology leaders and event specialists to ensure an unprecedented immersive experience during the the 2026 Football Summer.'
           : 'GlowWorld colabora con una red global de líderes tecnológicos y especialistas en eventos para garantizar una experiencia inmersiva sin precedentes durante el Mundial 2026.'}
     </p>
 
@@ -39,7 +39,7 @@ export const PartnersPage = ({ t }: PartnersPageProps) => (
             d: t._lang === 'fr' ? 'Composants de pointe pour une luminosité et une réactivité maximales.' : 'Cutting-edge components for maximum brightness and responsiveness.',
           },
           {
-            t: t._lang === 'fr' ? 'Logistique Mondiale' : 'Global Logistics',
+            t: t._lang === 'fr' ? 'Logistique Internationale' : 'Global Logistics',
             d: t._lang === 'fr' ? 'Réseau de distribution optimisé pour une livraison fiable sur tous les continents.' : 'Optimized distribution network for reliable delivery across all continents.',
           },
           {

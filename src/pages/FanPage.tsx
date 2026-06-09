@@ -110,7 +110,7 @@ export const FanPage = () => {
   const config = COUNTRY_CONFIGS[country?.toLowerCase() || ''];
   const lang = config.lang;
   const t = {
-    worldCup: { fr: 'Coupe du Monde 2026', en: 'World Cup 2026', es: 'Copa del Mundo 2026', pt: 'Copa do Mundo 2026' },
+    worldCup: { fr: 'l'Été du Foot 2026', en: 'the 2026 Football Summer', es: 'el Verano del Fútbol 2026', pt: 'el Verano del Fútbol 2026' },
     fanZone: { fr: 'Espace Fan Officiel GlowWorld', en: 'Official GlowWorld Fan Zone', es: 'Zona Fan Oficial GlowWorld', pt: 'Espaço Fan Oficial GlowWorld' },
     soundReactive: { fr: 'Bracelet Sound-Reactive activé · Réagit à chaque cri, chaque but', en: 'Sound-Reactive wristband activated · Reacts to every shout, every goal', es: 'Pulsera Sound-Reactive activada · Reacciona a cada grito, cada gol', pt: 'Pulseira Sound-Reactive ativada · Reage a cada grito, cada gol' },
     nextMatch: { fr: 'Prochain match', en: 'Next match', es: 'Próximo partido', pt: 'Próximo jogo' },
@@ -164,7 +164,7 @@ export const FanPage = () => {
     list: { fr: 'Liste', en: 'List', es: 'Lista', pt: 'Lista' },
     venueTitle: { fr: 'Stade du prochain match', en: 'Next match stadium', es: 'Estadio del próximo partido', pt: 'Estádio do próximo jogo' },
     venueTbc: { fr: 'Stade à confirmer', en: 'Venue to be confirmed', es: 'Estadio por confirmar', pt: 'Estádio a confirmar' },
-    venueDesc: { fr: "Le stade sera confirmé avec le calendrier officiel de la Coupe du Monde 2026.", en: "The stadium will be confirmed with the official 2026 World Cup schedule.", es: "El estadio se confirmará con el calendario oficial de la Copa del Mundo 2026.", pt: "O estádio será confirmado com o calendário oficial da Copa do Mundo 2026." },
+    venueDesc: { fr: "Le stade sera confirmé avec le calendrier des matchs 2026.", en: "The stadium will be confirmed with the official the 2026 Football Summer schedule.", es: "El estadio se confirmará con el calendario oficial de la el Verano del Fútbol 2026.", pt: "O estádio será confirmado com o calendário oficial da el Verano del Fútbol 2026." },
     caps: { fr: 'Sélections', en: 'Caps', es: 'Selecciones', pt: 'Seleções' },
     goals: { fr: 'Buts', en: 'Goals', es: 'Goles', pt: 'Gols' },
     age: { fr: 'Âge', en: 'Age', es: 'Edad', pt: 'Idade' }

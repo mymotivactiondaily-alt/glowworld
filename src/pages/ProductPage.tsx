@@ -131,6 +131,14 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4 leading-none">{localizedName}</h1>
+          <p className="text-france-blue font-bold text-lg mb-6 flex items-center gap-2">
+            <Zap className="w-5 h-5" />
+            {t._lang === 'fr' 
+              ? 'Scannez le QR code, débloquez votre mascotte IA pendant 75 jours' 
+              : t._lang === 'en' 
+                ? 'Scan the QR code, unlock your AI mascot for 75 days' 
+                : 'Escanea el código QR, desbloquea tu mascota IA durante 75 días'}
+          </p>
 
           <div className="flex flex-col gap-2 mb-8">
             <div className="flex items-center gap-4">

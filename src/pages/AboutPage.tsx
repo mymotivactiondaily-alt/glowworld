@@ -22,9 +22,9 @@ export const AboutPage = ({ t }: AboutPageProps) => {
       </h1>
       <p className="text-xl text-white/70 leading-relaxed mb-12">
         {t._lang === 'fr'
-          ? "GlowWorld est né d'une idée simple : rendre l'expérience de la Coupe du Monde encore plus immersive. Nos bracelets LED Sound Reactive détectent automatiquement l'ambiance autour de toi et s'illuminent à chaque cri, chaque but, chaque hymne. Pas d'app, pas de configuration — juste la magie de la lumière au service de ta passion."
+          ? "GlowWorld est né d'une idée simple : rendre l'expérience de la l'Été du Foot encore plus immersive. Nos bracelets LED Sound Reactive détectent automatiquement l'ambiance autour de toi et s'illuminent à chaque cri, chaque but, chaque hymne. Pas d'app, pas de configuration — juste la magie de la lumière au service de ta passion."
           : t._lang === 'en'
-            ? "GlowWorld was born from a simple idea: make the World Cup experience even more immersive. Our Sound Reactive LED wristbands automatically detect the atmosphere around you and light up with every cheer, every goal, every anthem. No app, no setup — just the magic of light serving your passion."
+            ? "GlowWorld was born from a simple idea: make the Football Summer experience even more immersive. Our Sound Reactive LED wristbands automatically detect the atmosphere around you and light up with every cheer, every goal, every anthem. No app, no setup — just the magic of light serving your passion."
             : 'GlowWorld nació de una idea simple: hacer la experiencia del Mundial aún más inmersiva. Nuestras pulseras LED Sound Reactive detectan automáticamente el ambiente a tu alrededor y se iluminan con cada grito, cada gol, cada himno. Sin app, sin configuración — solo la magia de la luz al servicio de tu pasión.'}
       </p>
 
@@ -52,7 +52,7 @@ export const AboutPage = ({ t }: AboutPageProps) => {
       <img
         src="/images/led-wristbands-product.png"
         className="w-full rounded-3xl mb-12"
-        alt="L'équipe GlowWorld préparant les bracelets LED pour la Coupe du Monde 2026"
+        alt="L'équipe GlowWorld préparant les bracelets LED pour la l'Été du Foot 2026"
         referrerPolicy="no-referrer"
       />
     </div>
