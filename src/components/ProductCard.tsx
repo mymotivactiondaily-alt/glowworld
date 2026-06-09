@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ShoppingCart, Star, Trophy, CheckCircle } from 'lucide-react';
+import { ShoppingCart, Star, Trophy, CheckCircle, Flame } from 'lucide-react';
 import { cn } from '../lib/utils';
 import type { Product, Translation } from '../types';
+import { LAUNCH_OFFER_ACTIVE, REGULAR_PRICE, REGULAR_PACK_PRICE } from '../constants';
 
 interface ProductCardProps {
   product: Product;
@@ -15,6 +16,9 @@ export const ProductCard = ({ product, onAddToCart, t }: ProductCardProps) => {
   const currentLang = (t._lang as 'fr' | 'en' | 'es') || 'fr';
   const localizedName = product.name[currentLang] || product.name.fr;
   const localizedDesc = product.description[currentLang] || product.description.fr;
+  
+  const isPack = product.team === 'Pack' || product.id.startsWith('pack-');
+  const regularPrice = isPack ? REGULAR_PACK_PRICE : REGULAR_PRICE;
 
   const schema = {
     '@context': 'https://schema.org/',
@@ -50,9 +54,15 @@ export const ProductCard = ({ product, onAddToCart, t }: ProductCardProps) => {
           />
         </Link>
         <div className="absolute top-4 left-4 flex flex-col gap-2">
+          {LAUNCH_OFFER_ACTIVE && (
+            <span className="bg-france-red text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 border border-white/20 animate-pulse">
+              <Flame className="w-3 h-3 text-yellow-300" />
+              {t.launch_offer_badge}
+            </span>
+          )}
           <span
             className={cn(
-              'px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider',
+              'px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider w-fit',
               product.team === 'France'
                 ? 'bg-france-blue'
                 : product.team === 'Brésil'
@@ -65,16 +75,16 @@ export const ProductCard = ({ product, onAddToCart, t }: ProductCardProps) => {
             {product.team}
           </span>
           {product.team === 'France' && (
-            <span className="bg-france-red text-white text-[8px] font-black px-2 py-1 rounded-full animate-pulse">
+            <span className="bg-france-red text-white text-[8px] font-black px-2 py-1 rounded-full w-fit">
               {t.stock_limited} (-15)
             </span>
           )}
           {product.isPremium && (
-            <span className="bg-amber-500 text-slate-900 text-[8px] font-black px-2 py-1 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.5)] flex items-center gap-1">
+            <span className="bg-amber-500 text-slate-900 text-[8px] font-black px-2 py-1 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.5)] flex items-center gap-1 w-fit">
               <Trophy className="w-2.5 h-2.5" /> {t.premium_edition}
             </span>
           )}
-          <span className="bg-black/80 backdrop-blur-sm text-white text-[8px] font-black px-2 py-1 rounded-full border border-white/20 flex items-center gap-1 shadow-lg">
+          <span className="bg-black/80 backdrop-blur-sm text-white text-[8px] font-black px-2 py-1 rounded-full border border-white/20 flex items-center gap-1 shadow-lg w-fit">
             <span className="text-amber-400">✦</span>
             IA {product.team} incluse
           </span>
@@ -107,7 +117,12 @@ export const ProductCard = ({ product, onAddToCart, t }: ProductCardProps) => {
         </Link>
         <p className="text-white/60 text-sm mb-4 line-clamp-2">{localizedDesc}</p>
         <div className="flex items-center justify-between">
-          <span className="text-2xl font-black text-france-red">{product.price}€</span>
+          <div className="flex flex-col">
+            {LAUNCH_OFFER_ACTIVE && (
+              <span className="text-xs text-white/40 line-through font-bold">{regularPrice}€</span>
+            )}
+            <span className="text-2xl font-black text-france-red">{product.price}€</span>
+          </div>
           <div className="flex gap-1">
             {[1, 2, 3, 4, 5].map((s) => (
               <Star key={s} className="w-3 h-3 fill-yellow-500 text-yellow-500" />

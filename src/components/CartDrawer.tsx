@@ -133,7 +133,7 @@ export const CartDrawer = ({
                         🔥 OFFRE DU MOMENT
                       </p>
                       <p className="text-sm mb-3">
-                        Offrez un 2ème bracelet <strong>{duoPack.team}</strong> et économisez 5€ avec le <strong>Pack Duo à 44.99€ !</strong>
+                        Offrez un 2ème bracelet <strong>{duoPack.team}</strong> et économisez {Math.round((cart[0].price * 2) - duoPack.price)}€ avec le <strong>Pack Duo à {duoPack.price}€ !</strong>
                       </p>
                       <button 
                         onClick={() => {

@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
-import { ShoppingCart, Star, Globe, Zap, CheckCircle, ArrowLeft } from 'lucide-react';
+import { ShoppingCart, Star, Globe, Zap, CheckCircle, ArrowLeft, Flame } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { ProductCard } from '../components/ProductCard';
-import { PRODUCTS } from '../constants';
+import { PRODUCTS, LAUNCH_OFFER_ACTIVE, REGULAR_PRICE, REGULAR_PACK_PRICE } from '../constants';
 import type { Product, Translation } from '../types';
 
 interface ProductPageProps {
@@ -44,6 +44,9 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
   const currentLang = (t._lang as 'fr' | 'en' | 'es') || 'fr';
   const localizedName = product.name[currentLang] || product.name.fr;
   const localizedDesc = product.description[currentLang] || product.description.fr;
+  
+  const isPack = product.team === 'Pack' || product.id.startsWith('pack-');
+  const regularPrice = isPack ? REGULAR_PACK_PRICE : REGULAR_PRICE;
 
   return (
     <div className="pt-32 pb-24 px-6 max-w-7xl mx-auto">
@@ -129,18 +132,33 @@ export const ProductPage = ({ onAddToCart, t }: ProductPageProps) => {
 
           <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4 leading-none">{localizedName}</h1>
 
-          <div className="flex items-center gap-4 mb-8">
-            <p className="text-4xl font-black text-france-red">{product.price}€</p>
-            <div className="flex flex-col">
-              <div className="flex gap-1">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <Star key={s} className="w-3 h-3 fill-yellow-500 text-yellow-500" />
-                ))}
+          <div className="flex flex-col gap-2 mb-8">
+            <div className="flex items-center gap-4">
+              <div className="flex items-end gap-3">
+                <p className="text-4xl font-black text-france-red">{product.price}€</p>
+                {LAUNCH_OFFER_ACTIVE && (
+                  <p className="text-xl text-white/40 line-through font-bold mb-1">{regularPrice}€</p>
+                )}
               </div>
-              <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">
-                128 {t._lang === 'fr' ? 'avis vérifiés' : 'verified reviews'}
-              </span>
+              <div className="flex flex-col">
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star key={s} className="w-3 h-3 fill-yellow-500 text-yellow-500" />
+                  ))}
+                </div>
+                <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">
+                  128 {t._lang === 'fr' ? 'avis vérifiés' : 'verified reviews'}
+                </span>
+              </div>
             </div>
+            {LAUNCH_OFFER_ACTIVE && (
+              <div className="w-fit">
+                <span className="bg-france-red text-white text-xs font-black px-4 py-2 rounded-full shadow-lg flex items-center gap-2 border border-white/20 animate-pulse mt-2">
+                  <Flame className="w-4 h-4 text-yellow-300" />
+                  {t.launch_offer_badge}
+                </span>
+              </div>
+            )}
           </div>
 
           <p className="text-xl text-white/70 mb-8 leading-relaxed">{product.longDescription || localizedDesc}</p>

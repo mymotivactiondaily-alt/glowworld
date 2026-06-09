@@ -55,7 +55,8 @@ export const TRANSLATIONS: Record<Lang, Translation> = {
     cart_coming_soon_msg: "⚡ Ouverture des commandes très prochainement",
     cart_upsell_title: "Offre Spéciale",
     cart_upsell_desc: "Passez au Pack Famille et économisez 20€ !",
-    cart_upsell_cta: "Ajouter au pack"
+    cart_upsell_cta: "Ajouter au pack",
+    launch_offer_badge: "Offre de lancement — jusqu'au 14 juin"
   },
   en: {
     _lang: 'en',
@@ -111,7 +112,8 @@ export const TRANSLATIONS: Record<Lang, Translation> = {
     cart_coming_soon_msg: "⚡ Orders opening very soon",
     cart_upsell_title: "Special Offer",
     cart_upsell_desc: "Upgrade to Family Pack and save 20€!",
-    cart_upsell_cta: "Add to pack"
+    cart_upsell_cta: "Add to pack",
+    launch_offer_badge: "Launch offer — until June 14"
   },
   es: {
     _lang: 'es',
@@ -167,6 +169,7 @@ export const TRANSLATIONS: Record<Lang, Translation> = {
     cart_coming_soon_msg: "⚡ Apertura de pedidos muy pronto",
     cart_upsell_title: "Oferta Especial",
     cart_upsell_desc: "¡Mejora al Pack Familiar y ahorra 20€!",
-    cart_upsell_cta: "Añadir al pack"
+    cart_upsell_cta: "Añadir al pack",
+    launch_offer_badge: "Oferta de lanzamiento — hasta el 14 de junio"
   }
 };

@@ -85,6 +85,7 @@ export interface Translation {
   cart_upsell_title: string;
   cart_upsell_desc: string;
   cart_upsell_cta: string;
+  launch_offer_badge: string;
 }
 
 export interface Order {

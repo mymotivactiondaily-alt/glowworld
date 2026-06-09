@@ -7,6 +7,7 @@ import Stripe from "stripe";
 import dotenv from "dotenv";
 import { Resend } from 'resend';
 import admin from 'firebase-admin';
+import { LAUNCH_OFFER_ACTIVE, LAUNCH_PRICE, REGULAR_PRICE } from './src/constants.js';
 
 dotenv.config();
 
@@ -104,7 +105,7 @@ async function createShopifyOrder(orderData: any, session: any) {
             ? (typeof item.name === 'object' ? (item.name.fr || item.name.en || item.name.es) : item.name)
             : item.id,
           quantity: item.qty || 1,
-          price: item.price ? String(item.price) : "24.99", // Dynamic price from metadata
+          price: item.price ? String(item.price) : String(LAUNCH_OFFER_ACTIVE ? LAUNCH_PRICE : REGULAR_PRICE), // Dynamic price from metadata
           requires_shipping: true,
         })),
         shipping_address: shipping ? {
@@ -387,7 +388,7 @@ async function startServer() {
               <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
                 <h1 style="color: #002395; text-align: center;">Merci pour votre commande !</h1>
                 <p>Bonjour,</p>
-                <p>Nous avons bien reçu votre paiement pour votre commande <strong>${session.id.slice(-8)}</strong>.</p>
+                <p>Nous avons bien reçu votre paiement de <strong>${orderData.amount}€</strong> pour votre commande <strong>${session.id.slice(-8)}</strong>.</p>
                 <p>Votre bracelet LED intelligent sera expédié dans les prochaines 24 heures vers <strong>${orderData.shipping?.address?.city || 'votre adresse'}, ${orderData.shipping?.address?.country || ''}</strong>.</p>
                 <hr />
                 <p style="font-size: 12px; color: #666; text-align: center;">GlowWorld 2026 - L'émotion en temps réel.</p>
