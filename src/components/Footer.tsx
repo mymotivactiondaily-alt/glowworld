@@ -20,9 +20,9 @@ export const Footer = ({ t }: FooterProps) => {
           </Link>
           <p className="text-white/50 text-sm mb-6">
             {t._lang === 'fr'
-              ? 'Vivez la l'Été du Foot 2026 comme jamais auparavant. La technologie au service de la passion.'
+              ? 'Vivez l\'Été du Foot 2026 comme jamais auparavant. La technologie au service de la passion.'
               : t._lang === 'en'
-                ? 'Experience the the 2026 Football Summer like never before. Technology in the service of passion.'
+                ? 'Experience the 2026 Football Summer like never before. Technology in the service of passion.'
                 : 'Vive la el Verano del Fútbol 2026 como nunca antes. La tecnología al servicio de la pasión.'}
           </p>
           <div className="flex gap-4">

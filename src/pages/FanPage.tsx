@@ -110,7 +110,7 @@ export const FanPage = () => {
   const config = COUNTRY_CONFIGS[country?.toLowerCase() || ''];
   const lang = config.lang;
   const t = {
-    worldCup: { fr: 'l'Été du Foot 2026', en: 'the 2026 Football Summer', es: 'el Verano del Fútbol 2026', pt: 'el Verano del Fútbol 2026' },
+    worldCup: { fr: 'l\'Été du Foot 2026', en: 'the 2026 Football Summer', es: 'el Verano del Fútbol 2026', pt: 'o Verão do Futebol 2026' },
     fanZone: { fr: 'Espace Fan Officiel GlowWorld', en: 'Official GlowWorld Fan Zone', es: 'Zona Fan Oficial GlowWorld', pt: 'Espaço Fan Oficial GlowWorld' },
     soundReactive: { fr: 'Bracelet Sound-Reactive activé · Réagit à chaque cri, chaque but', en: 'Sound-Reactive wristband activated · Reacts to every shout, every goal', es: 'Pulsera Sound-Reactive activada · Reacciona a cada grito, cada gol', pt: 'Pulseira Sound-Reactive ativada · Reage a cada grito, cada gol' },
     nextMatch: { fr: 'Prochain match', en: 'Next match', es: 'Próximo partido', pt: 'Próximo jogo' },

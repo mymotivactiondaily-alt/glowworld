@@ -97,7 +97,7 @@ export const ShippingPage = ({ t }: ShippingPageProps) => {
               </li>
               <li className="flex gap-3">
                 <span className="text-[#002395] font-bold">•</span>
-                Les délais peuvent varier selon la période (forte demande pendant la l'Été du Foot)
+                Les délais peuvent varier selon la période (forte demande pendant l'Été du Foot)
               </li>
             </ul>
           </section>

@@ -56,7 +56,10 @@ export const TRANSLATIONS: Record<Lang, Translation> = {
     cart_upsell_title: "Offre Spéciale",
     cart_upsell_desc: "Passez au Pack Famille et économisez 20€ !",
     cart_upsell_cta: "Ajouter au pack",
-    launch_offer_badge: "Offre de lancement — jusqu'au 14 juin"
+    launch_offer_badge: "Offre de lancement — jusqu'au 14 juin",
+    mascot_included: "Mascotte IA incluse",
+    hero_btn_primary: "⚡ Commander — {price}€",
+    hero_btn_secondary: "Découvrir ta mascotte IA"
   },
   en: {
     _lang: 'en',
@@ -113,7 +116,10 @@ export const TRANSLATIONS: Record<Lang, Translation> = {
     cart_upsell_title: "Special Offer",
     cart_upsell_desc: "Upgrade to Family Pack and save 20€!",
     cart_upsell_cta: "Add to pack",
-    launch_offer_badge: "Launch offer — until June 14"
+    launch_offer_badge: "Launch offer — until June 14",
+    mascot_included: "AI mascot included",
+    hero_btn_primary: "⚡ Order now — {price}€",
+    hero_btn_secondary: "Discover your AI mascot"
   },
   es: {
     _lang: 'es',
@@ -170,6 +176,9 @@ export const TRANSLATIONS: Record<Lang, Translation> = {
     cart_upsell_title: "Oferta Especial",
     cart_upsell_desc: "¡Mejora al Pack Familiar y ahorra 20€!",
     cart_upsell_cta: "Añadir al pack",
-    launch_offer_badge: "Oferta de lanzamiento — hasta el 14 de junio"
+    launch_offer_badge: "Oferta de lanzamiento — hasta el 14 de junio",
+    mascot_included: "Mascota IA incluida",
+    hero_btn_primary: "⚡ Comprar — {price}€",
+    hero_btn_secondary: "Descubre tu mascota IA"
   }
 };

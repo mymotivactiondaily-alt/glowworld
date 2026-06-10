@@ -206,7 +206,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
           <img
             src="/images/stadium-hero.png"
             className="w-full h-full object-cover scale-105"
-            alt="Stade de football rempli de supporters lors de la l'Été du Foot 2026"
+            alt="Stade de football rempli de supporters lors de l'Été du Foot 2026"
             referrerPolicy="no-referrer"
           />
         </div>
@@ -215,7 +215,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
               <span className="inline-block px-4 py-1 bg-france-red rounded-full text-xs font-black uppercase tracking-[0.3em]">
-                {t._lang === 'fr' ? 'l'Été du Foot 2026' : t._lang === 'en' ? 'the 2026 Football Summer' : 'el Verano del Fútbol 2026'}
+                {t._lang === 'fr' ? 'l\'Été du Foot 2026' : t._lang === 'en' ? 'the 2026 Football Summer' : 'el Verano del Fútbol 2026'}
               </span>
               <span className="inline-flex items-center gap-2 px-4 py-1 bg-black/60 backdrop-blur-md border border-amber-400/40 rounded-full text-xs font-black uppercase tracking-[0.3em] text-amber-300">
                 <Sparkles className="w-3.5 h-3.5" />

@@ -1,9 +1,21 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ShoppingCart, Star, Trophy, CheckCircle, Flame } from 'lucide-react';
+import { ShoppingCart, Star, Trophy, CheckCircle, Flame, Sparkles } from 'lucide-react';
 import { cn } from '../lib/utils';
 import type { Product, Translation } from '../types';
 import { LAUNCH_OFFER_ACTIVE, REGULAR_PRICE, REGULAR_PACK_PRICE } from '../constants';
+import { MASCOT_CONFIG, CountryKey } from '../config/mascotConfig';
+
+const TEAM_TO_MASCOT_KEY: Record<string, CountryKey> = {
+  'France': 'france',
+  'Brésil': 'brazil',
+  'Argentine': 'argentina',
+  'Portugal': 'portugal',
+  'Espagne': 'spain',
+  'USA': 'usa',
+  'Mexique': 'mexico',
+  'Canada': 'canada'
+};
 
 interface ProductCardProps {
   product: Product;
@@ -19,6 +31,9 @@ export const ProductCard = ({ product, onAddToCart, t }: ProductCardProps) => {
   
   const isPack = product.team === 'Pack' || product.id.startsWith('pack-');
   const regularPrice = isPack ? REGULAR_PACK_PRICE : REGULAR_PRICE;
+
+  const mascotKey = product.team !== 'Pack' ? TEAM_TO_MASCOT_KEY[product.team] : null;
+  const mascot = mascotKey ? MASCOT_CONFIG[mascotKey] : null;
 
   const schema = {
     '@context': 'https://schema.org/',
@@ -45,6 +60,21 @@ export const ProductCard = ({ product, onAddToCart, t }: ProductCardProps) => {
     <motion.div whileHover={{ y: -10 }} className="bg-white/5 rounded-2xl overflow-hidden border border-white/10 group">
       <script type="application/ld+json">{JSON.stringify(schema)}</script>
       <div className="relative aspect-square overflow-hidden">
+        {mascot && (
+          <div className="absolute top-4 right-4 z-20">
+            <div className="relative">
+              <img 
+                src={mascot.image} 
+                alt={mascot.name} 
+                className="w-12 h-12 object-cover rounded-full border-2 shadow-lg bg-slate-900" 
+                style={{ borderColor: mascot.primaryColor }} 
+              />
+              <div className="absolute -bottom-1 -right-1 px-1.5 py-0.5 bg-amber-400 border border-amber-500 rounded text-[7px] font-black uppercase tracking-widest text-slate-900 flex items-center gap-0.5 shadow-md">
+                <Sparkles className="w-2 h-2" /> IA
+              </div>
+            </div>
+          </div>
+        )}
         <Link to={`/product/${product.id}`}>
           <img
             src={product.image}
@@ -115,6 +145,12 @@ export const ProductCard = ({ product, onAddToCart, t }: ProductCardProps) => {
         <Link to={`/product/${product.id}`}>
           <h3 className="text-lg font-bold mb-1 hover:text-france-blue transition-colors">{localizedName}</h3>
         </Link>
+        {mascot && (
+          <div className="text-[10px] font-black uppercase tracking-widest text-amber-400 mb-2 flex items-center gap-1.5">
+            <Sparkles className="w-3 h-3" />
+            {t.mascot_included}
+          </div>
+        )}
         <p className="text-white/60 text-sm mb-4 line-clamp-2">{localizedDesc}</p>
         <div className="flex items-center justify-between">
           <div className="flex flex-col">

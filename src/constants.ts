@@ -120,7 +120,7 @@ export const PRODUCTS: Product[] = [
       es: 'Vive con El Tri. Iluminación Verde/Blanco/Rojo.'
     },
     features: ['Sound-Sync Technology', 'Silicone Premium Soft-Touch', 'Micro Intégré Haute Sensibilité', '7 Modes Lumineux'],
-    longDescription: 'Le bracelet indispensable pour tous les fans du Mexique lors de cette l'Été du Foot à domicile. Son micro intégré capte chaque cri de "¡Sí se puede!".'
+    longDescription: 'Le bracelet indispensable pour tous les fans du Mexique lors de cette l\'Été du Foot à domicile. Son micro intégré capte chaque cri de "¡Sí se puede!".'
   },
   {
     id: 'canada-pro',
@@ -241,7 +241,7 @@ export const PRODUCTS: Product[] = [
 export const BLOG_POSTS: BlogPost[] = [
   {
     id: '1',
-    title: 'Top 5 des goodies indispensables pour la l'Été du Foot 2026',
+    title: 'Top 5 des goodies indispensables pour l\'Été du Foot 2026',
     excerpt: 'Découvrez pourquoi les bracelets LED sont la tendance n°1 cette année.',
     date: '15 Mars 2026',
     image: '/images/led-wristbands-product.png',
@@ -250,7 +250,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: '4 min',
     author: 'Équipe GlowWorld',
     content: `
-      La l'Été du Foot 2026 approche à grands pas et l'excitation monte chez les supporters du monde entier. Pour vivre cet événement historique aux États-Unis, au Mexique et au Canada, certains accessoires sont devenus incontournables. En tête de liste, on retrouve le bracelet LED Sound Reactive, une véritable révolution technologique qui transforme l'expérience du fan.
+      L'Été du Foot 2026 approche à grands pas et l'excitation monte chez les supporters du monde entier. Pour vivre cet événement historique aux États-Unis, au Mexique et au Canada, certains accessoires sont devenus incontournables. En tête de liste, on retrouve le bracelet LED Sound Reactive, une véritable révolution technologique qui transforme l'expérience du fan.
 
       Contrairement aux simples drapeaux ou maillots, ces bracelets intelligents offrent une interactivité inédite. Grâce à leur micro intégré et leur technologie Sound-Sync, ils s'illuminent aux couleurs de votre équipe favorite au rythme de vos cris et de l'ambiance du match. Imaginez votre salon s'illuminer en bleu, blanc et rouge lors d'un but décisif de l'équipe de France !
 
@@ -277,8 +277,8 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     id: '3',
-    title: 'Le meilleur bracelet LED Sound Reactive pour la l'Été du Foot 2026 : guide complet',
-    excerpt: 'Tout ce qu\'il faut savoir pour choisir son bracelet LED Sound Reactive avant la l'Été du Foot 2026. Comparatif, critères de choix et meilleures éditions par équipe.',
+    title: 'Le meilleur bracelet LED Sound Reactive pour l\'Été du Foot 2026 : guide complet',
+    excerpt: 'Tout ce qu\'il faut savoir pour choisir son bracelet LED Sound Reactive avant l\'Été du Foot 2026. Comparatif, critères de choix et meilleures éditions par équipe.',
     date: '9 Avril 2026',
     image: 'https://images.unsplash.com/photo-1551818255-e6e10975bc1d',
     slug: 'meilleur-bracelet-led-2026',
@@ -286,15 +286,15 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: '6 min',
     author: 'Équipe GlowWorld',
     content: `
-      <h2>La l'Été du Foot 2026 : l'édition la plus grande de l'histoire</h2>
-      <p>La l'Été du Foot 2026 s'annonce comme le plus grand événement sportif de l'histoire. Du 11 juin au 19 juillet 2026, la compétition réunit pour la première fois 48 équipes, organisée conjointement par les États-Unis, le Canada et le Mexique. Pour vivre cette édition historique comme jamais, un accessoire s'impose : le bracelet LED intelligent pour supporter son équipe avec style.</p>
+      <h2>L'Été du Foot 2026 : l'édition la plus grande de l'histoire</h2>
+      <p>L'Été du Foot 2026 s'annonce comme le plus grand événement sportif de l'histoire. Du 11 juin au 19 juillet 2026, la compétition réunit pour la première fois 48 équipes, organisée conjointement par les États-Unis, le Canada et le Mexique. Pour vivre cette édition historique comme jamais, un accessoire s'impose : le bracelet LED intelligent pour supporter son équipe avec style.</p>
 
-      <h2>Qu'est-ce qu'un bracelet LED intelligent pour la l'Été du Foot ?</h2>
+      <h2>Qu'est-ce qu'un bracelet LED intelligent pour l'Été du Foot ?</h2>
       <p>Un bracelet LED Sound Reactive est un bracelet en silicone équipé de LEDs qui s'illuminent aux couleurs de votre équipe favorite. Grâce à son micro intégré haute sensibilité, il détecte automatiquement votre environnement sonore pour réagir en temps réel aux buts, aux hymnes et à l'ambiance du match. Fini de regarder les matchs passivement — avec un bracelet LED, votre salon devient un vrai stade.</p>
       <p>Le bracelet GlowWorld2026 se distingue par son mode "Sound-Sync" exclusif : les LEDs réagissent automatiquement au bruit ambiant. Quand vous criez lors d'un but, le bracelet s'illumine instantanément. Une immersion totale, sans aucune application nécessaire.</p>
 
-      <h2>Pourquoi choisir un bracelet LED pour la l'Été du Foot 2026 ?</h2>
-      <p>La l'Été du Foot 2026 sera un événement planétaire suivi par des milliards de personnes. Que vous soyez au stade, dans une fan zone ou dans votre salon, le bracelet LED fait toute la différence :</p>
+      <h2>Pourquoi choisir un bracelet LED pour l'Été du Foot 2026 ?</h2>
+      <p>L'Été du Foot 2026 sera un événement planétaire suivi par des milliards de personnes. Que vous soyez au stade, dans une fan zone ou dans votre salon, le bracelet LED fait toute la différence :</p>
       <ul>
         <li><strong>Immersion à domicile :</strong> Le bracelet transforme chaque match en spectacle immersif.</li>
         <li><strong>Ambiance électrique :</strong> Parfait pour les soirées entre amis ou en famille.</li>
@@ -302,7 +302,7 @@ export const BLOG_POSTS: BlogPost[] = [
       </ul>
 
       <h2>Conclusion</h2>
-      <p>La l'Été du Foot 2026 sera historique. Ne la vivez pas comme un simple spectateur. Avec un bracelet LED GlowWorld2026, chaque but devient une explosion de lumière. Les stocks sont limités avant le coup d'envoi du 11 juin. Commandez le vôtre dès maintenant.</p>
+      <p>L'Été du Foot 2026 sera historique. Ne la vivez pas comme un simple spectateur. Avec un bracelet LED GlowWorld2026, chaque but devient une explosion de lumière. Les stocks sont limités avant le coup d'envoi du 11 juin. Commandez le vôtre dès maintenant.</p>
     `
   },
   {
@@ -317,7 +317,7 @@ export const BLOG_POSTS: BlogPost[] = [
     author: 'Équipe GlowWorld',
     content: `
       <h2>7 éditions, 7 identités</h2>
-      <p>La l'Été du Foot 2026 réunit 48 nations pour la première fois de l'histoire. Chez GlowWorld, nous avons sélectionné les 7 équipes les plus représentées parmi les supporters européens pour créer des éditions collectors uniques. Mais comment choisir ?</p>
+      <p>L'Été du Foot 2026 réunit 48 nations pour la première fois de l'histoire. Chez GlowWorld, nous avons sélectionné les 7 équipes les plus représentées parmi les supporters européens pour créer des éditions collectors uniques. Mais comment choisir ?</p>
 
       <h2>Édition France — Pour les Bleus dans l'âme</h2>
       <p>Éclairage Bleu, Blanc, Rouge ultra-puissant. Le bracelet France est notre édition premium : drapeau UV intégré dans le silicone, numéroté en série limitée. Idéal pour les supporters qui ne manquent aucun match des Bleus. Le micro intégré capte chaque explosion de joie au moment d'un but de Mbappé.</p>
@@ -406,7 +406,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
   {
     id: '7',
-    title: 'Guide ultime : organiser la soirée foot parfaite pour la l'Été du Foot 2026',
+    title: 'Guide ultime : organiser la soirée foot parfaite pour l\'Été du Foot 2026',
     excerpt: 'Deco, ambiance, bracelets LED, collations… Tout ce qu\'il faut pour transformer votre salon en vrai stade le 11 juin.',
     date: '26 Avril 2026',
     image: '/images/led-wristbands-product.png',
@@ -415,7 +415,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: '6 min',
     author: 'Équipe GlowWorld',
     content: `
-      <h2>La l'Été du Foot 2026 mérite une vraie soirée</h2>
+      <h2>L'Été du Foot 2026 mérite une vraie soirée</h2>
       <p>Le 11 juin 2026, le plus grand événement sportif de l'histoire commence. 48 équipes, 3 pays organisateurs, des milliards de supporters dans le monde. Pour vivre ça à la hauteur de l'événement, votre salon doit devenir un stade. Voici le guide complet.</p>
 
       <h2>Étape 1 — L'équipement lumineux</h2>
@@ -440,7 +440,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
   {
     id: '8',
-    title: 'Pack Duo GlowWorld : vivez les matchs de la l'Été du Foot à deux',
+    title: 'Pack Duo GlowWorld : vivez les matchs de l\'Été du Foot à deux',
     excerpt: 'Offrir ou partager un bracelet LED, c\'est multiplier l\'émotion. Découvrez pourquoi le Pack Duo est notre produit le plus populaire.',
     date: '28 Avril 2026',
     image: '/images/led-wristbands-product.png',
@@ -450,7 +450,7 @@ export const BLOG_POSTS: BlogPost[] = [
     author: 'Équipe GlowWorld',
     content: `
       <h2>Le football est plus beau à deux</h2>
-      <p>Regarder la l'Été du Foot seul, c'est bien. Le regarder avec quelqu'un qui partage la même passion, c'est incomparable. Le Pack Duo GlowWorld a été conçu pour ça : deux bracelets Sound-Reactive aux couleurs de votre équipe favorite, pour vibrer ensemble.</p>
+      <p>Regarder l'Été du Foot seul, c'est bien. Le regarder avec quelqu'un qui partage la même passion, c'est incomparable. Le Pack Duo GlowWorld a été conçu pour ça : deux bracelets Sound-Reactive aux couleurs de votre équipe favorite, pour vibrer ensemble.</p>
 
       <h2>Que contient le Pack Duo ?</h2>
       <p>Le Pack Duo contient deux bracelets LED Sound-Reactive identiques, disponibles en 7 éditions nationales : France, Brésil, USA, Argentine, Mexique, Canada et Portugal. Les deux bracelets réagissent simultanément au son ambiant — quand vous criez un but, vous brillez ensemble.</p>
@@ -507,8 +507,8 @@ export const BLOG_POSTS: BlogPost[] = [
 
   {
     id: '10',
-    title: 'l'Été du Foot 2026 : les équipes favorites et pourquoi ça va être historique',
-    excerpt: 'France, Brésil, Argentine, Angleterre… Analyse des favoris pour le l'Été du Foot 2026 et ce qui rend cette édition unique dans l\'histoire du football.',
+    title: 'l\'Été du Foot 2026 : les équipes favorites et pourquoi ça va être historique',
+    excerpt: 'France, Brésil, Argentine, Angleterre… Analyse des favoris pour l\'Été du Foot 2026 et ce qui rend cette édition unique dans l\'histoire du football.',
     date: '2 Mai 2026',
     image: '/images/led-wristbands-product.png',
     slug: 'equipes-favorites-coupe-du-monde-2026',
@@ -517,13 +517,13 @@ export const BLOG_POSTS: BlogPost[] = [
     author: 'Équipe GlowWorld',
     content: `
       <h2>Une édition historique</h2>
-      <p>La l'Été du Foot 2026 est la première à réunir 48 équipes dans 3 pays organisateurs simultanément — États-Unis, Canada et Mexique. De juin à juillet 2026, le football prendra une dimension planétaire inédite.</p>
+      <p>L'Été du Foot 2026 est la première à réunir 48 équipes dans 3 pays organisateurs simultanément — États-Unis, Canada et Mexique. De juin à juillet 2026, le football prendra une dimension planétaire inédite.</p>
 
       <h2>La France — favorite numéro 1 ?</h2>
       <p>Double championne du monde (1998, 2018), finaliste en 2022, l'équipe de France dispose d'une génération exceptionnelle. Avec une attaque explosive et une défense solide, les Bleus partent parmi les grands favoris. Un bracelet LED Édition France dans votre collection s'impose.</p>
 
       <h2>Le Brésil — la Seleção veut retrouver le titre</h2>
-      <p>Cinq étoiles au compteur, le Brésil n'a plus remporté la l'Été du Foot depuis 2002. La pression est immense mais le talent est là. Les nuits brésiliennes en 2026 promettent d'être magiques.</p>
+      <p>Cinq étoiles au compteur, le Brésil n'a plus remporté l'Été du Foot depuis 2002. La pression est immense mais le talent est là. Les nuits brésiliennes en 2026 promettent d'être magiques.</p>
 
       <h2>L'Argentine — les champions en titre</h2>
       <p>Sacrée à Doha en 2022, l'Albiceleste cherche à confirmer. Avec une équipe rodée et expérimentée, l'Argentine est l'équipe à battre — et à célébrer avec le bracelet Édition Argentine.</p>
@@ -578,7 +578,7 @@ export const BLOG_POSTS: BlogPost[] = [
     author: 'Équipe GlowWorld',
     content: `
       <h2>Le compte à rebours est lancé</h2>
-      <p>Le 11 juin 2026, le coup d'envoi de la l'Été du Foot retentit aux États-Unis. Il reste peu de temps pour recevoir votre bracelet LED GlowWorld avant le début de la compétition.</p>
+      <p>Le 11 juin 2026, le coup d'envoi de l'Été du Foot retentit aux États-Unis. Il reste peu de temps pour recevoir votre bracelet LED GlowWorld avant le début de la compétition.</p>
 
       <h2>Pourquoi commander maintenant ?</h2>
       <p>Nos bracelets sont expédiés depuis notre entrepôt en un délai de 24 heures. La livraison vers la France, la Belgique, la Suisse et le Canada prend ensuite 7 à 12 jours ouvrés. Pour être livré avant le 11 juin, <strong>vous devez commander avant le 1er juin.</strong></p>
@@ -589,7 +589,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <h2>Commandez en 3 clics</h2>
       <p>Rendez-vous sur glowworld2026.com, choisissez votre édition, ajoutez au panier et payez en toute sécurité par carte ou PayPal. Votre bracelet sera expédié sous 24h et vous recevrez un email de confirmation avec le numéro de suivi.</p>
 
-      <p><strong>Ne ratez pas la l'Été du Foot — commandez votre bracelet maintenant.</strong></p>
+      <p><strong>Ne ratez pas l'Été du Foot — commandez votre bracelet maintenant.</strong></p>
     `
   },
 
