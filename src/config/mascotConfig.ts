@@ -65,7 +65,7 @@ export const MASCOT_CONFIG: Record<CountryKey, MascotConfig> = {
     inputSuggestions: [
       "Ôi, meu amigo! Vamos conversar?",
       "Que beleza ver você aqui!",
-      "Tá pronto pro Mundial 2026?",
+      "Tá pronto pro Verão do Futebol 2026?",
       "Quer falar da Seleção?",
       "Vamos dançar com a Canarinha!",
       "Pergunta o que quiser sobre o Brasil!"
@@ -95,14 +95,14 @@ export const MASCOT_CONFIG: Record<CountryKey, MascotConfig> = {
     inputSuggestions: [
       "¡Che, mi amigo! ¿Charlamos?",
       "¡Bárbaro tenerte por acá!",
-      "¿Listo para el Mundial 2026?",
+      "¿Listo para el Verano del Fútbol 2026?",
       "Hablemos de la Albiceleste, dale.",
       "¿Quién es tu jugador favorito?",
       "¡Vamos, mi compadre, contame!"
     ],
     quickReplies: ["¿Ganamos en 2026?", "¿Quién es el 10?", "Habla de la Selección"],
     inputPlaceholder: "Hacé tu pregunta a DIEGO...",
-    welcomeMessage: "¡Che, mi amigo! Soy DIEGO, tu compañero gaucho para vivir el Mundial 2026 con la Albiceleste. ¡Vamos!",
+    welcomeMessage: "¡Che, mi amigo! Soy DIEGO, tu compañero gaucho para vivir el Verano del Fútbol 2026 con la Albiceleste. ¡Vamos!",
     ctaOpenChat: "Charlar con DIEGO",
     closeButtonAriaLabel: "Cerrar el chat",
     deleteConfirmText: "¿Borrar toda nuestra conversación? Esta acción es definitiva.",
@@ -125,14 +125,14 @@ export const MASCOT_CONFIG: Record<CountryKey, MascotConfig> = {
     inputSuggestions: [
       "Olá, companheiro! Falamos?",
       "Força Portugal! Sempre.",
-      "Pronto para o Mundial 2026?",
+      "Pronto para o Verão do Futebol 2026?",
       "Vamos falar da Selecção!",
       "Quem é o teu favorito?",
       "Faz a tua pergunta, amigo."
     ],
     quickReplies: ["Ganhamos em 2026?", "Quem é o melhor?", "Fala da Seleção"],
     inputPlaceholder: "Faz uma pergunta ao FADO...",
-    welcomeMessage: "Olá, companheiro! Eu sou FADO, o galo de Barcelos. Estou aqui para viver contigo o Mundial 2026 com a nossa Selecção. Força!",
+    welcomeMessage: "Olá, companheiro! Eu sou FADO, o galo de Barcelos. Estou aqui para viver contigo o Verão do Futebol 2026 com a nossa Selecção. Força!",
     ctaOpenChat: "Conversar com FADO",
     closeButtonAriaLabel: "Fechar o chat",
     deleteConfirmText: "Apagar toda a nossa conversa? Esta acção é definitiva.",
@@ -155,14 +155,14 @@ export const MASCOT_CONFIG: Record<CountryKey, MascotConfig> = {
     inputSuggestions: [
       "¡Hola amigo! ¿Hablamos un rato?",
       "¡Olé! Bienvenido a mi Fan Zone.",
-      "¿Preparado para el Mundial 2026?",
+      "¿Preparado para el Verano del Fútbol 2026?",
       "Vamos a hablar de La Roja.",
       "¿Quién es tu jugador favorito?",
       "¡Magnífico tenerte por aquí!"
     ],
     quickReplies: ["¿Ganamos en 2026?", "¿Quién es el crack?", "Habla de la Roja"],
     inputPlaceholder: "Hazle tu pregunta a TIKI...",
-    welcomeMessage: "¡Hola amigo! Soy TIKI, el toro noble de GlowWorld. Estoy aquí para vivir contigo el Mundial 2026 con La Roja. ¡Vamos!",
+    welcomeMessage: "¡Hola amigo! Soy TIKI, el toro noble de GlowWorld. Estoy aquí para vivir contigo el Verano del Fútbol 2026 con La Roja. ¡Vamos!",
     ctaOpenChat: "Hablar con TIKI",
     closeButtonAriaLabel: "Cerrar el chat",
     deleteConfirmText: "¿Borrar toda nuestra conversación? Esta acción es definitiva.",
@@ -215,14 +215,14 @@ export const MASCOT_CONFIG: Record<CountryKey, MascotConfig> = {
     inputSuggestions: [
       "¡Órale, compadre! ¿Platicamos?",
       "¡Qué padre verte por aquí!",
-      "¿Listo para el Mundial 2026?",
+      "¿Listo para el Verano del Fútbol 2026?",
       "¡Vamos a hablar del Tri!",
       "¿Quién es tu jugador favorito?",
       "¡Ándale, hazme una pregunta!"
     ],
     quickReplies: ["¿Ganamos en 2026?", "¿Quién es el jefe?", "Habla del Tri"],
     inputPlaceholder: "Hazle una pregunta a TRI...",
-    welcomeMessage: "¡Órale, compadre! Soy TRI, tu águila real para vivir el Mundial 2026 con la Selección Mexicana. ¡Vamos!",
+    welcomeMessage: "¡Órale, compadre! Soy TRI, tu águila real para vivir el Verano del Fútbol 2026 con la Selección Mexicana. ¡Vamos!",
     ctaOpenChat: "Platicar con TRI",
     closeButtonAriaLabel: "Cerrar el chat",
     deleteConfirmText: "¿Borrar toda nuestra plática? Esta acción es definitiva.",

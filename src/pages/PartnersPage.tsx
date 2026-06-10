@@ -13,7 +13,7 @@ export const PartnersPage = ({ t }: PartnersPageProps) => (
         ? "GlowWorld collabore avec un réseau mondial de leaders technologiques et de spécialistes de l'événementiel pour garantir une expérience immersive sans précédent lors de l'Été du Foot 2026."
         : t._lang === 'en'
           ? 'GlowWorld collaborates with a global network of technology leaders and event specialists to ensure an unprecedented immersive experience during the 2026 Football Summer.'
-          : 'GlowWorld colabora con una red global de líderes tecnológicos y especialistas en eventos para garantizar una experiencia inmersiva sin precedentes durante el Mundial 2026.'}
+          : 'GlowWorld colabora con una red global de líderes tecnológicos y especialistas en eventos para garantizar una experiencia inmersiva sin precedentes durante el Verano del Fútbol 2026.'}
     </p>
 
     <section className="mb-12">

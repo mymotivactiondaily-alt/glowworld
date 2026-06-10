@@ -25,7 +25,7 @@ export const AboutPage = ({ t }: AboutPageProps) => {
           ? "GlowWorld est né d'une idée simple : rendre l'expérience de l'Été du Foot encore plus immersive. Nos bracelets LED Sound Reactive détectent automatiquement l'ambiance autour de toi et s'illuminent à chaque cri, chaque but, chaque hymne. Pas d'app, pas de configuration — juste la magie de la lumière au service de ta passion."
           : t._lang === 'en'
             ? "GlowWorld was born from a simple idea: make the Football Summer experience even more immersive. Our Sound Reactive LED wristbands automatically detect the atmosphere around you and light up with every cheer, every goal, every anthem. No app, no setup — just the magic of light serving your passion."
-            : 'GlowWorld nació de una idea simple: hacer la experiencia del Mundial aún más inmersiva. Nuestras pulseras LED Sound Reactive detectan automáticamente el ambiente a tu alrededor y se iluminan con cada grito, cada gol, cada himno. Sin app, sin configuración — solo la magia de la luz al servicio de tu pasión.'}
+            : 'GlowWorld nació de una idea simple: hacer la experiencia del Verano del Fútbol aún más inmersiva. Nuestras pulseras LED Sound Reactive detectan automáticamente el ambiente a tu alrededor y se iluminan con cada grito, cada gol, cada himno. Sin app, sin configuración — solo la magia de la luz al servicio de tu pasión.'}
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 text-left">

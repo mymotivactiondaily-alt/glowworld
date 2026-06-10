@@ -5,7 +5,7 @@ import { Zap, Globe, Trophy, CheckCircle, ArrowRight, Star, Sparkles, Brain, Mes
 import { Helmet } from 'react-helmet-async';
 import { Countdown } from '../components/Countdown';
 import { ProductCard } from '../components/ProductCard';
-import { PRODUCTS } from '../constants';
+import { PRODUCTS, LAUNCH_OFFER_ACTIVE, LAUNCH_PRICE, REGULAR_PRICE } from '../constants';
 import type { Product, Translation } from '../types';
 
 interface HomePageProps {
@@ -93,7 +93,7 @@ const KillerIASection = ({ t }: { t: any }) => (
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-400/10 border border-amber-400/40 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-amber-300 mb-6">
           <Sparkles className="w-3.5 h-3.5" />
-          {t._lang === 'fr' ? 'Une première mondiale' : t._lang === 'en' ? 'A world first' : 'Una primicia mundial'}
+          {t._lang === 'fr' ? 'Une première mondiale' : t._lang === 'en' ? 'A world first' : 'Una primicia global'}
         </div>
 
         <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight leading-[1.05] mb-6">
@@ -156,11 +156,11 @@ const KillerIASection = ({ t }: { t: any }) => (
       <ChatBubbleDemo t={t} />
 
       <div className="text-center mt-12">
-        <Link to="/catalog" className="inline-flex items-center gap-3 px-8 py-4 bg-amber-400 text-slate-950 font-black uppercase tracking-widest rounded-full hover:bg-amber-300 transition-all hover:scale-105 shadow-[0_0_30px_rgba(252,211,77,0.4)]">
+        <button onClick={() => document.getElementById('mascots')?.scrollIntoView({ behavior: 'smooth' })} className="inline-flex items-center gap-3 px-8 py-4 bg-amber-400 text-slate-950 font-black uppercase tracking-widest rounded-full hover:bg-amber-300 transition-all hover:scale-105 shadow-[0_0_30px_rgba(252,211,77,0.4)]">
           <Sparkles className="w-5 h-5" />
           {t._lang === 'fr' ? 'Découvre ton compagnon IA' : t._lang === 'en' ? 'Discover your AI companion' : 'Descubre tu compañero IA'}
           <ArrowRight className="w-5 h-5" />
-        </Link>
+        </button>
 
         <div className="mt-6 text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold">
           {t._lang === 'fr' ? '8 mascottes · 8 cultures · 0 IA générique' : t._lang === 'en' ? '8 mascots · 8 cultures · 0 generic AI' : '8 mascotas · 8 culturas · 0 IA genérica'}
@@ -175,8 +175,12 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
   const navigate = useNavigate();
   const [openMascot, setOpenMascot] = useStateMascot<string | null>(null);
 
+  const priceFormatted = `${LAUNCH_OFFER_ACTIVE ? LAUNCH_PRICE : REGULAR_PRICE}€`;
+  const heroCtaText = (t.hero_btn_primary || '').replace('{price}', priceFormatted);
+
   return (
     <div className="pt-20">
+      {/* 1. Helmet */}
       <Helmet>
         <title>{t.seo_home_title}</title>
         <meta name="description" content={t.seo_home_desc} />
@@ -199,8 +203,8 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
         </script>
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden px-6">
+      {/* 2. Hero Section */}
+      <section className="relative min-h-[75vh] flex items-center justify-center overflow-hidden px-6">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-slate-950/60 z-10" />
           <img
@@ -211,7 +215,7 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
           />
         </div>
 
-        <div className="relative z-20 max-w-4xl text-center">
+        <div className="relative z-20 max-w-4xl text-center pb-12 pt-8">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
               <span className="inline-block px-4 py-1 bg-france-red rounded-full text-xs font-black uppercase tracking-[0.3em]">
@@ -239,11 +243,11 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
             >
               <p className="text-xl md:text-2xl text-white font-bold leading-tight">
                 {t._lang === 'fr' ? (
-                  <>Le seul bracelet sound-reactive avec <span className="text-amber-300 glow-text drop-shadow-[0_0_10px_rgba(252,211,77,0.6)]">une IA dédiée à TON équipe</span>. Avant, pendant, après le match — ta mascotte est là.</>
+                  <>Le seul bracelet sound-reactive avec <span className="text-amber-300 glow-text drop-shadow-[0_0_10px_rgba(252,211,77,0.6)]">une IA dédiée à TON équipe</span>.</>
                 ) : t._lang === 'en' ? (
-                  <>The only sound-reactive wristband with <span className="text-amber-300 glow-text drop-shadow-[0_0_10px_rgba(252,211,77,0.6)]">an AI dedicated to YOUR team</span>. Before, during, after the match — your mascot is there.</>
+                  <>The only sound-reactive wristband with <span className="text-amber-300 glow-text drop-shadow-[0_0_10px_rgba(252,211,77,0.6)]">an AI dedicated to YOUR team</span>.</>
                 ) : (
-                  <>La única pulsera sound-reactive con <span className="text-amber-300 glow-text drop-shadow-[0_0_10px_rgba(252,211,77,0.6)]">una IA dedicada a TU equipo</span>. Antes, durante, después del partido — tu mascota está ahí.</>
+                  <>La única pulsera sound-reactive con <span className="text-amber-300 glow-text drop-shadow-[0_0_10px_rgba(252,211,77,0.6)]">una IA dedicada a TU equipo</span>.</>
                 )}
               </p>
               <div className="mt-4 flex items-center justify-center gap-2 text-france-red font-black uppercase tracking-widest text-[10px]">
@@ -252,46 +256,77 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
               </div>
             </motion.div>
 
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-16">
-              <Link
-                to="/catalog"
-                className="w-full md:w-auto bg-white text-slate-950 px-10 py-4 rounded-full font-black uppercase tracking-widest hover:bg-[#002395] hover:text-white transition-all neon-button"
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+              <button
+                onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
+                className="w-full md:w-auto bg-white text-slate-950 px-8 py-4 rounded-full font-black uppercase tracking-widest hover:bg-[#002395] hover:text-white transition-all neon-button flex items-center justify-center gap-2"
               >
-                {t.hero_cta}
-              </Link>
-              <button className="w-full md:w-auto flex items-center justify-center gap-2 px-10 py-4 rounded-full font-bold border border-white/20 hover:bg-white/10 transition-all">
+                <Zap className="w-5 h-5 fill-[#ED2939] text-[#ED2939]" />
+                <div className="flex items-center gap-2">
+                  <span>{heroCtaText}</span>
+                  {LAUNCH_OFFER_ACTIVE && (
+                    <span className="text-slate-500 line-through text-sm ml-1">{REGULAR_PRICE}€</span>
+                  )}
+                </div>
+              </button>
+              <button 
+                onClick={() => document.getElementById('mascots')?.scrollIntoView({ behavior: 'smooth' })}
+                className="w-full md:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold border border-white/20 hover:bg-white/10 transition-all text-white"
+              >
                 <Globe className="w-5 h-5" />
-                {t.hero_demo}
+                {t._lang === 'fr' ? 'Découvrir les Mascottes' : t._lang === 'en' ? 'Discover Mascots' : 'Descubrir Mascotas'}
               </button>
             </div>
-
-            <Countdown t={t} />
           </motion.div>
         </div>
       </section>
 
-      {/* Killer IA Section */}
-      <KillerIASection t={t} />
+      {/* 3. Featured Products */}
+      <section id="products" className="py-24 px-6 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <div>
+            <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">
+              {t._lang === 'fr' ? (
+                <>Éditions <span className="text-[#ED2939]">Limitées</span></>
+              ) : t._lang === 'en' ? (
+                <>Limited <span className="text-[#ED2939]">Editions</span></>
+              ) : (
+                <>Ediciones <span className="text-[#ED2939]">Limitadas</span></>
+              )}
+            </h2>
+            <p className="text-white/50 max-w-md">
+              {t._lang === 'fr'
+                ? 'Choisissez votre équipe et préparez-vous pour le plus grand spectacle de la planète.'
+                : t._lang === 'en'
+                  ? "Choose your team and get ready for the world's biggest show."
+                  : 'Elige tu equipo y prepárate para el espectáculo más grande del planeta.'}
+            </p>
+          </div>
+          <Link to="/catalog" className="group flex items-center gap-2 font-bold uppercase tracking-widest text-sm hover:text-[#002395]">
+            {t._lang === 'fr' ? 'Voir tout le catalogue' : t._lang === 'en' ? 'View full catalog' : 'Ver todo el catálogo'}{' '}
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+          </Link>
+        </div>
 
-      {/* Trust Badges */}
-      <section className="py-12 bg-white/5 border-y border-white/10">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
-          {[
-            { icon: Zap, text: t._lang === 'fr' ? 'Réactif au son en 0.1 sec' : t._lang === 'en' ? 'Sound reactive in 0.1 sec' : 'Reactiva al sonido en 0.1 seg' },
-            { icon: Globe, text: t._lang === 'fr' ? 'Livraison Internationale Offerte' : t._lang === 'en' ? 'Free International Shipping' : 'Envío Internacional Gratis' },
-            { icon: Trophy, text: t._lang === 'fr' ? '8 Éditions Nationales' : t._lang === 'en' ? '8 National Editions' : '8 Ediciones Nacionales' },
-            { icon: CheckCircle, text: t._lang === 'fr' ? 'Garantie 2 ans' : t._lang === 'en' ? '2-Year Warranty' : 'Garantía 2 años' },
-          ].map((item, i) => (
-            <div key={i} className="flex items-center justify-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
-              <item.icon className="w-5 h-5 text-[#002395]" />
-              <span className="text-xs font-bold uppercase tracking-widest">{item.text}</span>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {PRODUCTS.slice(0, 4).map((product) => (
+            <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} t={t} />
           ))}
         </div>
       </section>
 
-      {/* Mascots Catalog Section */}
-      <section className="py-20 px-6 bg-gradient-to-br from-blue-950/20 via-slate-950 to-red-950/20 border-y border-white/10">
+      {/* 4. Countdown */}
+      <section className="py-16 px-6 bg-slate-900 border-y border-white/5">
+        <div className="max-w-4xl mx-auto">
+          <Countdown t={t} />
+        </div>
+      </section>
+
+      {/* 5. Killer IA Section */}
+      <KillerIASection t={t} />
+
+      {/* 6. Mascots Catalog Section */}
+      <section id="mascots" className="py-20 px-6 bg-gradient-to-br from-blue-950/20 via-slate-950 to-red-950/20 border-y border-white/10">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-400/10 border border-amber-400/40 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-amber-300 mb-6">
             <Sparkles className="w-3.5 h-3.5" />
@@ -361,41 +396,24 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-          <div>
-            <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">
-              {t._lang === 'fr' ? (
-                <>Éditions <span className="text-[#ED2939]">Limitées</span></>
-              ) : t._lang === 'en' ? (
-                <>Limited <span className="text-[#ED2939]">Editions</span></>
-              ) : (
-                <>Ediciones <span className="text-[#ED2939]">Limitadas</span></>
-              )}
-            </h2>
-            <p className="text-white/50 max-w-md">
-              {t._lang === 'fr'
-                ? 'Choisissez votre équipe et préparez-vous pour le plus grand spectacle de la planète.'
-                : t._lang === 'en'
-                  ? "Choose your team and get ready for the world's biggest show."
-                  : 'Elige tu equipo y prepárate para el espectáculo más grande del planeta.'}
-            </p>
-          </div>
-          <Link to="/catalog" className="group flex items-center gap-2 font-bold uppercase tracking-widest text-sm hover:text-[#002395]">
-            {t._lang === 'fr' ? 'Voir tout le catalogue' : t._lang === 'en' ? 'View full catalog' : 'Ver todo el catálogo'}{' '}
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {PRODUCTS.slice(0, 4).map((product) => (
-            <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} t={t} />
+      {/* 7. Trust Badges */}
+      <section className="py-12 bg-white/5 border-y border-white/10">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+          {[
+            { icon: Zap, text: t._lang === 'fr' ? 'Réactif au son en 0.1 sec' : t._lang === 'en' ? 'Sound reactive in 0.1 sec' : 'Reactiva al sonido en 0.1 seg' },
+            { icon: Globe, text: t._lang === 'fr' ? 'Livraison Internationale Offerte' : t._lang === 'en' ? 'Free International Shipping' : 'Envío Internacional Gratis' },
+            { icon: Trophy, text: t._lang === 'fr' ? '8 Éditions Nationales' : t._lang === 'en' ? '8 National Editions' : '8 Ediciones Nacionales' },
+            { icon: CheckCircle, text: t._lang === 'fr' ? 'Garantie 2 ans' : t._lang === 'en' ? '2-Year Warranty' : 'Garantía 2 años' },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center justify-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
+              <item.icon className="w-5 h-5 text-[#002395]" />
+              <span className="text-xs font-bold uppercase tracking-widest">{item.text}</span>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* 8. Testimonials */}
       <section className="py-24 bg-france-blue/10">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h2 className="text-4xl font-black uppercase tracking-tighter mb-16">
@@ -433,10 +451,10 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
                 name: 'Marc D.',
                 text:
                   t._lang === 'fr'
-                    ? 'Qualité top, livraison ultra rapide. Prêt pour la CM2026 !'
+                    ? "Qualité top, livraison ultra rapide. Prêt pour l'Été du Foot 2026 !"
                     : t._lang === 'en'
-                      ? 'Top quality, ultra-fast delivery. Ready for WC2026!'
-                      : 'Calidad superior, entrega ultrarrápida. ¡Listo para el Mundial 2026!',
+                      ? 'Top quality, ultra-fast delivery. Ready for the 2026 Football Summer!'
+                      : 'Calidad superior, entrega ultrarrápida. ¡Listo para el Verano del Fútbol 2026!',
                 team: 'France',
               },
             ].map((testimonial, i) => (
