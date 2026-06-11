@@ -3,7 +3,6 @@ import { motion } from 'motion/react';
 import { useState as useStateMascot, useEffect as useEffectMascot } from 'react';
 import { Zap, Globe, Trophy, CheckCircle, ArrowRight, Star, Sparkles, Brain, MessageSquare, BarChart3 } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { Countdown } from '../components/Countdown';
 import { ProductCard } from '../components/ProductCard';
 import { PRODUCTS, LAUNCH_OFFER_ACTIVE, LAUNCH_PRICE, REGULAR_PRICE } from '../constants';
 import type { Product, Translation } from '../types';
@@ -315,10 +314,28 @@ export const HomePage = ({ onAddToCart, t }: HomePageProps) => {
         </div>
       </section>
 
-      {/* 4. Countdown */}
-      <section className="py-16 px-6 bg-slate-900 border-y border-white/5">
-        <div className="max-w-4xl mx-auto">
-          <Countdown t={t} />
+      {/* 4. Urgency Banner */}
+      <section className="py-8 px-6 bg-gradient-to-r from-[#002395] via-slate-900 to-[#ED2939] border-y border-amber-400/30 shadow-[0_0_20px_rgba(237,41,57,0.2)]">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex-1 text-center md:text-left">
+            <h3 className="text-xl md:text-2xl font-black uppercase tracking-widest text-white drop-shadow-md">
+              {t._lang === 'fr' ? '🔴 LE TOURNOI A COMMENCÉ — Commande maintenant, vibre dès ce soir !' :
+               t._lang === 'en' ? '🔴 THE TOURNAMENT HAS STARTED — Order now, feel it tonight!' :
+               '🔴 EL TORNEO HA COMENZADO — ¡Compra ahora, vibralo esta noche!'}
+            </h3>
+          </div>
+          <button 
+            onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
+            className="w-full md:w-auto shrink-0 bg-amber-400 text-slate-950 px-8 py-3 rounded-full font-black uppercase tracking-widest hover:bg-amber-300 transition-all shadow-[0_0_15px_rgba(252,211,77,0.5)] flex items-center justify-center gap-2"
+          >
+            <Zap className="w-5 h-5 fill-slate-950 text-slate-950" />
+            <div className="flex items-center gap-2">
+              <span>{heroCtaText}</span>
+              {LAUNCH_OFFER_ACTIVE && (
+                <span className="text-slate-700 line-through text-sm ml-1">{REGULAR_PRICE}€</span>
+              )}
+            </div>
+          </button>
         </div>
       </section>
 
