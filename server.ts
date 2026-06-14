@@ -421,6 +421,13 @@ async function startServer() {
     try {
       const { items, lang, userId, userEmail } = req.body;
 
+      console.log("Checkout request:", { 
+        hasUserEmail: !!userEmail, 
+        userEmailType: typeof userEmail,
+        itemsCount: items?.length,
+        lang
+      });
+
       const origin = req.headers.origin || `https://${req.headers.host}`;
 
       const lineItems = items.map((item: any) => ({
@@ -436,13 +443,13 @@ async function startServer() {
         quantity: item.quantity,
       }));
 
-      const session = await stripe.checkout.sessions.create({
+      const sessionConfig: any = {
         payment_method_types: ["card"],
         line_items: lineItems,
         mode: "payment",
         success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/cancel`,
-        customer_email: userEmail,
+        customer_creation: 'always',
         metadata: {
           userId: userId || 'guest',
           items: JSON.stringify(items.map((i: any) => ({ id: i.id, qty: i.quantity, price: i.price }))).slice(0, 490)
@@ -454,7 +461,13 @@ async function startServer() {
         allow_promotion_codes: true,
         billing_address_collection: 'required',
         invoice_creation: { enabled: true },
-      });
+      };
+
+      if (userEmail && typeof userEmail === 'string' && userEmail.includes('@') && userEmail.trim().length > 3) {
+        sessionConfig.customer_email = userEmail.trim();
+      }
+
+      const session = await stripe.checkout.sessions.create(sessionConfig);
 
       res.json({ id: session.id, url: session.url });
     } catch (error: any) {
